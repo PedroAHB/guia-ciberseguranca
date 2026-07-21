@@ -1,4 +1,4 @@
-# Guia Cibersegurança
+![Guia Cibersegurança — by Pedro Hackner](assets/img/capa.png)
 
 Este documento constitui um referencial técnico e acadêmico para a exploração sistemática do ecossistema Kali Linux. Seu objetivo principal é documentar, de forma estruturada e progressiva, o ferramental aplicado em auditorias de cibersegurança, gestão de infraestrutura de TI e integração de práticas DevSecOps.
 
