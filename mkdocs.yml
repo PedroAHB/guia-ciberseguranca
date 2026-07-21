@@ -1,0 +1,78 @@
+site_name: Guia Cibersegurança
+site_description: Guia técnico e acadêmico de ferramentas de cibersegurança para Kali Linux, organizado segundo o ciclo de vida do pentest.
+site_author: Pedro Augusto Hackner Bittencourt
+site_url: https://PedroAHB.github.io/guia-ciberseguranca/
+
+repo_name: PedroAHB/guia-ciberseguranca
+repo_url: https://github.com/PedroAHB/guia-ciberseguranca
+edit_uri: edit/main/docs/
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: pt-BR
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: green
+      toggle:
+        icon: material/weather-sunny
+        name: Alternar para tema claro
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Alternar para tema escuro
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      title: Nesta página
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji
+
+plugins:
+  - search:
+      lang: pt
+
+nav:
+  - Início: index.md
+  - 1. Reconhecimento Passivo e OSINT: 01-reconhecimento-osint.md
+  - 2. Enumeração Ativa e Mapeamento de Rede: 02-enumeracao-mapeamento-rede.md
+  - 3. Análise de Vulnerabilidades: 03-analise-vulnerabilidades.md
+  - 4. Segurança de Aplicações Web e APIs: 04-seguranca-web-apis.md
+  - 5. Exploração de Serviços e Bancos de Dados: 05-exploracao-servicos-bancos-dados.md
+  - 6. Pós-Exploração e Escalonamento de Privilégios: 06-pos-exploracao-escalonamento.md
+  - 7. Movimentação Lateral e Persistência: 07-movimentacao-lateral-persistencia.md
+  - 8. Criptoanálise e Quebra de Senhas: 08-criptoanalise-senhas.md
+  - 9. Auditoria de Redes Sem Fio (Wireless/RF): 09-auditoria-redes-wireless.md
+  - 10. Engenharia Reversa e Análise de Malware: 10-engenharia-reversa-malware.md
+  - 11. DevSecOps e Automação de Segurança: 11-devsecops-automacao.md
+  - Conclusão: conclusao.md
