@@ -1,8 +1,9 @@
-![Guia Cibersegurança — by Pedro Hackner](docs/assets/img/capa.png)
+![Guia Cibersegurança — by Pedro Hackner](docs/assets/img/capa.webp)
 
 # Guia Cibersegurança
 
 [![Deploy MkDocs](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/deploy.yml/badge.svg)](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/deploy.yml)
+[![Licença: CC BY 4.0](https://img.shields.io/badge/Licen%C3%A7a-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
 Guia técnico e acadêmico para a exploração sistemática do ecossistema Kali Linux, documentando de forma estruturada e progressiva o ferramental aplicado em auditorias de cibersegurança, gestão de infraestrutura de TI e integração de práticas DevSecOps.
 
@@ -46,6 +47,10 @@ O site é gerado com [MkDocs](https://www.mkdocs.org/) + [Material for MkDocs](h
 ## Aviso legal
 
 Todas as ferramentas, técnicas e metodologias documentadas neste guia possuem propósito estritamente educacional, técnico e profissional, devendo ser aplicadas exclusivamente em ambientes controlados, laboratórios próprios ou engajamentos formalmente autorizados por escrito (*Rules of Engagement*), em conformidade com a legislação vigente.
+
+## Licença
+
+O conteúdo textual original está disponível sob a licença [Creative Commons Attribution 4.0 International](LICENSE). Materiais de terceiros permanecem sujeitos aos direitos de seus respectivos titulares.
 
 ## Autor
 

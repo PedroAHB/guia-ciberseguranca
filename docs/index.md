@@ -1,8 +1,15 @@
-![Guia Cibersegurança — by Pedro Hackner](assets/img/capa.png)
+---
+description: "Guia técnico de ferramentas e metodologias de cibersegurança para Kali Linux, organizado segundo o ciclo de vida do pentest."
+---
+
+![Guia Cibersegurança — by Pedro Hackner](assets/img/capa.webp)
 
 Este documento constitui um referencial técnico e acadêmico para a exploração sistemática do ecossistema Kali Linux. Seu objetivo principal é documentar, de forma estruturada e progressiva, o ferramental aplicado em auditorias de cibersegurança, gestão de infraestrutura de TI e integração de práticas DevSecOps.
 
 Fundamentado em metodologias padrão da indústria, como o *Penetration Testing Execution Standard* (PTES) e a *Cyber Kill Chain*, este guia categoriza as aplicações em conformidade com o ciclo de vida do *pentest* — evoluindo do mapeamento inicial da superfície de ataque (OSINT) até a automação contínua de segurança em *pipelines* CI/CD. O escopo prioriza estritamente a precisão técnica, detalhando a operação de baixo nível, a sintaxe fundamentada e a execução prática de cada ferramenta em cenários éticos e profissionais.
+
+!!! danger "Uso exclusivamente ético e autorizado"
+    Execute as técnicas somente em laboratórios próprios ou ambientes cobertos por autorização formal e regras de engajamento. O operador é responsável por respeitar a legislação, o escopo acordado e a disponibilidade dos sistemas avaliados.
 
 ## Capítulos
 
