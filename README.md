@@ -1,3 +1,5 @@
+![Guia Cibersegurança — by Pedro Hackner](docs/assets/img/capa.png)
+
 # Guia Cibersegurança
 
 [![Deploy MkDocs](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/deploy.yml/badge.svg)](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/deploy.yml)

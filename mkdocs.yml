@@ -12,6 +12,7 @@ docs_dir: docs
 theme:
   name: material
   language: pt-BR
+  favicon: assets/img/favicon.png
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -61,6 +62,12 @@ markdown_extensions:
 plugins:
   - search:
       lang: pt
+
+extra_css:
+  - assets/css/extra.css
+
+extra_javascript:
+  - assets/js/tabs-scroll.js
 
 nav:
   - Início: index.md
