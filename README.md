@@ -55,3 +55,5 @@ O conteúdo textual original está disponível sob a licença [Creative Commons 
 ## Autor
 
 Pedro Augusto Hackner Bittencourt
+
+![Utilize esse guia com sabedoria e apenas em ambientes controlados](docs/assets/img/aviso.webp)

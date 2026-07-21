@@ -13,3 +13,5 @@ Este guia constitui um documento vivo, sujeito a atualizações contínuas à me
 ---
 
 **Autor e Responsável Técnico:** Pedro Augusto Hackner Bittencourt
+
+![Utilize esse guia com sabedoria e apenas em ambientes controlados](assets/img/aviso.webp)
