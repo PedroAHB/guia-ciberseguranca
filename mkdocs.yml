@@ -1,4 +1,4 @@
-site_name: Guia Cibersegurança
+site_name: Guia Cibersegurança Kali
 site_description: Guia técnico e acadêmico de ferramentas de cibersegurança para Kali Linux, organizado segundo o ciclo de vida do pentest.
 site_author: Pedro Augusto Hackner Bittencourt
 site_url: https://PedroAHB.github.io/guia-ciberseguranca/
@@ -14,6 +14,7 @@ theme:
   custom_dir: overrides
   language: pt-BR
   favicon: assets/img/favicon.png
+  logo: assets/img/favicon.png
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -32,7 +33,6 @@ theme:
         icon: material/weather-night
         name: Alternar para tema escuro
   features:
-    - navigation.tabs
     - navigation.top
     - navigation.footer
     - navigation.instant
@@ -77,9 +77,6 @@ copyright: Conteúdo licenciado sob CC BY 4.0 — Pedro Augusto Hackner Bittenco
 
 extra_css:
   - assets/css/extra.css
-
-extra_javascript:
-  - assets/js/tabs-scroll.js
 
 nav:
   - Início: index.md

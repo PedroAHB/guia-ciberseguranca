@@ -1,80 +1,10 @@
-/* Permite rolagem horizontal na barra de abas superior (navigation.tabs)
-   quando ha mais topicos do que cabe na largura da tela. */
-.md-tabs__list {
-  overflow-x: auto;
-  overflow-y: hidden;
-  flex-wrap: nowrap;
-  scrollbar-width: thin;
-  scrollbar-color: var(--md-default-fg-color--lighter) transparent;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
+/* Azul extraído do logotipo oficial do dragão da Kali Linux (docs/assets/img/favicon.png),
+   aplicado ao nome do site no cabeçalho e no topo da barra lateral de navegação. */
+:root {
+  --kali-blue: #2778ff;
 }
 
-.md-tabs__inner {
-  position: relative;
-}
-
-.md-tabs__item {
-  flex-shrink: 0;
-}
-
-.md-tabs__list::-webkit-scrollbar {
-  height: 4px;
-}
-
-.md-tabs__list::-webkit-scrollbar-thumb {
-  background-color: var(--md-default-fg-color--lighter);
-  border-radius: 4px;
-}
-
-.md-tabs__list::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-/* Os fades indicam visualmente que existem tópicos fora da área visível. */
-.md-tabs__inner::before,
-.md-tabs__inner::after {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  bottom: 4px;
-  width: 2.5rem;
-  pointer-events: none;
-  content: "";
-  opacity: 0;
-  transition: opacity 150ms ease;
-}
-
-.md-tabs__inner::before {
-  left: 0;
-  background: linear-gradient(
-    to right,
-    var(--md-primary-fg-color),
-    transparent
-  );
-}
-
-.md-tabs__inner::after {
-  right: 0;
-  background: linear-gradient(
-    to left,
-    var(--md-primary-fg-color),
-    transparent
-  );
-}
-
-.md-tabs__inner--can-scroll-left::before,
-.md-tabs__inner--can-scroll-right::after {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .md-tabs__list {
-    scroll-behavior: auto;
-  }
-
-  .md-tabs__inner::before,
-  .md-tabs__inner::after {
-    transition: none;
-  }
+.md-header__topic:first-child .md-ellipsis,
+.md-nav--primary > .md-nav__title {
+  color: var(--kali-blue);
 }
