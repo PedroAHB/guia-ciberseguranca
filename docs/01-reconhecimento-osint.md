@@ -6,7 +6,7 @@ description: "Técnicas e ferramentas de reconhecimento passivo e OSINT para map
 
 Como fase inicial do ciclo de vida de um engajamento de segurança ofensiva, esta etapa concentra-se na coleta de informações em fontes abertas (*Open Source Intelligence* — OSINT) e na correlação de inteligência de ameaças, sem qualquer interação direta com a infraestrutura do alvo. O objetivo é mapear a superfície de ataque externa — domínios, subdomínios, endereços de e-mail, credenciais expostas e relações organizacionais — minimizando a probabilidade de detecção e maximizando o volume de contexto disponível antes das fases subsequentes, que exigem varreduras e interação ativa contra o ambiente avaliado.
 
-## 1.1 TheHarvester
+## 1.1 TheHarvester — v4.11.1
 
 * **Descrição Acadêmica/Técnica:** O theHarvester é um *script* desenvolvido em Python projetado para a automação da coleta de dados de inteligência em fontes abertas. Operando em nível de aplicação (Camada 7 do modelo OSI), ele realiza requisições iterativas a motores de busca públicos, servidores de chaves PGP e APIs de terceiros (como Shodan, Hunter.io, e DNSdumpster) para compilar metadados associados a um domínio alvo. A arquitetura da ferramenta minimiza o tráfego de rede direto contra a infraestrutura do alvo, caracterizando-se primariamente como uma técnica de reconhecimento passivo, mitigando a probabilidade de detecção por sistemas de prevenção de intrusão (IPS).
 
@@ -36,7 +36,7 @@ theHarvester -d alvo.com -b all -l 500 -f recon_alvo_inicial
 
 - **Resultado Esperado:** O comando consultará todas as fontes públicas disponíveis (all), limitando a busca a 500 resultados por fonte de pesquisa, e salvará a saída estruturada nos formatos HTML e XML no arquivo recon_alvo_inicial, contendo os e-mails e subdomínios vinculados a "alvo.com".
 
-## 1.2 Recon-ng
+## 1.2 Recon-ng — v4.6.3
 
 * **Descrição Acadêmica/Técnica:** O recon-ng é um framework de reconhecimento web completo, desenvolvido em Python, que adota uma arquitetura modular análoga ao Metasploit. Diferente de scripts isolados, ele utiliza uma base de dados SQLite estruturada para armazenar hosts, contatos, localizações e vulnerabilidades, permitindo a correlação de dados entre diferentes módulos. O sistema opera através de uma interface de linha de comando (CLI) que gerencia workspaces, garantindo a segregação de dados entre diferentes projetos de auditoria. Sua extensibilidade via APIs de terceiros permite a automação de consultas complexas e o processamento de grandes volumes de dados de inteligência sem interação direta com o alvo.
 * **Principais Funcionalidades:**
@@ -99,7 +99,7 @@ show hosts
 
 - **Resultado Esperado:** O framework realizará ataques de força bruta no DNS (via dicionário) para identificar hosts ativos. Os resultados (nomes de host e endereços IP) serão automaticamente inseridos na tabela `hosts` do banco de dados do workspace `auditoria_nuvem`, prontos para serem utilizados por outros módulos de geolocalização ou busca de e-mails.
 
-## 1.3 OWASP Amass
+## 1.3 OWASP Amass — v5.1.1
 
 * **Descrição Acadêmica/Técnica:** O OWASP Amass é uma ferramenta desenvolvida em linguagem Go, arquitetada para o mapeamento profundo da superfície de ataque e descoberta de ativos em redes externas. Diferente de *scripts* de enumeração simples, o Amass estrutura os dados coletados utilizando um banco de dados de grafos, o que permite a análise relacional entre domínios, endereços IP e provedores de hospedagem. Em baixo nível, a ferramenta implementa técnicas heurísticas, incluindo consultas a dezenas de APIs de *Threat Intelligence*, *scraping* de mecanismos de busca, análise de *Certificate Transparency* (CT Logs), resolução recursiva de DNS, detecção de *wildcards* e permutações de nomes para inferir a existência de infraestruturas não documentadas.
 * **Principais Funcionalidades:**
@@ -135,7 +135,7 @@ amass enum -active -d alvo.com -brute -ip -dir ./recon_amass_alvo
 
 - **Resultado Esperado:** O Amass acionará resoluções de DNS com listas de permutações e força bruta, consultará *logs* de transparência de certificados e APIs, armazenando a topologia resultante estruturada (incluindo o banco em formato JSON e *logs* de texto) dentro do diretório ./recon_amass_alvo.
 
-## 1.4 Maltego
+## 1.4 Maltego — v4.12.1
 
 * **Descrição Acadêmica/Técnica:** O Maltego é uma plataforma de mineração de dados e análise de vínculos (*link analysis*), desenvolvida em Java, com arquitetura primariamente orientada a uma interface gráfica de grafos relacionais. Sua operação ocorre por meio de entidades (nós) que são submetidas a "transformações" (*transforms*). Em baixo nível, um *transform* é um código (frequentemente em Python) executado localmente ou em servidores de terceiros (TAS - *Transform Application Server*), encarregado de realizar consultas estruturadas via APIs a bases de dados públicas e privadas (ex: registros WHOIS, Shodan, redes sociais e inteligência de ameaças). O retorno de dados em formato XML é instantaneamente renderizado em um grafo direcionado, permitindo ao analista correlacionar dezenas de milhares de artefatos de infraestrutura de TI, e identificar interdependências ocultas durante a modelagem de ameaças.
 
@@ -166,7 +166,7 @@ python3 project.py local [nome_do_transform] [valor_da_entidade]
 - **Execução Prática:** O analista insere a entidade Domain com o valor "alvo.com" no centro do grafo. Em seguida, seleciona o nó e executa simultaneamente as transformações To Email address [theHarvester] e To DNS Name [Find sub-domains]. Selecionando as entidades de e-mail resultantes, executa o *transform* To Breach [Have I Been Pwned].
 - **Resultado Esperado:** O sistema renderizará uma árvore visual ramificando o domínio primário em diversos subdomínios e endereços de e-mail funcionais. Adicionalmente, conectará os e-mails a nós que representam incidentes de vazamento de dados documentados (com datas e tipos de dados expostos), fornecendo insumos empíricos e imediatos para a continuidade da auditoria de segurança.
 
-## 1.5 SpiderFoot
+## 1.5 SpiderFoot — v4.0
 
 * **Descrição Acadêmica/Técnica:** O SpiderFoot é uma ferramenta de automação de inteligência de fontes abertas (OSINT) desenvolvida em Python, projetada para integrar e correlacionar dados de mais de 200 fontes distintas. Sua arquitetura é orientada a eventos e baseada em módulos: cada dado coletado (ex: um endereço IP) é tratado como um evento que pode disparar automaticamente outros módulos (ex: geolocalização ou verificação de *reputation*). Em baixo nível, a ferramenta gerencia requisições assíncronas para APIs de terceiros e realiza *web scraping* para compilar um grafo de informações sobre domínios, sub-redes, e-mails e nomes de usuário, minimizando o esforço manual de correlação de dados brutos.
 * **Principais Funcionalidades:**

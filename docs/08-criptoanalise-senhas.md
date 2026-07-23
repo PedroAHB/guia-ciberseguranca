@@ -15,7 +15,7 @@ Ao longo das fases anteriores, diversos artefatos criptográficos são coletados
 | John the Ripper | CPU e OpenCL na edição Jumbo | Formatos variados e arquivos protegidos | Detecção de formato e conversores `*2john` |
 | Crunch | CPU/geração de arquivo | Padrões previsíveis e *wordlists* direcionadas | Controle exato de comprimento e caracteres |
 
-## 8.1 Hashcat
+## 8.1 Hashcat — v7.1.2
 
 * **Descrição Acadêmica/Técnica:** O Hashcat é o motor de quebra de senhas mais performático da indústria, desenvolvido em C e OpenCL/CUDA, arquitetado para explorar o paralelismo massivo de Unidades de Processamento Gráfico (GPUs) em vez de depender exclusivamente do processamento sequencial de CPUs. Em baixo nível, a ferramenta compila *kernels* de computação específicos para cada algoritmo de *hash* suportado (mais de 350 modos, identificados numericamente), distribuindo o cálculo de milhões a bilhões de tentativas de *hash* por segundo entre os múltiplos núcleos de processamento paralelo de uma GPU. O motor suporta múltiplos vetores de ataque simultâneos e mutuamente combináveis — força bruta pura (*Brute-Force*), dicionário direto (*Straight*), *combinator* (concatenação de duas listas) e, mais notavelmente, ataques baseados em regras (*Rule-Based*), onde uma sintaxe compacta de transformação (ex: capitalização, substituição de caracteres, adição de sufixos numéricos) é aplicada dinamicamente sobre cada palavra de uma *wordlist* de entrada, multiplicando exponencialmente o espaço de busca sem a necessidade de armazenar fisicamente essas variações.
 * **Principais Funcionalidades:**
@@ -55,7 +55,7 @@ hashcat -m 1000 hash_ntlm_extraido.txt /usr/share/wordlists/rockyou.txt -r /usr/
 
 - **Resultado Esperado:** O Hashcat carregará a GPU disponível, aplicando cada uma das 64 regras de mutação do arquivo best64.rule sobre cada palavra da *wordlist* rockyou.txt, testando variações como "Empresa2024!" ou "empresa2024". Ao encontrar a correspondência exata com o hash NTLM fornecido, a senha em texto claro será exibida diretamente no terminal e persistida no arquivo de *potfile* padrão da ferramenta para consulta futura via --show.
 
-## 8.2 John the Ripper
+## 8.2 John the Ripper — v1.9.0-Jumbo-1
 
 * **Descrição Acadêmica/Técnica:** O John the Ripper (JtR) é um dos motores de quebra de senhas mais tradicionais e versáteis da indústria, desenvolvido em C, historicamente otimizado para processamento em CPU (embora sua variante *jumbo* também ofereça suporte experimental a OpenCL). Sua distinção arquitetural central reside no utilitário auxiliar *format-agnostic*, capaz de identificar automaticamente o algoritmo de um *hash* através de análise estrutural (comprimento, *salt*, delimitadores), e no script auxiliar *\*2john*, uma família de conversores que extrai hashes de formatos de arquivo proprietários e complexos (ex: documentos protegidos do Office, arquivos ZIP/RAR criptografados, chaves privadas SSH) para o formato de texto simples que o motor de quebra consegue processar. O modo de ataque "Single Crack" é particularmente notável por sua inteligência contextual, utilizando os próprios metadados da conta (nome de usuário, campos GECOS) como base para gerar candidatos de senha altamente direcionados antes de recorrer a *wordlists* genéricas.
 * **Principais Funcionalidades:**
@@ -101,7 +101,7 @@ john --wordlist=/usr/share/wordlists/rockyou.txt hashes_servidor.txt
 
 - **Resultado Esperado:** O John identificará automaticamente o algoritmo de *hash* (ex: SHA-512 *crypt*, indicado pelo prefixo $6$ no arquivo *shadow*) e testará cada entrada da *wordlist* rockyou.txt contra os hashes combinados. Ao concluir, o comando john --show hashes_servidor.txt exibirá diretamente no terminal a lista de contas cujas senhas foram recuperadas com sucesso, no formato usuario:senha_em_texto_claro.
 
-## 8.3 Crunch
+## 8.3 Crunch — v3.6
 
 * **Descrição Acadêmica/Técnica:** O Crunch é um gerador de *wordlists* customizadas escrito em C, projetado para produzir combinações sistemáticas e exaustivas de caracteres de acordo com parâmetros rígidos definidos pelo operador (comprimento mínimo/máximo, conjunto de caracteres, padrões estruturais fixos). Diferente de *wordlists* estáticas pré-compiladas (como a rockyou.txt), que representam senhas reais previamente vazadas, o Crunch opera de forma puramente combinatória e determinística, iterando metodicamente por todo o espaço amostral definido pelos parâmetros de entrada. Sua funcionalidade de padrões (-t) é particularmente relevante para engenharia social direcionada, permitindo fixar segmentos conhecidos ou inferidos da senha (ex: o nome da empresa) e permutar apenas as posições variáveis remanescentes (ex: dígitos de ano ou caracteres especiais), reduzindo drasticamente o espaço de busca em relação a uma força bruta genérica e irrestrita.
 * **Principais Funcionalidades:**

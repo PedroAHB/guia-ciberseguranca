@@ -6,7 +6,7 @@ description: "Ferramentas para identificar, validar e priorizar vulnerabilidades
 
 Nesta fase do ciclo de auditoria, o foco transita do [mapeamento topológico realizado na fase anterior](02-enumeracao-mapeamento-rede.md) para a identificação ativa e triagem de falhas de segurança. O objetivo é correlacionar os serviços e versões descobertos com bancos de dados de vulnerabilidades conhecidas (CVEs), além de auditar configurações sistêmicas (*misconfigurations*) e credenciais padrão.
 
-## 3.1 Nuclei
+## 3.1 Nuclei — v3.11.0
 
 * **Descrição Acadêmica/Técnica:** Desenvolvido em linguagem Go pela ProjectDiscovery, o Nuclei é um motor de varredura de vulnerabilidades arquitetado sobre um modelo de execução declarativo baseado em *templates* YAML. Diferente de *scanners* tradicionais que operam primariamente via *banner grabbing* ou heurísticas fechadas, o Nuclei executa requisições HTTP, TCP, DNS e SSL exatas e customizadas, analisando as respostas contra padrões de expressões regulares (RegEx) ou *matchers* lógicos definidos pela comunidade. Essa abordagem de baixo nível (enviando o *payload* exato da exploração) reduz drasticamente a taxa de falsos positivos. Devido à sua altíssima concorrência e capacidade de saída em formatos estruturados (JSON), é amplamente adotado em *pipelines* de Integração e Entrega Contínuas (CI/CD) para testes de regressão de segurança.
 * **Principais Funcionalidades:**
@@ -45,7 +45,7 @@ nuclei -u https://staging.alvo.com -tags config,cve -severity critical,high,medi
 
 - **Resultado Esperado:** O Nuclei compilará os *templates* que correspondam às *tags* e severidades solicitadas e disparará requisições simultâneas contra o ambiente de *staging*. Caso encontre, por exemplo, um diretório .git exposto ou um painel de administração vulnerável a uma CVE específica, a correspondência será validada (evitando falsos positivos) e registrada no arquivo relatorio_nuclei_staging.txt, podendo acionar o bloqueio automático do *deploy* na esteira de CI/CD.
 
-## 3.2 Nessus
+## 3.2 Nessus — v10.12.1
 
 * **Descrição Acadêmica/Técnica:** O Nessus, desenvolvido pela Tenable, é uma solução proprietária de varredura de vulnerabilidades amplamente consolidada como padrão na indústria corporativa. Em baixo nível, opera de forma arquiteturalmente análoga ao OpenVAS (que derivou de seu código *open-source* original), utilizando um motor que executa dezenas de milhares de *plugins* compilados, escritos na linguagem NASL (*Nessus Attack Scripting Language*). Sua distinção técnica principal reside na curadoria estrita e na telemetria global de suas assinaturas, o que lhe confere um índice de falsos positivos significativamente menor que as alternativas gratuitas. A ferramenta é projetada não apenas para inferência probabilística de CVEs via rede, mas fundamentalmente para a auditoria determinística do estado interno do sistema operacional.
 * **Principais Funcionalidades:**
@@ -74,7 +74,7 @@ sudo /opt/nessus/sbin/nessuscli update
 - **Execução Prática:** O analista acessa a interface web no localhost, cria uma varredura utilizando o *template* "PCI-DSS Network Scan", insere as credenciais de um usuário com privilégios de leitura no domínio do *Active Directory* e define a sub-rede alvo.
 - **Resultado Esperado:** O Nessus autenticará silenciosamente via SMB/WMI em cada servidor, lerá as chaves de registro e as políticas de grupo local. Ao concluir, entregará um relatório de auditoria segmentando falhas de *software* (CVEs pendentes) de violações de política (ex: ausência de bloqueio de conta após 5 tentativas falhas), exigidas pelo padrão PCI.
 
-## 3.3 OpenVAS (Greenbone Vulnerability Management)
+## 3.3 OpenVAS (Greenbone Vulnerability Management) — GVM v26.34
 
 * **Descrição Acadêmica/Técnica:** O OpenVAS (*Open Vulnerability Assessment System*) é um *framework* corporativo de código aberto destinado ao gerenciamento centralizado de vulnerabilidades. Em baixo nível, não consiste em um executável isolado, mas sim em uma arquitetura baseada em múltiplos serviços: um processo gerenciador (gvmd), um servidor web para a interface de usuário (gsad) e o motor de varredura subjacente (ospd-openvas). O motor processa rotinas de testes denominadas *Network Vulnerability Tests* (NVTs), que são rotinas específicas desenvolvidas na linguagem NASL (*Nessus Attack Scripting Language*). Diferentemente de *scanners* que realizam apenas *banner grabbing* (inferência passiva), o OpenVAS atua de forma determinística por meio de varreduras autenticadas. Ele interage com o sistema de arquivos local do alvo via protocolos de administração (SMB, SSH, WMI) para auditar diretamente chaves de registro, permissões de diretórios e níveis de *patching* do *kernel*.
 * **Principais Funcionalidades:**
@@ -103,7 +103,7 @@ sudo gvm-check-setup
 - **Execução Prática:** O analista garante que os serviços estão ativos executando sudo gvm-start. No navegador corporativo, acessa [https://127.0.0.1:9392](https://127.0.0.1:9392). Navega até a seção de configurações e adiciona chaves SSH privadas no gerenciador de credenciais (*Credentials*). Em seguida, cria um escopo (*Target*) apontando para 192.168.50.0/24, associa a credencial SSH previamente cadastrada e inicia uma tarefa (*Task*) de varredura com o perfil "Full and fast".
 - **Resultado Esperado:** O motor OSPd efetuará login SSH legítimo em cada máquina, rodará comandos locais (como consultas ao gerenciador de pacotes dpkg ou rpm) e validará o estado real do sistema. A interface web processará esses dados e disponibilizará um relatório em PDF ou XML pontuando os CVEs confirmados e os respectivos *links* de mitigação do fornecedor.
 
-## 3.4 Nikto
+## 3.4 Nikto — v2.6.0
 
 * **Descrição Acadêmica/Técnica:** Desenvolvido em linguagem Perl e fundamentado na biblioteca de rede *LibWhisker*, o Nikto é um *scanner* de código aberto projetado estritamente para a auditoria infraestrutural de servidores HTTP/HTTPS (Camada 7 do modelo OSI). Diferente de ferramentas dinâmicas de análise de aplicação (DAST) que testam o código-fonte da aplicação (buscando falhas de lógica, SQLi ou XSS), o Nikto foca na configuração do *host*. Em baixo nível, ele envia milhares de requisições sequenciais predefinidas, avaliando as respostas do servidor (códigos HTTP, variação no tamanho da resposta e *banners*) contra um banco de dados interno de mais de 6.700 arquivos potencialmente perigosos (ex: install.php, web.config.bak), diretórios padrão ocultos, *scripts* CGI vulneráveis e ausência de cabeçalhos de segurança essenciais (*Security Headers*). Por seu volume massivo e direto de requisições, é uma ferramenta ruidosa, projetada para identificar rapidamente *low-hanging fruits* (falhas de configuração triviais).
 * **Principais Funcionalidades:**

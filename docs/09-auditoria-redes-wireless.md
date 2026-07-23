@@ -6,7 +6,7 @@ description: "Ferramentas para auditoria autorizada de redes sem fio, captura de
 
 Esta seção desvia-se do paradigma de redes cabeadas (TCP/IP) para operar diretamente na Camada 1 e 2 do modelo OSI, através da manipulação de interfaces de rádio frequência. O foco recai sobre a interceptação passiva de tráfego eletromagnético, a exploração de falhas criptográficas e de implementação nos protocolos de segurança Wi-Fi (WEP/WPA/WPA2/WPS) e a auditoria de outros meios de comunicação sem fio, como Bluetooth.
 
-## 9.1 Aircrack-ng
+## 9.1 Aircrack-ng — v1.7
 
 * **Descrição Acadêmica/Técnica:** O Aircrack-ng não é uma ferramenta isolada, mas uma suíte completa de utilitários em C, especializada na auditoria de segurança de redes Wi-Fi (802.11), cuja operação fundamental depende da capacidade da placa de rede sem fio de operar em *modo monitor* — um estado de baixo nível no qual a interface captura todos os quadros (*frames*) 802.11 no ar dentro do seu alcance de rádio, incluindo aqueles não destinados ao próprio dispositivo, ao contrário do *modo managed* convencional. Composta por ferramentas especializadas e encadeadas (airmon-ng para gerência de interfaces, airodump-ng para captura e despejo de pacotes, aireplay-ng para injeção de pacotes forjados, e aircrack-ng propriamente, o motor de quebra criptográfica), a suíte implementa ataques estatísticos contra a cifra RC4 do WEP e a captura determinística do *4-way handshake* do WPA/WPA2, cuja quebra subsequente depende da derivação criptográfica PBKDF2 contra uma *wordlist*.
 * **Principais Funcionalidades:**
@@ -58,7 +58,7 @@ aircrack-ng captura_corp-01.cap -w wordlist_techcorp_wifi.txt
 
 - **Resultado Esperado:** A desautenticação forçará o cliente a se reconectar automaticamente, momento em que o airodump-ng capturará com sucesso o *4-way handshake* (indicado no cabeçalho superior da tela de captura). O aircrack-ng então testará cada senha candidata da *wordlist* contra o *handshake*, derivando a chave PMK correspondente. Ao encontrar a correspondência, exibirá a mensagem "KEY FOUND!" seguida da senha em texto claro da rede Wi-Fi.
 
-## 9.2 Wifite
+## 9.2 Wifite — v2.8.1
 
 * **Descrição Acadêmica/Técnica:** O Wifite é uma ferramenta de automação escrita em Python, projetada para orquestrar o fluxo completo de ataques contra redes sem fio ao encapsular e sequenciar a execução de múltiplas ferramentas subjacentes especializadas (Aircrack-ng, Reaver, Hashcat, entre outras) sob uma única interface de linha de comando simplificada. Em baixo nível, a ferramenta automatiza integralmente o ciclo operacional que seria manual no Aircrack-ng: ativação do modo monitor, varredura e listagem de todos os alvos próximos ordenados por força de sinal (RSSI), seleção heurística automática do vetor de ataque mais eficiente disponível para cada rede específica (WPS, captura de *handshake* WPA ou quebra de chave WEP), execução do ataque de desautenticação e, por fim, o encaminhamento automático do artefato capturado para o motor de quebra apropriado.
 * **Principais Funcionalidades:**
@@ -93,7 +93,7 @@ sudo wifite --all --kill
 - **Execução Prática:** O analista executa sudo wifite, aguardando a listagem de todas as redes detectadas ordenadas por intensidade de sinal. Identificando visualmente que uma das redes ("IoT_Camera_Setup") possui o protocolo WPS habilitado (indicador de alta probabilidade de sucesso), seleciona-a diretamente pelo número correspondente no menu interativo.
 - **Resultado Esperado:** O Wifite identificará automaticamente a vulnerabilidade WPS, executará um ataque *Pixie-Dust* (exploração de aleatoriedade criptográfica fraca na implementação) contra o roteador. Em caso de sucesso, exibirá diretamente no terminal tanto o PIN de 8 dígitos do WPS quanto a senha WPA2-PSK em texto claro derivada, sem exigir qualquer ataque de força bruta prolongado contra a senha propriamente dita.
 
-## 9.3 Kismet
+## 9.3 Kismet — 2025-09-R1
 
 * **Descrição Acadêmica/Técnica:** O Kismet é um *framework* de detecção, coleta e análise de redes sem fio, desenvolvido em C++, que opera como um *sniffer* passivo multiplataforma e multiprotocolo (802.11 Wi-Fi, Bluetooth Classic/BLE, Zigbee, RFID e Sistemas de Rádio Definido por Software - SDR). Diferente do Aircrack-ng, cuja arquitetura é centrada primariamente em quebra criptográfica ativa, o Kismet é arquitetado como uma plataforma de inteligência de sinais (*Signals Intelligence*/SIGINT) contínua e passiva, empregando um modelo *servidor-cliente*: um processo *backend* (kismet_server) gerencia múltiplas fontes de captura simultâneas (várias placas Wi-Fi, dongles Bluetooth, receptores SDR) e agrega os dados em um banco relacional (SQLite), enquanto a interface web (kismet_client, acessível via navegador) exibe visualizações em tempo real, incluindo detecção heurística de anomalias como *rogue access points*, ataques de desautenticação em andamento e dispositivos realizando *fingerprinting* via *probe requests*.
 * **Principais Funcionalidades:**

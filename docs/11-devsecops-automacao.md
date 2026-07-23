@@ -15,7 +15,7 @@ Esta seção final rompe com o paradigma reativo do *pentest* tradicional (audit
 | Checkov | IaC | Terraform, Kubernetes, CloudFormation e outros | CLI, JSON, JUnit XML e SARIF |
 | Semgrep | SAST | Código-fonte por padrões e análise semântica | SARIF, JSON e resultados incrementais |
 
-## 11.1 Trivy
+## 11.1 Trivy — v0.72.0
 
 * **Descrição Acadêmica/Técnica:** O Trivy, desenvolvido em Go pela Aqua Security, é um *scanner* de segurança unificado e abrangente, projetado para consolidar múltiplas superfícies de análise (imagens de contêiner, sistemas de arquivos, repositórios Git e definições IaC) em uma única ferramenta de execução rápida. Em baixo nível, ao analisar uma imagem de contêiner, o Trivy realiza a extração e a inspeção das camadas (*layers*) do sistema de arquivos, identificando o gerenciador de pacotes do sistema operacional base (apt, apk, yum) e as dependências de linguagens de aplicação (package.json, requirements.txt, go.mod), correlacionando cada versão identificada contra múltiplos bancos de dados de vulnerabilidades (NVD, GitHub Security Advisories, distribuições Linux) mantidos em cache local para varreduras subsequentes de alta velocidade, sem exigir conectividade repetida com serviços externos.
 * **Principais Funcionalidades:**
@@ -55,7 +55,7 @@ trivy image --exit-code 1 --severity CRITICAL,HIGH api-pagamentos:v2.3
 
 - **Resultado Esperado:** O Trivy extrairá e analisará cada camada da imagem, exibindo uma tabela detalhada de vulnerabilidades encontradas (incluindo o pacote afetado, a versão instalada, a versão corrigida e o identificador CVE). Caso qualquer vulnerabilidade de severidade CRITICAL ou HIGH seja identificada, o comando retornará o código de saída 1, provocando a falha automática (*fail*) da etapa correspondente no *pipeline* de CI/CD e bloqueando a promoção da imagem vulnerável para produção.
 
-## 11.2 Checkov
+## 11.2 Checkov — v3.3.8
 
 * **Descrição Acadêmica/Técnica:** O Checkov, desenvolvido em Python pela Bridgecrew (Palo Alto Networks), é uma ferramenta de análise estática (SAST) especializada exclusivamente na auditoria de Infraestrutura como Código (IaC). Em baixo nível, a ferramenta realiza o *parsing* sintático completo de arquivos de definição de infraestrutura (Terraform, CloudFormation, Kubernetes YAML, ARM Templates, Dockerfile), convertendo-os em uma representação de grafo abstrato de recursos e suas propriedades. Sobre essa representação estruturada, a ferramenta aplica centenas de políticas de segurança predefinidas (*policy-as-code*), verificando programaticamente violações de práticas recomendadas — como *buckets* de armazenamento configurados com acesso público, grupos de segurança de rede permitindo tráfego irrestrito (0.0.0.0/0) ou bancos de dados provisionados sem criptografia em repouso — antes que a infraestrutura seja de fato provisionada no ambiente de nuvem.
 * **Principais Funcionalidades:**
@@ -95,7 +95,7 @@ checkov -d ./infraestrutura_terraform --compact
 
 - **Resultado Esperado:** O Checkov analisará estaticamente todos os arquivos .tf do diretório, exibindo um resumo compacto indicando, por exemplo, a falha na verificação "CKV_AWS_18: Ensure the S3 bucket has access logging configured" e "CKV_AWS_16: Ensure that RDS instances have encryption enabled". Essas falhas, identificadas antes do provisionamento real, permitem que o desenvolvedor corrija o código Terraform diretamente no *Pull Request*, evitando a criação de infraestrutura vulnerável em produção.
 
-## 11.3 Semgrep
+## 11.3 Semgrep — v1.170.0
 
 * **Descrição Acadêmica/Técnica:** O Semgrep, desenvolvido em OCaml/Python pela Semgrep Inc. (anteriormente r2c), é uma ferramenta de análise estática de código-fonte (SAST) *multi-linguagem*, arquitetada para detectar padrões de vulnerabilidade e má prática de programação sem a necessidade de compilar o código analisado. Em baixo nível, a ferramenta realiza o *parsing* do código-fonte em uma Árvore de Sintaxe Abstrata (AST) genérica e independente de linguagem, sobre a qual aplica regras de correspondência de padrões (*pattern matching*) escritas em uma sintaxe declarativa YAML que se assemelha intencionalmente ao próprio código-fonte alvo, mas com suporte a metavariáveis (ex: $VAR) que capturam expressões arbitrárias. Essa abordagem permite que analistas de segurança escrevam regras customizadas de detecção (ex: identificar chamadas a funções de execução de comando concatenadas com entrada de usuário não sanitizada) com uma curva de aprendizado significativamente menor do que a exigida por ferramentas SAST tradicionais baseadas em análise de fluxo de dados complexa.
 * **Principais Funcionalidades:**

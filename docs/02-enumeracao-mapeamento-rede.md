@@ -16,7 +16,7 @@ Diferente do reconhecimento passivo, esta fase exige interação direta com a in
 | Netdiscover | Camada 2, rede local | Descoberta ARP ativa ou passiva | Limitado ao domínio de broadcast |
 | Legion | Orquestração gráfica | Centralizar enumeração e evidências | Automação deve ser revisada antes da execução |
 
-## 2.1 Nmap (Network Mapper)
+## 2.1 Nmap (Network Mapper) — v7.99
 
 * **Descrição Acadêmica/Técnica:** Nmap é um utilitário de código aberto para exploração de rede e auditoria de segurança. Em baixo nível, opera manipulando *sockets* brutos (*Raw Sockets*) para forjar pacotes customizados nas camadas 3 (Rede) e 4 (Transporte) do modelo OSI. Através da análise determinística e probabilística dos pacotes de resposta (como *flags* TCP SYN/ACK/RST, mensagens ICMP e peculiaridades do *Initial Sequence Number* - ISN), a ferramenta infere o estado das portas e a identidade do *stack* TCP/IP do alvo. Além do mapeamento, o Nmap integra um motor de execução (NSE - *Nmap Scripting Engine*) baseado na linguagem Lua, expandindo sua capacidade para auditoria automatizada e detecção de vulnerabilidades (*CVEs*).
 * **Principais Funcionalidades:**
@@ -56,7 +56,7 @@ sudo nmap -sS -p- -sV -O --min-rate 1000 10.0.5.0/24 -oA recon_interna_vlan5
 
 - **Resultado Esperado:** O comando enviará pacotes SYN massivos de forma assíncrona (garantindo o envio mínimo de 1000 pacotes por segundo via --min-rate) para todas as 65.535 portas (-p-) de cada IP vivo na sub-rede. Ele aplicará assinaturas para descobrir o Sistema Operacional (-O) e as versões dos serviços (-sV). O resultado será exportado em três formatos distintos (XML, formato Nmap e formato *Grepable*) utilizando o prefixo recon_interna_vlan5, facilitando a integração contínua na esteira de auditoria.
 
-## 2.2 Masscan
+## 2.2 Masscan — v1.3.2
 
 * **Descrição Acadêmica/Técnica:** O Masscan é um *scanner* de portas TCP/UDP assíncrono arquitetado para varreduras de escopo global (ex: mapeamento de todo o espaço de endereçamento IPv4). Diferente do Nmap, que interage com a pilha TCP/IP do *kernel* do sistema operacional e aloca recursos para gerenciar o estado de cada conexão, o Masscan implementa sua própria micro-pilha TCP/IP em espaço de usuário (*user-space*). Operando de forma estritamente assíncrona via *raw sockets* (e suportando *drivers* de captura otimizados como o PF_RING), ele separa as *threads* de transmissão e recepção. Isso permite o envio ininterrupto de pacotes SYN e o processamento reativo de respostas SYN/ACK de forma independente, atingindo taxas teóricas de até 10 milhões de pacotes por segundo.
 * **Principais Funcionalidades:**
@@ -88,7 +88,7 @@ sudo masscan -p22,3389 203.0.113.0/16 --rate=50000 -oG recon_massivo_admin.grep
 
 - **Resultado Esperado:** O Masscan processará todos os endereços do bloco /16 focado estritamente nas portas 22 e 3389, transmitindo a uma taxa constante de 50.000 pacotes por segundo. A execução será concluída em poucos segundos. Os IPs que responderem positivamente terão seus registros (IP e porta aberta) salvos no arquivo recon_massivo_admin.grep, fornecendo uma sub-lista de alvos refinada para a próxima etapa da auditoria.
 
-## 2.3 Netdiscover
+## 2.3 Netdiscover — v0.21
 
 * **Descrição Acadêmica/Técnica:** Operando exclusivamente na Camada 2 (Enlace de Dados) do modelo OSI, o Netdiscover é uma ferramenta projetada para a identificação de *hosts* vivos em redes locais (LANs) utilizando o protocolo ARP (*Address Resolution Protocol*). Diferente de varredores tradicionais que operam nas camadas 3 e 4 via ICMP ou TCP/UDP, o Netdiscover não depende de roteamento. Ele identifica ativos injetando requisições ARP no domínio de *broadcast* (modo ativo) ou interceptando tráfego ARP preexistente (modo passivo). Como o tráfego ARP é fundamental para a comunicação em rede local e raramente filtrado por *firewalls* de *host* (como o Windows Defender Firewall), o Netdiscover é altamente eficaz para mapear ativos antes da execução de varreduras de portas em camadas superiores.
 * **Principais Funcionalidades:**
@@ -122,7 +122,7 @@ sudo netdiscover -p -i eth0
 
 - **Resultado Esperado:** A placa de rede eth0 entrará em modo promíscuo, escutando passivamente os anúncios ARP pela rede sem transmitir um único pacote. A ferramenta construirá em tempo real uma tabela contendo os IPs, endereços MAC associados e o fabricante do *hardware* de cada *host* ativo na rede que esteja transmitindo dados.
 
-## 2.4 Legion
+## 2.4 Legion — v0.7.0
 
 * **Descrição Acadêmica/Técnica:** O Legion é um *framework* de *penetration testing* semi-automatizado, com interface gráfica desenvolvida em Python (via PyQt), que atua como um orquestrador para diversas ferramentas subjacentes de varredura e exploração (como Nmap, Masscan, Nikto, Dirb, Enum4linux e Hydra). Sua arquitetura baseia-se em execução sensível ao contexto (*context-aware automation*): ao identificar um serviço específico em uma porta (ex: HTTP na porta 80), o *framework* dinamicamente sugere e automatiza a execução de *scripts* e varreduras direcionadas exclusivamente àquele protocolo. Em baixo nível, ele abstrai a sintaxe complexa de múltiplos utilitários de linha de comando, estruturando os retornos padrão (*stdout/stderr*) em um banco de dados relacional local (SQLite) para centralização de evidências e gerenciamento de estado do projeto.
 * **Principais Funcionalidades:**

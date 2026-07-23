@@ -11,6 +11,9 @@ Fundamentado em metodologias padrão da indústria, como o *Penetration Testing 
 !!! danger "Uso exclusivamente ético e autorizado"
     Execute as técnicas somente em laboratórios próprios ou ambientes cobertos por autorização formal e regras de engajamento. O operador é responsável por respeitar a legislação, o escopo acordado e a disponibilidade dos sistemas avaliados.
 
+!!! info "Nota sobre versionamento"
+    Ao lado do nome de cada ferramenta é indicada a versão estável mais recente identificada em julho de 2026. Essa referência serve como baseline para identificar eventuais mudanças de sintaxe, *flags* descontinuadas ou funcionalidades ausentes em instalações mais antigas. Como diversos projetos possuem ciclos de lançamento contínuos (*rolling release*), recomenda-se sempre confirmar a versão instalada localmente (geralmente via `--version`, `-v` ou `-h`) antes de aplicar os comandos deste documento.
+
 ## Capítulos
 
 - [1. Reconhecimento Passivo e OSINT](01-reconhecimento-osint.md)

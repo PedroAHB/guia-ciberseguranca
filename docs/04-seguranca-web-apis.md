@@ -16,7 +16,7 @@ Diferente das fases anteriores, voltadas à infraestrutura e rede, esta seção 
 | SQLmap | Exploração especializada de SQLi | Confirmação e enumeração controlada de injeções SQL | Alta, orientada a parâmetros/requisições |
 | ffuf | *Fuzzing* HTTP | Descoberta de conteúdo, parâmetros e *virtual hosts* | Alta, com filtros e saída estruturada |
 
-## 4.1 Burp Suite
+## 4.1 Burp Suite — v2026.7
 
 * **Descrição Acadêmica/Técnica:** Desenvolvido pela PortSwigger em Java, o Burp Suite é uma plataforma integrada para testes de segurança em aplicações web, arquitetada em torno de um *proxy* de interceptação *man-in-the-middle* (MITM) que se posiciona entre o navegador do analista e o servidor alvo. Em baixo nível, ele termina a sessão TLS do cliente e estabelece uma nova conexão criptografada com o destino, utilizando um certificado raiz próprio (CA *self-signed*) instalado no navegador para descriptografar e permitir a manipulação em tempo real de requisições e respostas HTTP/HTTPS antes da retransmissão. Sobre essa camada de interceptação, a suíte agrega múltiplos módulos especializados (Repeater, Intruder, Scanner, Sequencer, Decoder), permitindo desde a manipulação manual granular de parâmetros até a automação de ataques de força bruta e a varredura ativa/passiva de vulnerabilidades lógicas.
 * **Principais Funcionalidades:**
@@ -43,7 +43,7 @@ java -jar [caminho_burpsuite_pro.jar] --project-file=[projeto.burp] --config-fil
 - **Execução Prática:** O analista configura o navegador para rotear o tráfego pelo *proxy* local (127.0.0.1:8080) do Burp Suite e realiza a navegação normal pela loja até a etapa de finalização de compra. A requisição de confirmação do pedido é capturada na aba *Proxy*, enviada ao *Repeater* (Ctrl+R), e o parâmetro order_id é manualmente alterado para o valor de um pedido pertencente a outro usuário.
 - **Resultado Esperado:** Caso a aplicação não valide corretamente a propriedade do recurso (falha de *Broken Access Control*), o servidor retornará o código HTTP 200 juntamente com os dados completos do pedido de terceiros (endereço, itens e valores), confirmando a vulnerabilidade de IDOR para inclusão imediata no relatório de risco crítico.
 
-## 4.2 OWASP ZAP (Zed Attack Proxy)
+## 4.2 OWASP ZAP (Zed Attack Proxy) — v2.17.0
 
 * **Descrição Acadêmica/Técnica:** O OWASP ZAP é um *proxy* de interceptação e *scanner* de vulnerabilidades de código aberto, desenvolvido em Java sob a governança da fundação OWASP, arquitetado como alternativa livre e totalmente automatizável ao Burp Suite. Em baixo nível, sua operação central também se baseia em um *proxy* MITM com certificado raiz próprio, porém sua arquitetura é fundamentalmente orientada à automação: o ZAP expõe uma API REST completa e um motor de *scripting* (Zest, Python, JavaScript) que permite orquestrar rastreamentos (*spidering*), varreduras ativas e passivas inteiramente via linha de comando ou *pipelines* de CI/CD, sem dependência estrita da interface gráfica. O *Ajax Spider*, baseado no motor de navegação Selenium/HtmlUnit, complementa o rastreamento tradicional ao renderizar e interagir com aplicações que dependem intensamente de JavaScript (*Single Page Applications*).
 * **Principais Funcionalidades:**
@@ -83,7 +83,7 @@ zap.sh -cmd -quickurl https://staging.alvo.com -quickprogress -quickout relatori
 
 - **Resultado Esperado:** O ZAP executará em modo *headless* o rastreamento completo da aplicação seguido da varredura ativa padrão, exibindo o progresso percentual em tempo real no terminal (-quickprogress). Ao término, o relatório estruturado em XML será gerado, permitindo que um *script* subsequente na esteira de CI/CD analise a severidade dos achados e determine automaticamente a aprovação ou reprovação (*fail the build*) do *deploy*.
 
-## 4.3 SQLmap
+## 4.3 SQLmap — v1.10.6
 
 * **Descrição Acadêmica/Técnica:** O SQLmap é uma ferramenta de exploração automatizada de injeção SQL (SQLi), desenvolvida em Python, projetada para detectar e explorar falhas de sanitização de entrada em camadas de persistência de dados. Em baixo nível, o motor opera através de um extenso conjunto de técnicas de inferência: *Boolean-based blind*, *Error-based*, *UNION query-based*, *Stacked queries* e *Time-based blind*, testando sistematicamente a resposta da aplicação a payloads booleanos e temporizados quando não há retorno direto de dados na tela. Uma vez confirmado o vetor de injeção, a ferramenta é capaz de impressão digital do SGBD (*fingerprinting* via banners e comportamento de funções nativas), enumeração de metadados (bancos, tabelas, colunas) através de consultas SQL cegas reconstruídas byte a byte, e, dependendo dos privilégios do usuário do banco, escalonamento para execução de comandos no sistema operacional subjacente via funcionalidades nativas do SGBD (ex: xp_cmdshell no MSSQL).
 * **Principais Funcionalidades:**
@@ -127,7 +127,7 @@ sqlmap -u "http://alvo.com/noticia.php?id=15" -D portal_noticias -T usuarios_adm
 
 - **Resultado Esperado:** O SQLmap primeiramente confirmará o vetor de injeção (provavelmente do tipo *Time-based blind*), identificará o SGBD como MySQL e listará os bancos de dados disponíveis no servidor. Na segunda execução, a ferramenta reconstruirá byte a byte o conteúdo da tabela usuarios_admin, exibindo em formato tabular no terminal os hashes de senha e nomes de usuário administrativos, prontos para uma tentativa subsequente de quebra offline via [Hashcat](08-criptoanalise-senhas.md#81-hashcat) ou [John the Ripper](08-criptoanalise-senhas.md#82-john-the-ripper).
 
-## 4.4 ffuf (Fuzz Faster U Fool)
+## 4.4 ffuf (Fuzz Faster U Fool) — v2.2.1
 
 * **Descrição Acadêmica/Técnica:** O ffuf é uma ferramenta de *fuzzing* web de alto desempenho, escrita em linguagem Go, projetada para a descoberta de conteúdo e a manipulação sistemática de qualquer ponto de uma requisição HTTP através da substituição de uma palavra-chave (FUZZ) por entradas provenientes de uma *wordlist*. Em baixo nível, sua arquitetura aproveita a concorrência nativa do Go (*goroutines*) para disparar um volume massivo de requisições HTTP simultâneas, avaliando as respostas com base em filtros granulares de código de status, tamanho de resposta, contagem de palavras/linhas ou tempo de resposta, permitindo isolar resultados relevantes mesmo em aplicações que retornam página 200 genérica para recursos inexistentes (*soft 404s*). Sua flexibilidade de posicionamento do marcador FUZZ permite aplicá-lo não apenas a diretórios de URL, mas também a parâmetros, *headers*, valores de *cookies* e sub-domínios (*virtual host fuzzing*).
 * **Principais Funcionalidades:**

