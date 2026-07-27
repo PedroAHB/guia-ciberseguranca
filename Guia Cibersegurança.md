@@ -6,7 +6,7 @@ Fundamentado em metodologias padrão da indústria, como o *Penetration Testing 
 
 **Nota sobre versionamento:** ao lado do nome de cada ferramenta é indicada a versão estável mais recente identificada em julho de 2026. Essa referência serve como baseline para identificar eventuais mudanças de sintaxe, *flags* descontinuadas ou funcionalidades ausentes em instalações mais antigas. Como diversos projetos possuem ciclos de lançamento contínuos (*rolling release*), recomenda-se sempre confirmar a versão instalada localmente (geralmente via `--version`, `-v` ou `-h`) antes de aplicar os comandos deste documento.
 
-# **1  Reconhecimento Passivo e OSINT:**
+# **1  Reconhecimento Passivo e OSINT.**
 
 Coleta de informações em fontes abertas e inteligência de ameaças sem interação direta com a infraestrutura do alvo.
 
@@ -29,9 +29,8 @@ theHarvester d dominio.com b all l 500 f nomedoarquivodesaida
 
 - **Exemplo Prático de Aplicação:**  
   - **Cenário:** Em um engajamento de *Penetration Testing* modalidade *Black Box* contra a organização "alvo.com", o analista necessita mapear a superfície de ataque externa e identificar um padrão de nomenclatura de e-mails corporativos (ex: *[nome.sobrenome@alvo.com](mailto:nome.sobrenome@alvo.com)*). O objetivo é alimentar uma futura campanha de *password spraying* ou engenharia social, sem disparar alertas nos *firewalls* da organização.
-
-**Comando Executado:**  
-**Bash**  
+  - **Comando Executado:**  
+  **Bash**  
 theHarvester d alvo.com b all l 500 f reconalvoinicial
 
 - **Resultado Esperado:** O comando consultará todas as fontes públicas disponíveis (all), limitando a busca a 500 resultados por fonte de pesquisa, e salvará a saída estruturada nos formatos HTML e XML no arquivo reconalvoinicial, contendo os e-mails e subdomínios vinculados a "alvo.com".
@@ -79,9 +78,8 @@ run
 
 - **Exemplo Prático de Aplicação:**  
   - **Cenário:** Durante a fase de reconhecimento de uma infraestrutura baseada em nuvem, é necessário identificar todos os subdomínios de uma organização e verificar se algum está associado a serviços de armazenamento expostos. O analista utiliza o recon-ng para centralizar as descobertas em um único banco de dados, facilitando a exportação posterior para ferramentas de análise de vulnerabilidades.
-
-**Comandos Executados:**  
-**Bash**  
+  - **Comandos Executados:**  
+  **Bash**  
 recon-ng
 
 workspaces create auditorianuvem
@@ -126,9 +124,8 @@ amass track d dominio.com
 
 - **Exemplo Prático de Aplicação:**  
   - **Cenário:** Em um ciclo de auditoria contínua integrada a uma esteira DevSecOps, o objetivo é mapear exaustivamente a infraestrutura da organização "alvo.com". O escopo (*White Box*) permite interação direta, e o analista necessita descobrir subdomínios subjacentes, resolver seus IPs correspondentes e armazenar a saída em um diretório específico para alimentar *pipelines* subsequentes de varredura de portas (ex: Nmap).
-
-**Comando Executado:**  
-**Bash**  
+  - **Comando Executado:**  
+  **Bash**  
 amass enum active d alvo.com brute ip dir ./reconamassalvo
 
 - **Resultado Esperado:** O Amass acionará resoluções de DNS com listas de permutações e força bruta, consultará *logs* de transparência de certificados e APIs, armazenando a topologia resultante estruturada (incluindo o banco em formato JSON e *logs* de texto) dentro do diretório ./reconamassalvo.
@@ -229,9 +226,8 @@ sudo nmap sS p- sV alvoouIP oA nomedoarquivosaida
 
 - **Exemplo Prático de Aplicação:**  
   - **Cenário:** Durante um engajamento de *Internal Pentest*, o analista obteve acesso à VLAN corporativa interna de servidores (10.0.5.0/24). A prioridade é mapear rapidamente todos os *hosts* vivos, descobrir todas as portas TCP abertas e identificar as versões exatas dos serviços para posterior pesquisa de *exploits* no Metasploit, garantindo que os artefatos fiquem salvos para documentação.
-
-**Comando Executado:**  
-**Bash**  
+  - **Comando Executado:**  
+  **Bash**  
 sudo nmap sS p- sV O -min-rate 1000 10.0.5.0/24 oA reconinternavlan5
 
 - **Resultado Esperado:** O comando enviará pacotes SYN massivos de forma assíncrona (garantindo o envio mínimo de 1000 pacotes por segundo via -min-rate) para todas as 65.535 portas (-p-) de cada IP vivo na sub-rede. Ele aplicará assinaturas para descobrir o Sistema Operacional (-O) e as versões dos serviços (-sV). O resultado será exportado em três formatos distintos (XML, formato Nmap e formato *Grepable*) utilizando o prefixo reconinternavlan5, facilitando a integração contínua na esteira de auditoria.
@@ -260,9 +256,8 @@ sudo masscan -top-ports 100 10.0.0.0/8 192.168.0.0/16 -rate=100000 oG arquivo.gr
 
 - **Exemplo Prático de Aplicação:**  
   - **Cenário:** Durante um engajamento de *Red Teaming* ou análise de superfície de ataque externa de um grande provedor de serviços, o analista recebe um escopo abrangendo um bloco de endereços /16 (65.536 IPs). O objetivo primário e imediato é identificar todos os *hosts* que possuem serviços de administração remota expostos para a internet (RDP  3389 e SSH  22), operando em velocidade máxima antes de aplicar varreduras de vulnerabilidades mais lentas (via Nmap).
-
-**Comando Executado:**  
-**Bash**  
+  - **Comando Executado:**  
+  **Bash**  
 sudo masscan p22,3389 203.0.113.0/16 -rate=50000 oG reconmassivoadmin.grep
 
 - **Resultado Esperado:** O Masscan processará todos os endereços do bloco /16 focado estritamente nas portas 22 e 3389, transmitindo a uma taxa constante de 50.000 pacotes por segundo. A execução será concluída em poucos segundos. Os IPs que responderem positivamente terão seus registros (IP e porta aberta) salvos no arquivo reconmassivoadmin.grep, fornecendo uma sub-lista de alvos refinada para a próxima etapa da auditoria.
@@ -293,9 +288,8 @@ sudo netdiscover p i interface
 
 - **Exemplo Prático de Aplicação:**  
   - **Cenário:** Em um engajamento de *Physical Penetration Testing* ou após comprometer um dispositivo na rede interna (ex: via *pivot* de uma máquina Windows), o analista precisa mapear os *hosts* da VLAN corporativa 192.168.10.0/24. O ambiente possui um IDS rigoroso (*Intrusion Detection System*) que bloqueia varreduras ICMP/TCP de imediato. A prioridade é obter uma lista silenciosa de endereços IP e MACs vivos antes de lançar ataques direcionados.
-
-**Comando Executado:**  
-**Bash**  
+  - **Comando Executado:**  
+  **Bash**  
 sudo netdiscover p i eth0
 
 - **Resultado Esperado:** A placa de rede eth0 entrará em modo promíscuo, escutando passivamente os anúncios ARP pela rede sem transmitir um único pacote. A ferramenta construirá em tempo real uma tabela contendo os IPs, endereços MAC associados e o fabricante do *hardware* de cada *host* ativo na rede que esteja transmitindo dados.
@@ -324,7 +318,7 @@ sudo legion
 
 
 
-# **3- Análise de Vulnerabilidades**
+# **3  Análise de Vulnerabilidades.**
 
 Nesta fase do ciclo de auditoria, o foco transita do mapeamento topológico para a identificação ativa e triagem de falhas de segurança. O objetivo é correlacionar os serviços e versões descobertos na fase anterior com bancos de dados de vulnerabilidades conhecidas (CVEs), além de auditar configurações sistêmicas (misconfigurations) e credenciais padrão.
 
