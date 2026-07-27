@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://PedroAHB.github.io/guia-ciberseguranca/sitemap.xml

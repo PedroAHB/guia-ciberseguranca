@@ -1,0 +1,10 @@
+/* Azul extraído do logotipo oficial do dragão da Kali Linux (docs/assets/img/favicon.png),
+   aplicado ao nome do site no cabeçalho e no topo da barra lateral de navegação. */
+:root {
+  --kali-blue: #2778ff;
+}
+
+.md-header__topic:first-child .md-ellipsis,
+.md-nav--primary > .md-nav__title {
+  color: var(--kali-blue);
+}
