@@ -12,7 +12,7 @@ Diferente das fases anteriores, voltadas à infraestrutura e rede, esta seção 
 | Ferramenta | Abordagem | Melhor aplicação | Automação |
 | --- | --- | --- | --- |
 | Burp Suite | Proxy e testes manuais/assistidos | Validação lógica e manipulação fina de requisições | Parcial; recursos avançados dependem da edição |
-| OWASP ZAP | Proxy e DAST aberto | Varredura automatizada em esteiras CI/CD | Alta, com CLI, API e Automation Framework |
+| ZAP | Proxy e DAST aberto | Varredura automatizada em esteiras CI/CD | Alta, com CLI, API e Automation Framework |
 | SQLmap | Exploração especializada de SQLi | Confirmação e enumeração controlada de injeções SQL | Alta, orientada a parâmetros/requisições |
 | ffuf | *Fuzzing* HTTP | Descoberta de conteúdo, parâmetros e *virtual hosts* | Alta, com filtros e saída estruturada |
 
@@ -43,9 +43,9 @@ java -jar [caminho_burpsuite_pro.jar] --project-file=[projeto.burp] --config-fil
 - **Execução Prática:** O analista configura o navegador para rotear o tráfego pelo *proxy* local (127.0.0.1:8080) do Burp Suite e realiza a navegação normal pela loja até a etapa de finalização de compra. A requisição de confirmação do pedido é capturada na aba *Proxy*, enviada ao *Repeater* (Ctrl+R), e o parâmetro order_id é manualmente alterado para o valor de um pedido pertencente a outro usuário.
 - **Resultado Esperado:** Caso a aplicação não valide corretamente a propriedade do recurso (falha de *Broken Access Control*), o servidor retornará o código HTTP 200 juntamente com os dados completos do pedido de terceiros (endereço, itens e valores), confirmando a vulnerabilidade de IDOR para inclusão imediata no relatório de risco crítico.
 
-## 4.2 OWASP ZAP (Zed Attack Proxy) — v2.17.0
+## 4.2 ZAP (Zed Attack Proxy) — v2.17.0
 
-* **Descrição Acadêmica/Técnica:** O OWASP ZAP é um *proxy* de interceptação e *scanner* de vulnerabilidades de código aberto, desenvolvido em Java sob a governança da fundação OWASP, arquitetado como alternativa livre e totalmente automatizável ao Burp Suite. Em baixo nível, sua operação central também se baseia em um *proxy* MITM com certificado raiz próprio, porém sua arquitetura é fundamentalmente orientada à automação: o ZAP expõe uma API REST completa e um motor de *scripting* (Zest, Python, JavaScript) que permite orquestrar rastreamentos (*spidering*), varreduras ativas e passivas inteiramente via linha de comando ou *pipelines* de CI/CD, sem dependência estrita da interface gráfica. O *Ajax Spider*, baseado no motor de navegação Selenium/HtmlUnit, complementa o rastreamento tradicional ao renderizar e interagir com aplicações que dependem intensamente de JavaScript (*Single Page Applications*).
+* **Descrição Acadêmica/Técnica:** O ZAP (antigo OWASP ZAP) é um *proxy* de interceptação e *scanner* de vulnerabilidades de código aberto, desenvolvido em Java. Nasceu como projeto da OWASP, deixou a fundação em 2023 e, desde 2024, é mantido pela equipe do ZAP com patrocínio da Checkmarx. Foi arquitetado como alternativa livre e totalmente automatizável ao Burp Suite. Em baixo nível, sua operação central também se baseia em um *proxy* MITM com certificado raiz próprio, porém sua arquitetura é fundamentalmente orientada à automação: o ZAP expõe uma API REST completa e um motor de *scripting* (Zest, Python, JavaScript) que permite orquestrar rastreamentos (*spidering*), varreduras ativas e passivas inteiramente via linha de comando ou *pipelines* de CI/CD, sem dependência estrita da interface gráfica. O *Ajax Spider*, baseado no motor de navegação Selenium/HtmlUnit, complementa o rastreamento tradicional ao renderizar e interagir com aplicações que dependem intensamente de JavaScript (*Single Page Applications*).
 * **Principais Funcionalidades:**
   * Rastreamento automatizado de aplicações web tradicionais (*Traditional Spider*) e SPAs renderizadas em JavaScript (*Ajax Spider*).
   * Motor de varredura passiva (análise não intrusiva de respostas) e ativa (envio de *payloads* de ataque) para detecção de falhas do *OWASP Top 10*.
@@ -68,9 +68,9 @@ zap.sh -cmd -quickurl [https://alvo.com] -quickout [relatorio_zap.html]
 
 zap.sh -cmd -autorun [plano_automacao.yaml]
 
-# Inicialização em modo daemon expondo a API REST para orquestração remota
+# Inicialização em modo daemon expondo a API REST apenas localmente (evite 0.0.0.0, que expõe a API à rede)
 
-zap.sh -daemon -host 0.0.0.0 -port 8090 -config api.key=[chave_api]
+zap.sh -daemon -host 127.0.0.1 -port 8090 -config api.key=[chave_api]
 ```
 
 **Exemplo Prático de Aplicação:**
