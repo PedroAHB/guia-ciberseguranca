@@ -4,6 +4,8 @@
 
 [![Deploy MkDocs](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/deploy.yml/badge.svg)](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/deploy.yml)
 [![Licença: CC BY 4.0](https://img.shields.io/badge/Licen%C3%A7a-CC%20BY%204.0-lightgrey.svg)](LICENSE)
+[![CodeQL](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/codeql.yml/badge.svg)](https://github.com/PedroAHB/guia-ciberseguranca/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/PedroAHB/guia-ciberseguranca/badge)](https://scorecard.dev/viewer/?uri=github.com/PedroAHB/guia-ciberseguranca)
 
 Guia técnico e acadêmico para a exploração sistemática do ecossistema Kali Linux, documentando de forma estruturada e progressiva o ferramental aplicado em auditorias de cibersegurança, gestão de infraestrutura de TI e integração de práticas DevSecOps.
 
