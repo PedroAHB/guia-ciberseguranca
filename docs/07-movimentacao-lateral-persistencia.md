@@ -72,7 +72,7 @@ proxychains nmap -sT -Pn [bloco_IP_interno_ou_CIDR]
 ```
 
 **Exemplo Prático de Aplicação:**
-- **Cenário:** Com o túnel SOCKS5 reverso já estabelecido no [exemplo do Chisel](#71-chisel), o analista precisa efetivamente utilizar o NetExec para validar as credenciais de domínio previamente comprometidas contra os servidores da sub-rede interna 192.168.20.0/24, tarefa impossível sem o redirecionamento forçado do tráfego dessas ferramentas através do túnel.
+- **Cenário:** Com o túnel SOCKS5 reverso já estabelecido no [exemplo do Chisel](#71-chisel-v1118), o analista precisa efetivamente utilizar o NetExec para validar as credenciais de domínio previamente comprometidas contra os servidores da sub-rede interna 192.168.20.0/24, tarefa impossível sem o redirecionamento forçado do tráfego dessas ferramentas através do túnel.
 - **Comando Executado:**
 
 ```bash

@@ -43,7 +43,7 @@ aircrack-ng [arquivo_captura.cap] -w [wordlist.txt]
 ```
 
 **Exemplo Prático de Aplicação:**
-- **Cenário:** Em uma auditoria de segurança física autorizada, o analista precisa validar a robustez da senha da rede Wi-Fi corporativa protegida por WPA2-PSK ("RedeCorp_5G"), capturando o *handshake* de autenticação de um dispositivo cliente já conectado e submetendo-o a um ataque de dicionário direcionado (gerado previamente via [Crunch](08-criptoanalise-senhas.md#83-crunch)).
+- **Cenário:** Em uma auditoria de segurança física autorizada, o analista precisa validar a robustez da senha da rede Wi-Fi corporativa protegida por WPA2-PSK ("RedeCorp_5G"), capturando o *handshake* de autenticação de um dispositivo cliente já conectado e submetendo-o a um ataque de dicionário direcionado (gerado previamente via [Crunch](08-criptoanalise-senhas.md#83-crunch-v36)).
 - **Comandos Executados:**
 
 ```bash

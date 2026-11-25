@@ -4,7 +4,7 @@ description: "Ferramentas de auditoria offline de hashes, recuperação de senha
 
 # 8. Criptoanálise e Quebra de Senhas
 
-Ao longo das fases anteriores, diversos artefatos criptográficos são coletados (hashes NTLM extraídos via [Mimikatz](06-pos-exploracao-escalonamento.md#62-mimikatz), arquivos de captura de handshakes Wi-Fi, hashes de banco de dados extraídos via [SQLmap](04-seguranca-web-apis.md#43-sqlmap)). Esta seção concentra-se na auditoria *offline* desses artefatos e na geração e mutação inteligente de listas de palavras candidatas. Ataques *online* contra serviços ativos são tratados na seção sobre [Hydra](05-exploracao-servicos-bancos-dados.md#53-hydra).
+Ao longo das fases anteriores, diversos artefatos criptográficos são coletados (hashes NTLM extraídos via [Mimikatz](06-pos-exploracao-escalonamento.md#62-mimikatz-v220), arquivos de captura de handshakes Wi-Fi, hashes de banco de dados extraídos via [SQLmap](04-seguranca-web-apis.md#43-sqlmap-v1106)). Esta seção concentra-se na auditoria *offline* desses artefatos e na geração e mutação inteligente de listas de palavras candidatas. Ataques *online* contra serviços ativos são tratados na seção sobre [Hydra](05-exploracao-servicos-bancos-dados.md#53-hydra-v97).
 
 !!! warning "Respeite o escopo e proteja credenciais"
     Trabalhe apenas com hashes e capturas obtidos de forma autorizada. Trate senhas recuperadas como dados sensíveis, limite sua exposição e elimine os artefatos conforme as regras do engajamento.
@@ -46,7 +46,7 @@ hashcat -m [modo_hash] [arquivo_hashes.txt] --show
 ```
 
 **Exemplo Prático de Aplicação:**
-- **Cenário:** Após extrair o hash NTLM de um usuário de domínio (via [Mimikatz](06-pos-exploracao-escalonamento.md#62-mimikatz)) que não pôde ser explorado diretamente por *Pass-the-Hash* devido a restrições de *Protected Users*, o analista precisa recuperar a senha em texto claro. A política de senhas da organização exige complexidade mínima, mas os colaboradores tendem a seguir padrões previsíveis (palavra capitalizada + ano).
+- **Cenário:** Após extrair o hash NTLM de um usuário de domínio (via [Mimikatz](06-pos-exploracao-escalonamento.md#62-mimikatz-v220)) que não pôde ser explorado diretamente por *Pass-the-Hash* devido a restrições de *Protected Users*, o analista precisa recuperar a senha em texto claro. A política de senhas da organização exige complexidade mínima, mas os colaboradores tendem a seguir padrões previsíveis (palavra capitalizada + ano).
 - **Comando Executado:**
 
 ```bash
@@ -132,7 +132,7 @@ crunch 8 8 -t Empresa%%%% --stats
 ```
 
 **Exemplo Prático de Aplicação:**
-- **Cenário:** Através de engenharia social e OSINT prévio, o analista descobriu que a política de senha da rede Wi-Fi corporativa da empresa "TechCorp" segue rigorosamente o padrão nome_da_empresa seguido de 4 dígitos numéricos (ex: TechCorp2024). O objetivo é gerar uma *wordlist* extremamente direcionada e compacta (em vez de uma genérica massiva) para uso subsequente em um ataque de quebra do *handshake* WPA2 capturado via [Aircrack-ng](09-auditoria-redes-wireless.md#91-aircrack-ng).
+- **Cenário:** Através de engenharia social e OSINT prévio, o analista descobriu que a política de senha da rede Wi-Fi corporativa da empresa "TechCorp" segue rigorosamente o padrão nome_da_empresa seguido de 4 dígitos numéricos (ex: TechCorp2024). O objetivo é gerar uma *wordlist* extremamente direcionada e compacta (em vez de uma genérica massiva) para uso subsequente em um ataque de quebra do *handshake* WPA2 capturado via [Aircrack-ng](09-auditoria-redes-wireless.md#91-aircrack-ng-v17).
 - **Comando Executado:**
 
 ```bash
