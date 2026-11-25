@@ -10,6 +10,13 @@ on:
 permissions:
   contents: read
 
+# Um deploy por vez: evita que pushes simultâneos na branch gh-pages se rejeitem
+# e que um run antigo termine depois de um novo e publique uma versão desatualizada.
+# Runs novos aguardam o atual; entre os pendentes, só o mais recente é mantido.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
