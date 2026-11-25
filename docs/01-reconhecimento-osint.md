@@ -4,7 +4,7 @@ description: "Técnicas e ferramentas de reconhecimento passivo e OSINT para map
 
 # 1. Reconhecimento Passivo e OSINT
 
-Como fase inicial do ciclo de vida de um engajamento de segurança ofensiva, esta etapa concentra-se na coleta de informações em fontes abertas (*Open Source Intelligence* — OSINT) e na correlação de inteligência de ameaças, sem qualquer interação direta com a infraestrutura do alvo. O objetivo é mapear a superfície de ataque externa — domínios, subdomínios, endereços de e-mail, credenciais expostas e relações organizacionais — minimizando a probabilidade de detecção e maximizando o volume de contexto disponível antes das fases subsequentes, que exigem varreduras e interação ativa contra o ambiente avaliado.
+Como fase inicial do ciclo de vida de um engajamento de segurança ofensiva, esta etapa concentra-se na coleta de informações em fontes abertas (*Open Source Intelligence* — OSINT) e na correlação de inteligência de ameaças, sem interação direta com a infraestrutura do alvo (técnicas que geram consultas ativas, como a força bruta de DNS, são indicadas nos respectivos exemplos). O objetivo é mapear a superfície de ataque externa — domínios, subdomínios, endereços de e-mail, credenciais expostas e relações organizacionais — minimizando a probabilidade de detecção e maximizando o volume de contexto disponível antes das fases subsequentes, que exigem varreduras e interação ativa contra o ambiente avaliado.
 
 ## 1.1 TheHarvester — v4.11.1
 
@@ -14,7 +14,7 @@ Como fase inicial do ciclo de vida de um engajamento de segurança ofensiva, est
   * Extração passiva de subdomínios, endereços IPv4/IPv6 e URLs associadas ao domínio.
   * Identificação e coleta de endereços de e-mail corporativo expostos na web.
   * Integração modular com APIs de *Threat Intelligence* para expansão do vetor de dados.
-  * Geração de relatórios estruturados (XML, HTML) para integração com outras ferramentas na esteira de testes.
+  * Geração de relatórios estruturados (XML, JSON) para integração com outras ferramentas na esteira de testes.
 
 **Sintaxe e Comandos Principais:**
 
@@ -34,9 +34,9 @@ theHarvester -d [dominio.com] -b all -l 500 -f [nome_do_arquivo_de_saida]
 theHarvester -d alvo.com -b all -l 500 -f recon_alvo_inicial
 ```
 
-- **Resultado Esperado:** O comando consultará todas as fontes públicas disponíveis (all), limitando a busca a 500 resultados por fonte de pesquisa, e salvará a saída estruturada nos formatos HTML e XML no arquivo recon_alvo_inicial, contendo os e-mails e subdomínios vinculados a "alvo.com".
+- **Resultado Esperado:** O comando consultará todas as fontes públicas disponíveis (all), limitando a busca a 500 resultados por fonte de pesquisa, e salvará a saída estruturada nos formatos XML e JSON no arquivo recon_alvo_inicial, contendo os e-mails e subdomínios vinculados a "alvo.com".
 
-## 1.2 Recon-ng — v4.6.3
+## 1.2 Recon-ng — v5.1.2
 
 * **Descrição Acadêmica/Técnica:** O recon-ng é um framework de reconhecimento web completo, desenvolvido em Python, que adota uma arquitetura modular análoga ao Metasploit. Diferente de scripts isolados, ele utiliza uma base de dados SQLite estruturada para armazenar hosts, contatos, localizações e vulnerabilidades, permitindo a correlação de dados entre diferentes módulos. O sistema opera através de uma interface de linha de comando (CLI) que gerencia workspaces, garantindo a segregação de dados entre diferentes projetos de auditoria. Sua extensibilidade via APIs de terceiros permite a automação de consultas complexas e o processamento de grandes volumes de dados de inteligência sem interação direta com o alvo.
 * **Principais Funcionalidades:**
@@ -184,14 +184,14 @@ spiderfoot -l 127.0.0.1:5001
 
 # Execução via CLI: listar todos os módulos de coleta disponíveis
 
-spiderfoot -m
+spiderfoot -M
 
 # Iniciar um scan via CLI em um alvo específico com módulos selecionados e saída em CSV
 
-spiderfoot -s alvo.com -m s3_bucket,whois,google_maps -o csv > resultados_recon.csv
+spiderfoot -s alvo.com -m sfp_s3bucket,sfp_whois,sfp_googlemaps -o csv > resultados_recon.csv
 ```
 
 **Exemplo Prático de Aplicação:**
 - **Cenário:** Um analista de infraestrutura precisa identificar buckets S3 da Amazon Web Services (AWS) que possam estar associados ao domínio "alvo.com" e verificar se há exposição de dados sensíveis ou arquivos de configuração críticos.
-- **Execução Prática:** O analista inicia o SpiderFoot, seleciona o alvo e ativa especificamente o módulo s3_bucket.
+- **Execução Prática:** O analista inicia o SpiderFoot, seleciona o alvo e ativa especificamente o módulo sfp_s3bucket.
 - **Resultado Esperado:** O SpiderFoot realizará buscas exaustivas por nomes de buckets que sigam o padrão do domínio alvo. Caso identificados, o analista poderá verificar se o acesso público está habilitado, prevenindo um potencial vazamento de dados antes que seja explorado por agentes maliciosos.
