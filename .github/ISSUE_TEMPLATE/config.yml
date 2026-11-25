@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 Reportar uma vulnerabilidade
+    url: https://github.com/PedroAHB/guia-ciberseguranca/security/policy
+    about: Não abra issue pública para falhas de segurança no site, nos workflows ou nas dependências. Siga a política de segurança.
+  - name: 🌐 Site publicado
+    url: https://PedroAHB.github.io/guia-ciberseguranca/
+    about: Consulte a versão atual do guia antes de abrir uma issue.
