@@ -125,7 +125,7 @@ sqlmap -u "http://alvo.com/noticia.php?id=15" --batch --dbs
 sqlmap -u "http://alvo.com/noticia.php?id=15" -D portal_noticias -T usuarios_admin --dump
 ```
 
-- **Resultado Esperado:** O SQLmap primeiramente confirmará o vetor de injeção (provavelmente do tipo *Time-based blind*), identificará o SGBD como MySQL e listará os bancos de dados disponíveis no servidor. Na segunda execução, a ferramenta reconstruirá byte a byte o conteúdo da tabela usuarios_admin, exibindo em formato tabular no terminal os hashes de senha e nomes de usuário administrativos, prontos para uma tentativa subsequente de quebra offline via [Hashcat](08-criptoanalise-senhas.md#81-hashcat) ou [John the Ripper](08-criptoanalise-senhas.md#82-john-the-ripper).
+- **Resultado Esperado:** O SQLmap primeiramente confirmará o vetor de injeção (provavelmente do tipo *Time-based blind*), identificará o SGBD como MySQL e listará os bancos de dados disponíveis no servidor. Na segunda execução, a ferramenta reconstruirá byte a byte o conteúdo da tabela usuarios_admin, exibindo em formato tabular no terminal os hashes de senha e nomes de usuário administrativos, prontos para uma tentativa subsequente de quebra offline via [Hashcat](08-criptoanalise-senhas.md#81-hashcat-v712) ou [John the Ripper](08-criptoanalise-senhas.md#82-john-the-ripper-v190-jumbo-1).
 
 ## 4.4 ffuf (Fuzz Faster U Fool) — v2.2.1
 

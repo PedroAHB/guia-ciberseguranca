@@ -79,7 +79,7 @@ sudo masscan --top-ports 100 10.0.0.0/8 192.168.0.0/16 --rate=100000 -oG [arquiv
 ```
 
 **Exemplo Prático de Aplicação:**
-- **Cenário:** Durante um engajamento de *Red Teaming* ou análise de superfície de ataque externa de um grande provedor de serviços, o analista recebe um escopo abrangendo um bloco de endereços /16 (65.536 IPs). O objetivo primário e imediato é identificar todos os *hosts* que possuem serviços de administração remota expostos para a internet (RDP - 3389 e SSH - 22), operando em velocidade máxima antes de aplicar varreduras de vulnerabilidades mais lentas (via [Nmap](#21-nmap-network-mapper)).
+- **Cenário:** Durante um engajamento de *Red Teaming* ou análise de superfície de ataque externa de um grande provedor de serviços, o analista recebe um escopo abrangendo um bloco de endereços /16 (65.536 IPs). O objetivo primário e imediato é identificar todos os *hosts* que possuem serviços de administração remota expostos para a internet (RDP - 3389 e SSH - 22), operando em velocidade máxima antes de aplicar varreduras de vulnerabilidades mais lentas (via [Nmap](#21-nmap-network-mapper-v799)).
 - **Comando Executado:**
 
 ```bash
