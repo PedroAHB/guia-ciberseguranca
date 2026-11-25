@@ -29,7 +29,7 @@ O guia é dividido em 11 capítulos, cada um cobrindo uma fase do ciclo de vida 
 
 ## Rodando o site localmente
 
-Pré-requisitos: Python 3.9+.
+Pré-requisitos: Python 3.10+ (exigido pelo `pymdown-extensions` 11.x).
 
 ```bash
 python -m venv .venv
