@@ -105,7 +105,7 @@ sudo gvm-check-setup
 
 ## 3.4 Nikto — v2.6.0
 
-* **Descrição Acadêmica/Técnica:** Desenvolvido em linguagem Perl e fundamentado na biblioteca de rede *LibWhisker*, o Nikto é um *scanner* de código aberto projetado estritamente para a auditoria infraestrutural de servidores HTTP/HTTPS (Camada 7 do modelo OSI). Diferente de ferramentas dinâmicas de análise de aplicação (DAST) que testam o código-fonte da aplicação (buscando falhas de lógica, SQLi ou XSS), o Nikto foca na configuração do *host*. Em baixo nível, ele envia milhares de requisições sequenciais predefinidas, avaliando as respostas do servidor (códigos HTTP, variação no tamanho da resposta e *banners*) contra um banco de dados interno de mais de 6.700 arquivos potencialmente perigosos (ex: install.php, web.config.bak), diretórios padrão ocultos, *scripts* CGI vulneráveis e ausência de cabeçalhos de segurança essenciais (*Security Headers*). Por seu volume massivo e direto de requisições, é uma ferramenta ruidosa, projetada para identificar rapidamente *low-hanging fruits* (falhas de configuração triviais).
+* **Descrição Acadêmica/Técnica:** Desenvolvido em linguagem Perl e fundamentado na biblioteca de rede *LibWhisker*, o Nikto é um *scanner* de código aberto projetado estritamente para a auditoria infraestrutural de servidores HTTP/HTTPS (Camada 7 do modelo OSI). Diferente de ferramentas de análise dinâmica de aplicações (DAST), que testam a lógica da aplicação em execução (buscando falhas como SQLi ou XSS), o Nikto foca na configuração do *host*. Em baixo nível, ele envia milhares de requisições sequenciais predefinidas, avaliando as respostas do servidor (códigos HTTP, variação no tamanho da resposta e *banners*) contra um banco de dados interno de mais de 6.700 arquivos potencialmente perigosos (ex: install.php, web.config.bak), diretórios padrão ocultos, *scripts* CGI vulneráveis e ausência de cabeçalhos de segurança essenciais (*Security Headers*). Por seu volume massivo e direto de requisições, é uma ferramenta ruidosa, projetada para identificar rapidamente *low-hanging fruits* (falhas de configuração triviais).
 * **Principais Funcionalidades:**
   * Detecção de indexação de diretórios habilitada (*Directory Listing*) e arquivos de *backup/logs* expostos.
   * Auditoria rigorosa de cabeçalhos de resposta HTTP (ex: X-Frame-Options, Strict-Transport-Security, Server).
@@ -123,9 +123,10 @@ nikto -h [http://alvo.com]
 
 nikto -h [https://alvo.com] -ssl
 
-# Varredura otimizada e direcionada especificamente a arquivos de backup e arquivos miscelâneos
+# Varredura direcionada a arquivos interessantes, configurações padrão e divulgação de informações
+# (Tuning: 1 = arquivos interessantes, 2 = configuração/arquivo padrão, 3 = divulgação de informações)
 
-nikto -h [http://alvo.com] -Tuning 4,b
+nikto -h [http://alvo.com] -Tuning 1,2,3
 
 # Varredura abrangente com exportação estruturada do relatório em formato HTML
 
@@ -137,7 +138,7 @@ nikto -h [http://alvo.com] -Format htm -o [relatorio_web.html]
 - **Comando Executado:**
 
 ```bash
-nikto -h http://10.0.30.15 -Tuning 1,2,3,4 -Format txt -o relatorio_nikto_intranet.txt
+nikto -h http://10.0.30.15 -Tuning 1,2,3 -Format txt -o relatorio_nikto_intranet.txt
 ```
 
-- **Resultado Esperado:** O Nikto disparará suas baterias de teste sem evasão. O *output* indicará que o cabeçalho X-XSS-Protection não está definido e revelará a existência de um arquivo /phpinfo.php esquecido na raiz do servidor (expondo variáveis de ambiente e o *path* absoluto do sistema de arquivos). Todas as ocorrências serão salvas e indexadas no arquivo relatorio_nikto_intranet.txt para inclusão como apontamento de baixa/média severidade no relatório executivo.
+- **Resultado Esperado:** O Nikto disparará suas baterias de teste sem evasão. O *output* indicará que o cabeçalho X-Content-Type-Options não está definido e revelará a existência de um arquivo /phpinfo.php esquecido na raiz do servidor (expondo variáveis de ambiente e o *path* absoluto do sistema de arquivos). Todas as ocorrências serão salvas e indexadas no arquivo relatorio_nikto_intranet.txt para inclusão como apontamento de baixa/média severidade no relatório executivo.
