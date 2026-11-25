@@ -1,0 +1,31 @@
+name: 🔐 Contato de segurança
+description: Peça um canal privado para reportar uma vulnerabilidade, sem descrevê-la aqui.
+title: "Contato de segurança"
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **Esta issue é pública.** Use este formulário apenas quando o botão **Report a vulnerability** da aba **Security** não estiver disponível.
+
+        **Não inclua nenhum detalhe técnico**: nada de URL afetada, passos, payloads ou impacto. O mantenedor responderá com um canal privado.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Urgência percebida
+      options:
+        - Baixa
+        - Média
+        - Alta
+        - Crítica
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmações
+      options:
+        - label: Não incluí nenhum detalhe técnico da vulnerabilidade nesta issue.
+          required: true

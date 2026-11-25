@@ -1,0 +1,48 @@
+name: 📝 Erro no conteúdo
+description: Comando incorreto, parâmetro desatualizado, explicação imprecisa ou link quebrado no guia.
+title: "docs: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por ajudar a melhorar o guia! **Não inclua saídas de ferramentas executadas contra ambientes reais**, IPs de terceiros, hashes ou credenciais reais. Use dados fictícios.
+
+  - type: input
+    id: page
+    attributes:
+      label: Página ou capítulo
+      description: URL da página no site ou arquivo em `docs/`.
+      placeholder: https://PedroAHB.github.io/guia-ciberseguranca/08-criptoanalise-senhas/
+    validations:
+      required: true
+
+  - type: input
+    id: tool
+    attributes:
+      label: Ferramenta e versão
+      placeholder: nmap 7.95
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: O que está errado
+      description: Cite o trecho e explique o problema.
+    validations:
+      required: true
+
+  - type: textarea
+    id: fix
+    attributes:
+      label: Correção sugerida
+      description: Se possível, inclua a fonte oficial (documentação ou man page) que embasa a correção.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmações
+      options:
+        - label: Procurei issues existentes e não encontrei uma duplicata.
+          required: true
+        - label: Este relato não contém dados reais de terceiros, credenciais ou saídas de ambientes reais.
+          required: true

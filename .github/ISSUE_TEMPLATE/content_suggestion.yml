@@ -1,0 +1,38 @@
+name: ✨ Sugestão de conteúdo
+description: Sugira uma ferramenta, técnica, capítulo ou melhoria no guia.
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Sugestão
+      description: O que deveria ser adicionado ou melhorado, e por quê?
+    validations:
+      required: true
+
+  - type: input
+    id: chapter
+    attributes:
+      label: Capítulo relacionado
+      placeholder: 04 - Segurança de Aplicações Web e APIs
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Fontes oficiais
+      description: Links para a documentação ou o repositório oficial da ferramenta ou técnica.
+
+  - type: textarea
+    id: risk
+    attributes:
+      label: Riscos e avisos necessários
+      description: A técnica pode causar dano, indisponibilidade ou violar a lei se usada sem autorização? Que avisos o guia deve incluir?
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmações
+      options:
+        - label: Procurei issues existentes e não encontrei uma duplicata.
+          required: true
