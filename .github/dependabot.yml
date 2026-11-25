@@ -15,6 +15,11 @@ updates:
       include: "scope"
     labels:
       - "dependencies"
+    ignore:
+      # MkDocs 2.x é uma reescrita incompatível com o Material for MkDocs e com os plugins atuais.
+      # A migração do site segue outro caminho (Zensical); não aceitar 2.x automaticamente.
+      - dependency-name: "mkdocs"
+        versions: [">=2.0.0"]
 
   # Actions usadas nos workflows (respeita o pin por SHA e atualiza o comentário de versão)
   - package-ecosystem: "github-actions"
