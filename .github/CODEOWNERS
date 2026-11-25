@@ -1,0 +1,20 @@
+# Donos do código: são solicitados automaticamente como revisores dos PRs
+# que alteram os caminhos abaixo. A última regra que casar tem precedência.
+# Documentação: https://docs.github.com/pt/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Padrão: todo o repositório
+*                         @PedroAHB
+
+# Build, deploy e cadeia de dependências (afetam o site publicado)
+/.github/                 @PedroAHB
+/.github/workflows/       @PedroAHB
+/.github/CODEOWNERS       @PedroAHB
+/mkdocs.yml               @PedroAHB
+/requirements.txt         @PedroAHB
+/overrides/               @PedroAHB
+
+# Políticas e proteção contra vazamento de segredos
+/SECURITY.md              @PedroAHB
+/LICENSE                  @PedroAHB
+/.gitignore               @PedroAHB
+/.pre-commit-config.yaml  @PedroAHB
