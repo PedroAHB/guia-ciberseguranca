@@ -1,0 +1,35 @@
+# Atualizações automáticas de versão.
+# Documentação: https://docs.github.com/pt/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+version: 2
+updates:
+  # Dependências Python do build do site (requirements.txt)
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    labels:
+      - "dependencies"
+
+  # Actions usadas nos workflows (respeita o pin por SHA e atualiza o comentário de versão)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      timezone: "America/Sao_Paulo"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
