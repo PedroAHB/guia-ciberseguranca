@@ -40,6 +40,39 @@ mkdocs serve
 
 Depois, acesse `http://127.0.0.1:8000` no navegador. Qualquer alteração nos arquivos em `docs/` é recarregada automaticamente.
 
+## Setup seguro
+
+### Ambiente isolado e dependências fixadas
+
+- Use sempre um ambiente virtual (`.venv/`, já ignorado pelo git) para não misturar as dependências do site com as do sistema ou do Kali.
+- As versões em `requirements.txt` são fixadas com `==`, de modo que todos (incluindo o deploy) constroem o site com exatamente as mesmas versões. Atualizações chegam por PRs do Dependabot.
+
+### Hooks de pre-commit
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+O [gitleaks](https://github.com/gitleaks/gitleaks) roda em todo commit e bloqueia segredos colados por engano. Não use `--no-verify` para contorná-lo.
+
+### Segredos
+
+- **O projeto não precisa de nenhum segredo.** O build é local e o deploy usa apenas o `GITHUB_TOKEN` temporário do GitHub Actions, com permissão de escrita restrita ao job de deploy.
+- Não crie arquivos `.env`, chaves ou tokens no repositório. Se algum dia um segredo for necessário no CI, use [GitHub Secrets](https://docs.github.com/pt/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) e prefira OIDC a chaves de longa duração.
+
+### Artefatos de laboratório
+
+Ao praticar os capítulos, **não salve dentro do repositório** capturas de rede, potfiles, saídas de varredura ou dumps: eles podem conter dados reais. O `.gitignore` cobre os formatos mais comuns (`*.pcap*`, `*.potfile`, `*.gnmap`, `loot/`, `scans/` etc.), mas o ideal é manter esses arquivos fora do diretório do projeto.
+
+### Se um segredo ou dado sensível vazar
+
+1. **Revogue ou rotacione** a credencial imediatamente no provedor. Apagar o arquivo num commit novo não o remove do histórico, e repositórios públicos são varridos por bots em minutos.
+2. Avise o mantenedor pelo canal privado descrito no [SECURITY.md](SECURITY.md).
+3. Só depois avalie reescrever o histórico do git.
+
+Mais detalhes em [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Publicação
 
 O site é gerado com [MkDocs](https://www.mkdocs.org/) + [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) e publicado automaticamente no GitHub Pages a cada `push` na branch `main`, através do workflow em [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
