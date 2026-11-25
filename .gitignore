@@ -1,7 +1,114 @@
+# =============================================================================
+# Python / MkDocs
+# =============================================================================
 .venv/
 venv/
+env/
 site/
+.cache/
 __pycache__/
 *.pyc
+*.pyo
+
+# =============================================================================
+# Segredos e configuração local
+# =============================================================================
+.env
+.env.*
+*.env
+!.env.example
+!.env.sample
+.secrets/
+secrets/
+*.secrets
+.netrc
+.pypirc
+.htpasswd
+
+# =============================================================================
+# Chaves, certificados e keystores
+# =============================================================================
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.csr
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.kdbx
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+!*.pub
+
+# =============================================================================
+# Credenciais de cloud e infraestrutura
+# =============================================================================
+.aws/
+credentials.csv
+*_accessKeys.csv
+*service-account*.json
+*-credentials.json
+credentials.json
+client_secret*.json
+application_default_credentials.json
+.azure/
+*.publishsettings
+kubeconfig
+.kube/
+.docker/config.json
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform/
+
+# =============================================================================
+# Artefatos de laboratório (saídas de ferramentas podem conter dados reais)
+# =============================================================================
+*.pcap
+*.pcapng
+*.cap
+*.hccapx
+*.hc22000
+*.pot
+*.potfile
+hashcat.potfile
+john.pot
+*.dump
+*.sql.gz
+*dump*.sql
+*backup*.sql
+*.bak
+*.sqlite
+*.sqlite3
+*.db
+loot/
+scans/
+nmap-*.xml
+*.gnmap
+*.nmap
+
+# =============================================================================
+# Logs e temporários
+# =============================================================================
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# =============================================================================
+# Sistema operacional e editores
+# =============================================================================
 .DS_Store
 Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
