@@ -62,7 +62,7 @@ sudo nmap -sS -p- -sV -O --min-rate 1000 10.0.5.0/24 -oA recon_interna_vlan5
 * **Principais Funcionalidades:**
   * Transmissão assíncrona de alto desempenho com *bypass* da pilha de rede do *kernel*.
   * Controle restrito e granular da banda utilizada via limitação exata de pacotes por segundo (--rate).
-  * Compatibilidade intencional com a sintaxe de comandos e formatos de saída do Nmap (XML, Grepable, JSON).
+  * Compatibilidade intencional com a sintaxe de comandos e os formatos de saída do Nmap (XML e Grepable), além de saída em JSON.
   * Suporte à captura de *banners* de serviços em escala de rede.
   * Capacidade de interrupção (pausa) e retomada de varreduras de longa duração, gerando e lendo arquivos de estado de execução.
 
@@ -83,7 +83,7 @@ sudo masscan --top-ports 100 10.0.0.0/8 192.168.0.0/16 --rate=100000 -oG [arquiv
 - **Comando Executado:**
 
 ```bash
-sudo masscan -p22,3389 203.0.113.0/16 --rate=50000 -oG recon_massivo_admin.grep
+sudo masscan -p22,3389 198.18.0.0/16 --rate=50000 -oG recon_massivo_admin.grep
 ```
 
 - **Resultado Esperado:** O Masscan processará todos os endereços do bloco /16 focado estritamente nas portas 22 e 3389, transmitindo a uma taxa constante de 50.000 pacotes por segundo. A execução será concluída em poucos segundos. Os IPs que responderem positivamente terão seus registros (IP e porta aberta) salvos no arquivo recon_massivo_admin.grep, fornecendo uma sub-lista de alvos refinada para a próxima etapa da auditoria.
@@ -113,7 +113,7 @@ sudo netdiscover -p -i [interface]
 ```
 
 **Exemplo Prático de Aplicação:**
-- **Cenário:** Em um engajamento de *Physical Penetration Testing* ou após comprometer um dispositivo na rede interna (ex: via *pivot* de uma máquina Windows), o analista precisa mapear os *hosts* da VLAN corporativa 192.168.10.0/24. O ambiente possui um IDS rigoroso (*Intrusion Detection System*) que bloqueia varreduras ICMP/TCP de imediato. A prioridade é obter uma lista silenciosa de endereços IP e MACs vivos antes de lançar ataques direcionados.
+- **Cenário:** Em um engajamento de *Physical Penetration Testing* ou após comprometer um dispositivo na rede interna (ex: via *pivot* de uma máquina Windows), o analista precisa mapear os *hosts* da VLAN corporativa 192.168.10.0/24. O ambiente possui um IPS rigoroso (*Intrusion Prevention System*) que bloqueia varreduras ICMP/TCP de imediato. A prioridade é obter uma lista silenciosa de endereços IP e MACs vivos antes de lançar ataques direcionados.
 - **Comando Executado:**
 
 ```bash
