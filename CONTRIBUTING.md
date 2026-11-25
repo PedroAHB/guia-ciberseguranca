@@ -34,7 +34,7 @@ Antes de abrir o PR, confirme que o build passa sem avisos:
 mkdocs build --strict
 ```
 
-O hook do [gitleaks](https://github.com/gitleaks/gitleaks) roda em todo commit e bloqueia segredos detectados. **Não use `git commit --no-verify`** para contorná-lo. Se for um falso positivo num exemplo didático, veja a seção [Exemplos e dados fictícios](#exemplos-e-dados-ficticios).
+O hook do [gitleaks](https://github.com/gitleaks/gitleaks) roda em todo commit e bloqueia segredos detectados. **Não use `git commit --no-verify`** para contorná-lo. Se for um falso positivo num exemplo didático, veja a seção [Exemplos e dados fictícios](#exemplos-e-dados-fictícios).
 
 ## Estrutura
 
