@@ -11,7 +11,7 @@ Obrigado pelo interesse em melhorar o **Guia Cibersegurança**! Este documento d
 
 ## Ambiente local
 
-Pré-requisitos: Python 3.10+ e Git.
+Pré-requisitos: Python 3.11+ e Git.
 
 ```bash
 git clone https://github.com/PedroAHB/guia-ciberseguranca.git
