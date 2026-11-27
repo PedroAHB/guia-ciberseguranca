@@ -68,6 +68,9 @@ markdown_extensions:
 plugins:
   - search:
       lang: pt
+  # Baixa fontes e outros recursos externos no build e os serve a partir do próprio site,
+  # sem requisições a terceiros (ex.: Google Fonts) quando o leitor abre a página.
+  - privacy
   - minify:
       minify_html: true
       minify_js: true
