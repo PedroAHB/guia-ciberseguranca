@@ -71,6 +71,13 @@ plugins:
   # Baixa fontes e outros recursos externos no build e os serve a partir do próprio site,
   # sem requisições a terceiros (ex.: Google Fonts) quando o leitor abre a página.
   - privacy
+  # Gera a imagem de prévia (Open Graph/Twitter Card) de cada página com o título e a
+  # descrição do front matter. Requer cairosvg/pillow (requirements.txt) e libcairo2 no CI.
+  - social:
+      cards_layout_options:
+        background_color: "#14151a"
+        color: "#ffffff"
+        font_family: Roboto
   - minify:
       minify_html: true
       minify_js: true
