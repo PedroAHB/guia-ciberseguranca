@@ -43,6 +43,7 @@ sudo nmap -sS -p- -sV [alvo_ou_IP] -oA [nome_do_arquivo_saida]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante um engajamento de *Internal Pentest*, o analista obteve acesso à VLAN corporativa interna de servidores (10.0.5.0/24). A prioridade é mapear rapidamente todos os *hosts* vivos, descobrir todas as portas TCP abertas e identificar as versões exatas dos serviços para posterior pesquisa de *exploits* no Metasploit, garantindo que os artefatos fiquem salvos para documentação.
 - **Comando Executado:**
 
@@ -73,6 +74,7 @@ sudo masscan --top-ports 100 10.0.0.0/8 192.168.0.0/16 --rate=100000 -oG [arquiv
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante um engajamento de *Red Teaming* ou análise de superfície de ataque externa de um grande provedor de serviços, o analista recebe um escopo abrangendo um bloco de endereços /16 (65.536 IPs). O objetivo primário e imediato é identificar todos os *hosts* que possuem serviços de administração remota expostos para a internet (RDP - 3389 e SSH - 22), operando em velocidade máxima antes de aplicar varreduras de vulnerabilidades mais lentas (via [Nmap](#21-nmap-network-mapper-v799)).
 - **Comando Executado:**
 
@@ -104,6 +106,7 @@ sudo netdiscover -p -i [interface]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Em um engajamento de *Physical Penetration Testing* ou após comprometer um dispositivo na rede interna (ex: via *pivot* de uma máquina Windows), o analista precisa mapear os *hosts* da VLAN corporativa 192.168.10.0/24. O ambiente possui um IPS rigoroso (*Intrusion Prevention System*) que bloqueia varreduras ICMP/TCP de imediato. A prioridade é obter uma lista silenciosa de endereços IP e MACs vivos antes de lançar ataques direcionados.
 - **Comando Executado:**
 
@@ -130,6 +133,7 @@ sudo legion
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Um auditor de segurança recebe um escopo de 50 servidores corporativos mesclados (Windows e Linux). Para otimizar o tempo de *assessment* e evitar a digitação manual de dezenas de comandos para cada serviço descoberto (ex: mapeamento SMB, *fuzzing* web, tentativas de login anônimo via FTP), ele opta por uma abordagem orquestrada que centralize os dados para facilitar a escrita do relatório final.
 - **Execução Prática:** O analista abre o terminal e executa sudo legion. Na interface gráfica, adiciona a sub-rede 10.0.10.0/24 ao escopo e inicia uma varredura padrão.
 - **Resultado Esperado:** O Legion executará o Nmap em *background*. Assim que descobrir, por exemplo, a porta 445 aberta em um *host*, ele automaticamente ativará *scripts* NSE do Nmap para enumeração de SMB e rodará o enum4linux contra aquele IP específico. O analista poderá navegar pela GUI e clicar no *host* para ler os resultados estruturados de todas essas ferramentas simultaneamente em um único painel.

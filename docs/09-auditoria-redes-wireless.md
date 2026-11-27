@@ -43,6 +43,7 @@ aircrack-ng [arquivo_captura.cap] -w [wordlist.txt]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Em uma auditoria de segurança física autorizada, o analista precisa validar a robustez da senha da rede Wi-Fi corporativa protegida por WPA2-PSK ("RedeCorp_5G"), capturando o *handshake* de autenticação de um dispositivo cliente já conectado e submetendo-o a um ataque de dicionário direcionado (gerado previamente via [Crunch](08-criptoanalise-senhas.md#83-crunch-v36)).
 - **Comandos Executados:**
 
@@ -82,6 +83,7 @@ sudo wifite --all --kill
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante uma avaliação de segurança física em um perímetro corporativo com múltiplos pontos de acesso Wi-Fi visíveis (redes corporativas, redes de convidados e possíveis roteadores de IoT mal configurados), o analista precisa de uma abordagem rápida e automatizada para identificar qual das redes disponíveis representa o vetor de ataque mais fácil, sem gastar tempo analisando manualmente cada uma.
 - **Execução Prática:** O analista executa sudo wifite, aguardando a listagem de todas as redes detectadas ordenadas por intensidade de sinal. Identificando visualmente que uma das redes ("IoT_Camera_Setup") possui o protocolo WPS habilitado (indicador de alta probabilidade de sucesso), seleciona-a diretamente pelo número correspondente no menu interativo.
 - **Resultado Esperado:** O Wifite identificará automaticamente a vulnerabilidade WPS, executará um ataque *Pixie-Dust* (exploração de aleatoriedade criptográfica fraca na implementação) contra o roteador. Em caso de sucesso, exibirá diretamente no terminal tanto o PIN de 8 dígitos do WPS quanto a senha WPA2-PSK em texto claro derivada, sem exigir qualquer ataque de força bruta prolongado contra a senha propriamente dita.
@@ -112,6 +114,7 @@ curl -s http://localhost:2501/devices/all_devices.json -u [usuario]:[senha]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante uma auditoria de segurança física contínua em um escritório corporativo, a equipe de segurança suspeita da presença de um *rogue access point* — um ponto de acesso não autorizado, possivelmente instalado maliciosamente por um insider, imitando o SSID legítimo da rede corporativa para capturar credenciais de funcionários desavisados (*Evil Twin*).
 - **Execução Prática:** O analista posiciona um dispositivo com o Kismet em execução contínua (sudo kismet -c wlan1mon) em um local central do escritório, monitorando passivamente por um período de 24 horas. Periodicamente, acessa a interface web em http://localhost:2501 para revisar os alertas gerados automaticamente pelo motor de detecção de anomalias.
 - **Resultado Esperado:** O Kismet identificará e alertará sobre duas redes distintas fisicamente (endereços MAC/BSSID diferentes) transmitindo exatamente o mesmo SSID corporativo, classificando o evento como uma possível anomalia de *Evil Twin*. O relatório incluirá o endereço MAC do dispositivo suspeito, a intensidade do sinal (permitindo estimativa de localização física) e o histórico temporal de sua atividade, fornecendo evidências concretas para uma investigação de segurança física subsequente.

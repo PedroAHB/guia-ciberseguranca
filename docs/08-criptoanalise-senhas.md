@@ -42,6 +42,7 @@ hashcat -m [modo_hash] [arquivo_hashes.txt] --show
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após extrair o hash NTLM de um usuário de domínio (via [Mimikatz](06-pos-exploracao-escalonamento.md#62-mimikatz-v220)) que não pôde ser explorado diretamente por *Pass-the-Hash* devido a restrições de *Protected Users*, o analista precisa recuperar a senha em texto claro. A política de senhas da organização exige complexidade mínima, mas os colaboradores tendem a seguir padrões previsíveis (palavra capitalizada + ano).
 - **Comando Executado:**
 
@@ -81,6 +82,7 @@ john --show [arquivo_de_hashes.txt]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante a fase de pós-exploração em um servidor Linux, o analista obtém acesso de leitura aos arquivos /etc/passwd e /etc/shadow (via uma falha de permissão local). O objetivo é recuperar a senha em texto claro do usuário root ou de outra conta privilegiada armazenada nesses arquivos, para uso posterior em outros serviços da rede (dado o comum reaproveitamento de senhas).
 - **Comandos Executados:**
 
@@ -118,6 +120,7 @@ crunch 8 8 -t Empresa%%%% --stats
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Através de engenharia social e OSINT prévio, o analista descobriu que a política de senha da rede Wi-Fi corporativa da empresa "TechCorp" segue rigorosamente o padrão nome_da_empresa seguido de 4 dígitos numéricos (ex: TechCorp2024). O objetivo é gerar uma *wordlist* extremamente direcionada e compacta (em vez de uma genérica massiva) para uso subsequente em um ataque de quebra do *handshake* WPA2 capturado via [Aircrack-ng](09-auditoria-redes-wireless.md#91-aircrack-ng-v17).
 - **Comando Executado:**
 

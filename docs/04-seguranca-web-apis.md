@@ -37,6 +37,7 @@ java -jar [caminho_burpsuite_pro.jar] --project-file=[projeto.burp] --config-fil
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante uma auditoria de segurança em uma aplicação de *e-commerce*, o analista precisa validar se o fluxo de checkout é vulnerável a manipulação de preços (*price tampering*) ou a *Insecure Direct Object References* (IDOR), alterando o identificador de pedido de outro cliente para visualizar dados sensíveis não autorizados.
 - **Execução Prática:** O analista configura o navegador para rotear o tráfego pelo *proxy* local (127.0.0.1:8080) do Burp Suite e realiza a navegação normal pela loja até a etapa de finalização de compra. A requisição de confirmação do pedido é capturada na aba *Proxy*, enviada ao *Repeater* (Ctrl+R), e o parâmetro order_id é manualmente alterado para o valor de um pedido pertencente a outro usuário.
 - **Resultado Esperado:** Caso a aplicação não valide corretamente a propriedade do recurso (falha de *Broken Access Control*), o servidor retornará o código HTTP 200 juntamente com os dados completos do pedido de terceiros (endereço, itens e valores), confirmando a vulnerabilidade de IDOR para inclusão imediata no relatório de risco crítico.
@@ -68,6 +69,7 @@ zap.sh -daemon -host 127.0.0.1 -port 8090 -config api.key=[chave_api]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Uma equipe de DevSecOps precisa incorporar uma verificação de segurança dinâmica (DAST) automatizada ao *pipeline* de integração contínua, garantindo que nenhuma *build* seja promovida ao ambiente de produção caso vulnerabilidades de severidade alta sejam introduzidas na aplicação (https://staging.alvo.com), sem exigir intervenção manual de um analista.
 - **Comando Executado:**
 
@@ -105,6 +107,7 @@ sqlmap -u [http://alvo.com/pagina.php?id=1] -D [banco] -T [tabela] --dump --tamp
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante a auditoria de uma aplicação de portal de notícias, o analista identifica que o parâmetro id na URL de exibição de artigos (http://alvo.com/noticia.php?id=15) retorna comportamentos distintos ao ser manipulado com aspas simples, sugerindo uma potencial injeção SQL cega (*blind*). O objetivo é confirmar a falha e extrair a tabela de credenciais administrativas sem interromper a disponibilidade do serviço.
 - **Comandos Executados:**
 
@@ -142,6 +145,7 @@ ffuf -w [wordlist.txt] -u [http://alvo.com/FUZZ] -e .php,.bak,.zip -recursion -t
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após identificar que uma aplicação retorna sistematicamente o código HTTP 200 com um corpo de resposta idêntico (tamanho fixo de 3.245 bytes) para qualquer recurso inexistente (*soft 404*), o analista precisa localizar painéis administrativos e arquivos de backup ocultos em http://alvo.com sem que os falsos positivos poluam a saída.
 - **Comando Executado:**
 

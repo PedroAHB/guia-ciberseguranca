@@ -36,6 +36,7 @@ chisel client [IP_atacante]:[porta_de_escuta] [porta_local]:[IP_interno]:[porta_
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após comprometer um servidor *web* (10.0.5.10) que atua como ponte entre a DMZ e a rede interna corporativa (192.168.20.0/24), o analista precisa rotear o tráfego de ferramentas como Nmap e o próprio NetExec através dessa máquina pivô para varrer a rede interna, à qual não possui rota direta a partir de sua estação de ataque externa.
 - **Comandos Executados:**
 
@@ -70,6 +71,7 @@ proxychains nmap -sT -Pn [bloco_IP_interno_ou_CIDR]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Com o túnel SOCKS5 reverso já estabelecido no [exemplo do Chisel](#71-chisel-v1118), o analista precisa efetivamente utilizar o NetExec para validar as credenciais de domínio previamente comprometidas contra os servidores da sub-rede interna 192.168.20.0/24, tarefa impossível sem o redirecionamento forçado do tráfego dessas ferramentas através do túnel.
 - **Comando Executado:**
 
@@ -106,6 +108,7 @@ menu
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após extrair um *hash* NTLM de um administrador local através do NetExec (--sam) em um servidor Windows específico (10.0.5.40), o analista precisa estabelecer uma sessão interativa completa nesse *host* para realizar tarefas de pós-exploração mais elaboradas, como o carregamento em memória de um *script* PowerShell de enumeração adicional, sem jamais ter conhecido a senha original da conta.
 - **Comandos Executados:**
 

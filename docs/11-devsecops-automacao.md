@@ -42,6 +42,7 @@ trivy image --exit-code 1 --severity CRITICAL -f json -o [relatorio.json] [nome_
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Antes de publicar uma nova imagem de contêiner (api-pagamentos:v2.3) no registro de produção, a esteira de CI/CD precisa garantir automaticamente que a imagem não contenha vulnerabilidades críticas conhecidas em suas dependências de base ou de aplicação, interrompendo o *pipeline* imediatamente caso alguma seja encontrada.
 - **Comando Executado:**
 
@@ -78,6 +79,7 @@ checkov -d [caminho_do_diretorio] --framework terraform --compact
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Antes de aplicar (terraform apply) um novo módulo de infraestrutura que provisiona um *bucket* de armazenamento S3 e um banco de dados RDS na AWS, a equipe de DevSecOps precisa garantir automaticamente, dentro do *pipeline* de revisão de *Pull Requests*, que nenhum recurso seja provisionado com configurações de segurança inadequadas (ex: *bucket* público ou banco sem criptografia).
 - **Comando Executado:**
 
@@ -114,6 +116,7 @@ semgrep --config auto --sarif -o [relatorio.sarif] [caminho_do_diretorio]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Uma equipe de desenvolvimento precisa incorporar uma verificação automatizada de segurança de código diretamente no *Pull Request* de um repositório Python, detectando especificamente o uso perigoso da função eval() com entradas potencialmente controláveis pelo usuário, uma prática que introduz risco crítico de execução arbitrária de código.
 - **Comando Executado:**
 

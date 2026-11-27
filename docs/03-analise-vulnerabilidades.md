@@ -39,6 +39,7 @@ nuclei -u [alvo.com] -tags cve,exposure -severity critical,high
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** No contexto de uma esteira DevSecOps, um novo *deploy* de uma aplicação web (*release candidate*) acaba de ser provisionado no ambiente de *staging* ([https://staging.alvo.com](https://staging.alvo.com)). Antes de promover o código para produção, o analista automatiza o Nuclei no *pipeline* para garantir que não haja arquivos de ambiente expostos (como .env ou .git) e que a aplicação não esteja vulnerável a falhas críticas recém-descobertas.
 - **Comando Executado:**
 
@@ -71,6 +72,7 @@ sudo /opt/nessus/sbin/nessuscli update
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Uma instituição financeira necessita validar se a sua infraestrutura interna (10.50.0.0/24) está em estrita conformidade com as diretrizes do PCI-DSS antes de uma auditoria oficial externa. É imperativo atestar a ausência de protocolos legados (como SMBv1 ou Telnet), validar políticas de expiração de senhas e garantir o *patching* de 100% dos *hosts*. O uso de *exploits* é terminantemente proibido para evitar *downtime*.
 - **Execução Prática:** O analista acessa a interface web no localhost, cria uma varredura utilizando o *template* "PCI-DSS Network Scan", insere as credenciais de um usuário com privilégios de leitura no domínio do *Active Directory* e define a sub-rede alvo.
 - **Resultado Esperado:** O Nessus autenticará silenciosamente via SMB/WMI em cada servidor, lerá as chaves de registro e as políticas de grupo local. Ao concluir, entregará um relatório de auditoria segmentando falhas de *software* (CVEs pendentes) de violações de política (ex: ausência de bloqueio de conta após 5 tentativas falhas), exigidas pelo padrão PCI.
@@ -98,6 +100,7 @@ sudo gvm-check-setup
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Em um engajamento *White Box*, o analista necessita validar se um bloco de servidores Linux da DMZ (192.168.50.0/24) está vulnerável a falhas de escalonamento de privilégio local ou se possui bibliotecas do sistema desatualizadas (ex: OpenSSL vulnerável). O escopo exige evidências concretas, não apenas inferências baseadas em portas abertas.
 - **Execução Prática:** O analista garante que os serviços estão ativos executando sudo gvm-start. No navegador corporativo, acessa [https://127.0.0.1:9392](https://127.0.0.1:9392). Navega até a seção de configurações e adiciona chaves SSH privadas no gerenciador de credenciais (*Credentials*). Em seguida, cria um escopo (*Target*) apontando para 192.168.50.0/24, associa a credencial SSH previamente cadastrada e inicia uma tarefa (*Task*) de varredura com o perfil "Full and fast".
 - **Resultado Esperado:** O motor OSPd efetuará login SSH legítimo em cada máquina, rodará comandos locais (como consultas ao gerenciador de pacotes dpkg ou rpm) e validará o estado real do sistema. A interface web processará esses dados e disponibilizará um relatório em PDF ou XML pontuando os CVEs confirmados e os respectivos *links* de mitigação do fornecedor.
@@ -130,6 +133,7 @@ nikto -h [http://alvo.com] -Format htm -o [relatorio_web.html]
 ```
 
 **Exemplo Prático de Aplicação:**
+
 - **Cenário:** Em um engajamento de *Penetration Testing*, a equipe de infraestrutura do cliente subiu às pressas um servidor web Apache legado (10.0.30.15) para hospedar uma intranet temporária. Antes de tentar explorar os formulários de login da aplicação, o analista decide validar se os administradores deixaram arquivos de configuração críticos, *scripts* de teste do Apache ou páginas de documentação acessíveis na raiz do servidor.
 - **Comando Executado:**
 
