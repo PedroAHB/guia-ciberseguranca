@@ -6,6 +6,12 @@ description: "Técnicas e ferramentas de pós-exploração, enumeração local e
 
 Uma vez estabelecido o acesso inicial, geralmente restrito a um usuário de baixo privilégio, esta fase concentra-se na enumeração exaustiva do sistema comprometido para identificar vetores de escalonamento (*misconfigurations*, falhas de *kernel*, credenciais em cache) e no *bypass* de mecanismos de controle de acesso, com o objetivo final de obter privilégios administrativos (root/SYSTEM) e mapear a estrutura de confiança do domínio.
 
+| Ferramenta | Camada/escopo principal | Melhor aplicação | Principal cuidado |
+| --- | --- | --- | --- |
+| PEAS Suite | Sistema operacional local (Linux e Windows) | Enumerar vetores de escalonamento de privilégios | Grande volume de achados; priorize pelos destaques e valide manualmente |
+| Mimikatz | Memória do LSASS no Windows | Demonstrar o risco de credenciais em cache | Requer privilégios administrativos e expõe credenciais reais |
+| BloodHound | Grafo de relações do *Active Directory* | Encontrar caminhos de ataque até grupos privilegiados | A coleta enumera o domínio inteiro; os dados coletados são sensíveis |
+
 ## 6.1 PEAS Suite (LinPEAS / WinPEAS) — build 2026-07-01
 
 * **Descrição Acadêmica/Técnica:** A PEAS Suite (*Privilege Escalation Awesome Scripts*) compreende dois *scripts* de enumeração massiva e automatizada — LinPEAS (Bash, para sistemas Unix-like) e WinPEAS (C#/.NET, para sistemas Windows) — projetados para varrer sistematicamente o sistema operacional comprometido em busca de vetores de escalonamento de privilégios. Em baixo nível, os *scripts* não exploram vulnerabilidades diretamente; em vez disso, executam centenas de verificações determinísticas e heurísticas (leitura de permissões de arquivos SUID/SGID, análise de tarefas *cron*/*Scheduled Tasks*, enumeração de capacidades do *kernel*, busca por credenciais em arquivos de configuração e histórico de *shell*, verificação de *binários* com permissões de execução elevadas) e correlacionam os achados com bancos de dados conhecidos de técnicas de escalonamento (como o GTFOBins), destacando os resultados via codificação de cores baseada em probabilidade de exploração (vermelho para altíssima probabilidade).

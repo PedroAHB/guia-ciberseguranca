@@ -6,6 +6,12 @@ description: "Ferramentas para pivoting, tunelamento, movimentação lateral e a
 
 Com privilégios elevados estabelecidos em um ponto de apoio (*foothold*), esta fase concentra-se em expandir o alcance do comprometimento através de segmentos de rede internos inacessíveis diretamente, bem como em garantir mecanismos de acesso remoto duradouros. O foco técnico recai sobre o tunelamento de tráfego, o roteamento de ferramentas ofensivas através de hosts pivô e o estabelecimento de canais de acesso persistentes.
 
+| Ferramenta | Camada/escopo principal | Melhor aplicação | Principal cuidado |
+| --- | --- | --- | --- |
+| Chisel | Tunelamento TCP/UDP sobre HTTP/WebSocket | Alcançar segmentos internos a partir de um host pivô | Contorna *firewalls* de saída; mantenha apenas durante o teste autorizado |
+| Proxychains-ng | Redirecionamento de conexões por cadeia de *proxies* | Rotear ferramentas sem suporte nativo a *proxy* | Depende de um *proxy* já estabelecido, como um túnel SOCKS5 |
+| Evil-WinRM | *Shell* remota via WinRM (portas 5985/5986) | Acesso interativo a hosts Windows | Exige credenciais válidas e WinRM habilitado no alvo |
+
 ## 7.1 Chisel — v1.11.8
 
 * **Descrição Acadêmica/Técnica:** O Chisel é uma ferramenta de tunelamento TCP/UDP rápida, desenvolvida em Go e compilada como um binário estático único (sem dependências externas), projetada para estabelecer túneis criptografados sobre HTTP/WebSocket entre um cliente e um servidor. Em baixo nível, a ferramenta opera em uma arquitetura cliente-servidor: uma instância atua como servidor (tipicamente na máquina do atacante, expondo uma porta de escuta), enquanto a outra atua como cliente (executada no *host* pivô comprometido), estabelecendo uma conexão *outbound* multiplexada sobre uma única sessão SSH encapsulada dentro de WebSocket. Essa característica é criticamente relevante em ambientes corporativos, pois o tráfego de tunelamento se assemelha a tráfego HTTP/HTTPS legítimo, contornando *firewalls* de saída (*egress filtering*) que tipicamente bloqueiam apenas portas não convencionais, ao mesmo tempo em que multiplexa múltiplos túneis lógicos (*forward* e *reverse*) sobre essa única conexão física.

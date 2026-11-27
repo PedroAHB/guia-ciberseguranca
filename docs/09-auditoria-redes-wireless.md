@@ -6,6 +6,12 @@ description: "Ferramentas para auditoria autorizada de redes sem fio, captura de
 
 Esta seção desvia-se do paradigma de redes cabeadas (TCP/IP) para operar diretamente na Camada 1 e 2 do modelo OSI, através da manipulação de interfaces de rádio frequência. O foco recai sobre a interceptação passiva de tráfego eletromagnético, a exploração de falhas criptográficas e de implementação nos protocolos de segurança Wi-Fi (WEP/WPA/WPA2/WPS) e a auditoria de outros meios de comunicação sem fio, como Bluetooth.
 
+| Ferramenta | Camada/escopo principal | Melhor aplicação | Principal cuidado |
+| --- | --- | --- | --- |
+| Aircrack-ng | Camadas 1–2, Wi-Fi 802.11 | Auditar a robustez de redes WEP/WPA/WPA2 | Exige placa com modo monitor; a desautenticação interrompe clientes legítimos |
+| Wifite | Orquestração de ferramentas *wireless* | Automatizar auditorias de redes sem fio | A automação ampla pode atingir redes fora do escopo; defina o alvo |
+| Kismet | *Sniffer* passivo multiprotocolo (Wi-Fi, Bluetooth, Zigbee, SDR) | Inventário e detecção de redes e dispositivos sem fio | Captura tráfego de terceiros dentro do alcance do rádio |
+
 ## 9.1 Aircrack-ng — v1.7
 
 * **Descrição Acadêmica/Técnica:** O Aircrack-ng não é uma ferramenta isolada, mas uma suíte completa de utilitários em C, especializada na auditoria de segurança de redes Wi-Fi (802.11), cuja operação fundamental depende da capacidade da placa de rede sem fio de operar em *modo monitor* — um estado de baixo nível no qual a interface captura todos os quadros (*frames*) 802.11 no ar dentro do seu alcance de rádio, incluindo aqueles não destinados ao próprio dispositivo, ao contrário do *modo managed* convencional. Composta por ferramentas especializadas e encadeadas (airmon-ng para gerência de interfaces, airodump-ng para captura e despejo de pacotes, aireplay-ng para injeção de pacotes forjados, e aircrack-ng propriamente, o motor de quebra criptográfica), a suíte implementa ataques estatísticos contra a cifra RC4 do WEP e a captura determinística do *4-way handshake* do WPA/WPA2, cuja quebra subsequente depende da derivação criptográfica PBKDF2 contra uma *wordlist*.

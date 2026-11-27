@@ -6,6 +6,13 @@ description: "Ferramentas para exploração autorizada de serviços de rede, cre
 
 Esta fase representa o ponto de transição entre a identificação teórica de falhas e a obtenção prática de acesso não autorizado. O objetivo é operacionalizar as vulnerabilidades mapeadas nas fases anteriores através da execução de *exploits*, ataques de injeção e tentativas de autenticação, culminando no comprometimento inicial (*Initial Access*) de um serviço, host ou banco de dados.
 
+| Ferramenta | Camada/escopo principal | Melhor aplicação | Principal cuidado |
+| --- | --- | --- | --- |
+| Metasploit Framework | Exploração modular e pós-exploração | Validar vulnerabilidades conhecidas de forma controlada | *Exploits* podem afetar a disponibilidade; use apenas no escopo autorizado |
+| SearchSploit | Consulta *offline* ao Exploit-DB | Verificar se há *exploit* público para uma versão | Revise o código público antes de qualquer execução |
+| Hydra | Autenticação *online* em serviços de rede | Testar senhas fracas em serviços expostos | Sujeito a *rate limiting*, bloqueio de contas e detecção por IDS/IPS |
+| NetExec | *Active Directory* via SMB, WinRM, LDAP, MSSQL e SSH | Validar credenciais e privilégios em escala | Tentativas em massa podem bloquear contas e gerar alertas |
+
 ## 5.1 Metasploit Framework — v6.4.145
 
 * **Descrição Acadêmica/Técnica:** O Metasploit Framework, mantido pela Rapid7 e desenvolvido primariamente em Ruby, é a plataforma de exploração modular mais consolidada da indústria, estruturando o ciclo completo de um ataque em componentes reutilizáveis e interoperáveis. Em baixo nível, sua arquitetura é dividida em módulos de *exploits* (código que abusa de uma vulnerabilidade específica), *payloads* (a carga útil executada após o sucesso, ex: *reverse shells*), *encoders* (ofuscação de *payloads* para evasão de antivírus/IDS) e *auxiliary* (varreduras e utilitários que não necessariamente concedem acesso). O componente central de pós-exploração, o Meterpreter, é um *payload* avançado que opera inteiramente em memória (*in-memory*, sem tocar o disco), comunicando-se com o atacante através de um canal criptografado e extensível dinamicamente via carregamento de novas funcionalidades (*stagers* e *stages*) sem a necessidade de reconexão.

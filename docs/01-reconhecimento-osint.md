@@ -6,6 +6,14 @@ description: "Técnicas e ferramentas de reconhecimento passivo e OSINT para map
 
 Como fase inicial do ciclo de vida de um engajamento de segurança ofensiva, esta etapa concentra-se na coleta de informações em fontes abertas (*Open Source Intelligence* — OSINT) e na correlação de inteligência de ameaças, sem interação direta com a infraestrutura do alvo (técnicas que geram consultas ativas, como a força bruta de DNS, são indicadas nos respectivos exemplos). O objetivo é mapear a superfície de ataque externa — domínios, subdomínios, endereços de e-mail, credenciais expostas e relações organizacionais — minimizando a probabilidade de detecção e maximizando o volume de contexto disponível antes das fases subsequentes, que exigem varreduras e interação ativa contra o ambiente avaliado.
 
+| Ferramenta | Camada/escopo principal | Melhor aplicação | Principal cuidado |
+| --- | --- | --- | --- |
+| theHarvester | Camada 7, fontes públicas e APIs | Coleta inicial de e-mails, subdomínios e IPs de um domínio | Várias fontes exigem chaves de API; os resultados precisam de validação |
+| Recon-ng | *Framework* modular com banco SQLite | Centralizar e correlacionar descobertas por *workspace* | Alguns módulos geram consultas ativas, como a força bruta de DNS |
+| Amass | Superfície externa: DNS, ASN e *CT logs* | Inventário profundo de subdomínios e ativos | O modo ativo interage com a infraestrutura do alvo; exige escopo autorizado |
+| Maltego | Análise de vínculos em grafo | Correlacionar entidades e visualizar relações | *Transforms* podem rodar em servidores de terceiros, que recebem as consultas |
+| SpiderFoot | Automação OSINT orientada a eventos | Varreduras recursivas e monitoramento contínuo | Execuções amplas geram grande volume de dados para triagem |
+
 ## 1.1 TheHarvester — v4.11.1
 
 * **Descrição Acadêmica/Técnica:** O theHarvester é um *script* desenvolvido em Python projetado para a automação da coleta de dados de inteligência em fontes abertas. Operando em nível de aplicação (Camada 7 do modelo OSI), ele realiza requisições iterativas a motores de busca públicos, servidores de chaves PGP e APIs de terceiros (como Shodan, Hunter.io, e DNSdumpster) para compilar metadados associados a um domínio alvo. A arquitetura da ferramenta minimiza o tráfego de rede direto contra a infraestrutura do alvo, caracterizando-se primariamente como uma técnica de reconhecimento passivo, mitigando a probabilidade de detecção por sistemas de prevenção de intrusão (IPS).

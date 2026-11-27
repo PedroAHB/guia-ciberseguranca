@@ -6,6 +6,13 @@ description: "Ferramentas para identificar, validar e priorizar vulnerabilidades
 
 Nesta fase do ciclo de auditoria, o foco transita do [mapeamento topológico realizado na fase anterior](02-enumeracao-mapeamento-rede.md) para a identificação ativa e triagem de falhas de segurança. O objetivo é correlacionar os serviços e versões descobertos com bancos de dados de vulnerabilidades conhecidas (CVEs), além de auditar configurações sistêmicas (*misconfigurations*) e credenciais padrão.
 
+| Ferramenta | Camada/escopo principal | Melhor aplicação | Principal cuidado |
+| --- | --- | --- | --- |
+| Nuclei | Camada 7 e protocolos de rede, via *templates* YAML | Verificações rápidas e automatizadas em esteiras CI/CD | *Templates* enviam requisições reais; filtre por *tags* e severidade |
+| Nessus | Rede e auditoria autenticada do sistema | Conformidade (CIS, PCI-DSS) e varreduras com credenciais | Solução proprietária; varreduras autenticadas exigem credenciais dedicadas |
+| OpenVAS/GVM | Arquitetura de serviços com feed comunitário | Gestão de vulnerabilidades *open source* com varreduras autenticadas | Exige sincronizar os feeds e validar a instalação antes do uso |
+| Nikto | Servidores HTTP/HTTPS | Encontrar falhas de configuração triviais em servidores web | Ferramenta ruidosa, com grande volume de requisições |
+
 ## 3.1 Nuclei — v3.11.0
 
 * **Descrição Acadêmica/Técnica:** Desenvolvido em linguagem Go pela ProjectDiscovery, o Nuclei é um motor de varredura de vulnerabilidades arquitetado sobre um modelo de execução declarativo baseado em *templates* YAML. Diferente de *scanners* tradicionais que operam primariamente via *banner grabbing* ou heurísticas fechadas, o Nuclei executa requisições HTTP, TCP, DNS e SSL exatas e customizadas, analisando as respostas contra padrões de expressões regulares (RegEx) ou *matchers* lógicos definidos pela comunidade. Essa abordagem de baixo nível (enviando o *payload* exato da exploração) reduz drasticamente a taxa de falsos positivos. Devido à sua altíssima concorrência e capacidade de saída em formatos estruturados (JSON), é amplamente adotado em *pipelines* de Integração e Entrega Contínuas (CI/CD) para testes de regressão de segurança.
