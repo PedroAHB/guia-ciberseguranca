@@ -1,12 +1,67 @@
-/* Azul extraído do logotipo oficial do dragão da Kali Linux (docs/assets/img/favicon.png),
-   aplicado ao nome do site no cabeçalho e no topo da barra lateral de navegação. */
+/* Paleta baseada no azul do logotipo do dragão da Kali Linux (#2778ff, docs/assets/img/favicon.png).
+   O tom exato não atinge 4,5:1 como cor de texto em nenhum dos temas, então cada tema usa a
+   variação do mesmo matiz que passa no WCAG AA:
+     - tema claro:  #1a5fd6 sobre branco    -> 5,75:1
+     - tema escuro: #5c9aff sobre #1e2129   -> 5,76:1 (e 6,53:1 sobre o cabeçalho #14151a)
+   O cabeçalho continua escuro nos dois temas. */
 :root {
   --kali-blue: #2778ff;
+  --kali-header-bg: #14151a;
+  --kali-header-bg-alt: #1d1f26;
+  --kali-blue-on-dark: #5c9aff;
 }
 
-.md-header__topic:first-child .md-ellipsis,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #1a5fd6;
+  --md-primary-fg-color--light: #2778ff;
+  --md-primary-fg-color--dark: #1449a8;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, 0.7);
+  --md-accent-fg-color: #1a5fd6;
+  --md-accent-fg-color--transparent: rgba(26, 95, 214, 0.1);
+  --md-accent-bg-color: #ffffff;
+  --md-typeset-a-color: #1a5fd6;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #5c9aff;
+  --md-primary-fg-color--light: #7aabff;
+  --md-primary-fg-color--dark: #2778ff;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, 0.7);
+  --md-accent-fg-color: #5c9aff;
+  --md-accent-fg-color--transparent: rgba(92, 154, 255, 0.1);
+  --md-accent-bg-color: #14151a;
+  --md-typeset-a-color: #5c9aff;
+}
+
+/* Cabeçalho escuro em qualquer tema (o primary custom pintaria o fundo de azul) */
+.md-header {
+  background-color: var(--kali-header-bg);
+  color: #ffffff;
+}
+
+/* Nome do site no cabeçalho */
+.md-header__topic:first-child .md-ellipsis {
+  color: var(--kali-blue-on-dark);
+}
+
+/* Título da barra lateral no desktop (fundo da página) */
 .md-nav--primary > .md-nav__title {
-  color: var(--kali-blue);
+  color: var(--md-typeset-a-color);
+}
+
+/* Menu mobile/gaveta: barra do título escura com o nome em azul, como no cabeçalho */
+@media screen and (max-width: 76.234375em) {
+  .md-nav--primary .md-nav__title[for="__drawer"] {
+    background-color: var(--kali-header-bg);
+    color: var(--kali-blue-on-dark);
+  }
+
+  .md-nav--primary .md-nav__source {
+    background-color: var(--kali-header-bg-alt);
+    color: #ffffff;
+  }
 }
 
 /* Tabelas no celular (até 600 px): sombras laterais indicam que há colunas fora da tela.
