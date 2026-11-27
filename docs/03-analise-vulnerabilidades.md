@@ -15,7 +15,7 @@ Nesta fase do ciclo de auditoria, o foco transita do [mapeamento topológico rea
   * Suporte a múltiplos protocolos (TCP, HTTP, DNS, SSL, File, Whois, entre outros).
   * Filtros granulares de execução baseados em *tags*, severidade, autores ou diretórios específicos.
 
-* **Sintaxe e Comandos Principais:**
+**Sintaxe e Comandos Principais:**
 
 ```bash
 # Atualização do motor de templates oficial da comunidade (recomendado antes de qualquer uso)
@@ -53,7 +53,8 @@ nuclei -u https://staging.alvo.com -tags config,cve -severity critical,high,medi
   * Auditoria nativa de conformidade baseada em *benchmarks* rigorosos (CIS, DISA STIG, HIPAA, PCI-DSS).
   * Avaliação de segurança em dispositivos de infraestrutura de rede (switches, roteadores Cisco/Juniper) e *appliances* de segurança.
   * Geração de relatórios executivos com priorização baseada em risco (*Vulnerability Priority Rating* - VPR).
-* **Sintaxe e Comandos Principais:** Sendo uma plataforma *Enterprise* cuja operação interativa ocorre primariamente através de sua interface gráfica (GUI), a interação via terminal no Kali Linux restringe-se ao controle do *daemon* e manutenção do *backend*:
+
+**Sintaxe e Comandos Principais:** Sendo uma plataforma *Enterprise* cuja operação interativa ocorre primariamente através de sua interface gráfica (GUI), a interação via terminal no Kali Linux restringe-se ao controle do *daemon* e manutenção do *backend*:
 
 ```bash
 # Inicialização do daemon do Nessus (acesso padrão: https://127.0.0.1:8834)
@@ -82,7 +83,8 @@ sudo /opt/nessus/sbin/nessuscli update
   * Auditoria de conformidade e configurações incorretas diretamente no sistema operacional do ativo.
   * Atualização contínua do banco de dados de assinaturas (NVTs, SCAP e alertas CERT) via *Greenbone Community Feed* (GCF).
   * Gerenciamento temporal das vulnerabilidades e geração de relatórios técnicos baseados nas métricas do *Common Vulnerability Scoring System* (CVSS).
-* **Sintaxe e Comandos Principais:** A interação em terminal no Kali Linux é primariamente focada na gestão da infraestrutura da ferramenta, sendo a execução de varreduras conduzida pela interface web:
+
+**Sintaxe e Comandos Principais:** A interação em terminal no Kali Linux é primariamente focada na gestão da infraestrutura da ferramenta, sendo a execução de varreduras conduzida pela interface web:
 
 ```bash
 # 1. Sincronização mandatória dos feeds de inteligência (executada periodicamente)
@@ -112,7 +114,8 @@ sudo gvm-check-setup
   * Identificação de instalações legadas ou desatualizadas de sistemas de gerenciamento de conteúdo (CMS) e *frameworks*.
   * Capacidade de evasão básica de Sistemas de Detecção de Intrusão (IDS) via técnicas de mutação e codificação de URIs (ex: *hex encoding*).
   * Suporte nativo para roteamento de requisições via *proxies* HTTP e autenticação básica (Basic/NTLM).
-* **Sintaxe e Comandos Principais:**
+
+**Sintaxe e Comandos Principais:**
 
 ```bash
 # Varredura padrão contra a porta HTTP (80) de um domínio ou IP

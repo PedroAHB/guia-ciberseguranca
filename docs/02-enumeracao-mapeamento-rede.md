@@ -130,7 +130,8 @@ sudo netdiscover -p -i eth0
   * Execução modular e encadeada de ferramentas baseada em assinaturas de serviços descobertos.
   * Parametrização ajustável para intensidade de varredura (*Easy*, *Hard*, *Custom*), mitigando riscos de interrupção de serviços (*Denial of Service* acidental).
   * Centralização de *logs* de terminal e captura automática de artefatos para geração de relatórios de auditoria.
-* **Sintaxe e Comandos Principais:** Sendo uma aplicação estritamente gráfica, a interação via CLI é limitada à inicialização com privilégios elevados para garantir o funcionamento adequado dos manipuladores de rede (*raw sockets*) do Nmap e Masscan.
+
+**Sintaxe e Comandos Principais:** Sendo uma aplicação estritamente gráfica, a interação via CLI é limitada à inicialização com privilégios elevados para garantir o funcionamento adequado dos manipuladores de rede (*raw sockets*) do Nmap e Masscan.
 
 ```bash
 # Inicialização do framework (requer privilégios de root para varreduras furtivas e de SO)
