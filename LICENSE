@@ -19,6 +19,12 @@ Exclusões
 --------
 
 Marcas, nomes de produtos e materiais de terceiros permanecem sujeitos aos
-direitos de seus respectivos titulares. A imagem de capa
-`docs/assets/img/capa.webp`, que contém um personagem de obra de terceiros,
-não é sublicenciada por esta licença.
+direitos de seus respectivos titulares. As imagens a seguir contêm um
+personagem de obra de terceiros e não são sublicenciadas por esta licença:
+
+- `docs/assets/img/capa.webp` (imagem de capa);
+- `docs/assets/img/aviso.webp` (banner da conclusão).
+
+O texto do banner da conclusão usa a fonte SDGlitch, licenciada pelo
+respectivo autor apenas para uso pessoal; a fonte não é distribuída neste
+repositório.
