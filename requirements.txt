@@ -2,3 +2,6 @@ mkdocs==1.6.1
 mkdocs-material==9.8.2
 mkdocs-minify-plugin==0.8.0
 pymdown-extensions==13.1.2
+# Imagens dos cards sociais (extra "imaging" do mkdocs-material)
+cairosvg==2.9.1
+pillow==13.0.0

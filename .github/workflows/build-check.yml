@@ -1,0 +1,70 @@
+name: Build check
+
+# Valida o site em cada PR antes do merge: build estrito do MkDocs (incluindo os
+# cards sociais, que exigem cairo) e presença das metatags de compartilhamento.
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Somente leitura: o job não publica nada.
+permissions:
+  contents: read
+
+concurrency:
+  group: build-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: mkdocs build --strict
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Configurar Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.x"
+
+      - name: Instalar bibliotecas de sistema (cairo para os cards sociais)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libcairo2
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Build estrito
+        run: mkdocs build --strict --site-dir site
+
+      - name: Conferir metatags Open Graph e Twitter Card
+        shell: python
+        run: |
+          import pathlib, re, sys
+          from urllib.parse import urlparse
+
+          site = pathlib.Path("site")
+          base = "/guia-ciberseguranca/"
+          required = ["og:title", "og:description", "og:image", "og:url", "twitter:card", "twitter:image"]
+          failures = 0
+          pages = sorted(p for p in site.rglob("index.html"))
+          for page in pages:
+              html = page.read_text(encoding="utf-8")
+              missing = [k for k in required if not re.search(r'(property|name)="?' + re.escape(k) + r'"?', html)]
+              image = re.search(r'property="?og:image"?\s+content="?([^"\s>]+)', html)
+              problem = ""
+              if image:
+                  path = urlparse(image.group(1)).path
+                  local = site / path[len(base):] if path.startswith(base) else None
+                  if not local or not local.is_file():
+                      problem = f" imagem ausente: {path}"
+              if missing or problem or not image:
+                  failures += 1
+                  print(f"FALHA {page.relative_to(site)}: faltando {missing}{problem}")
+              else:
+                  print(f"ok    {page.relative_to(site)} -> {urlparse(image.group(1)).path}")
+          print(f"{len(pages)} páginas verificadas, {failures} com problema")
+          sys.exit(1 if failures or not pages else 0)
