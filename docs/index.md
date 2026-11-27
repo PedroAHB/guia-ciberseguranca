@@ -1,5 +1,8 @@
 ---
 description: "Guia técnico de ferramentas e metodologias de cibersegurança para Kali Linux, organizado segundo o ciclo de vida do pentest."
+social:
+  cards_layout_options:
+    title: Guia de Cibersegurança com Kali Linux
 ---
 
 # Guia de Cibersegurança com Kali Linux
