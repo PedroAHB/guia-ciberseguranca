@@ -8,3 +8,30 @@
 .md-nav--primary > .md-nav__title {
   color: var(--kali-blue);
 }
+
+/* Tabelas no celular (até 600 px): sombras laterais indicam que há colunas fora da tela.
+   Técnica de "scroll shadows": as faixas da cor de fundo rolam junto com o conteúdo
+   (attachment: local) e cobrem as sombras fixas nas bordas (attachment: scroll) quando
+   não há mais nada para rolar naquele lado. Usa as variáveis do Material para
+   funcionar nos temas claro e escuro. Nada muda acima de 600 px. */
+@media screen and (max-width: 600px) {
+  .md-typeset .md-typeset__scrollwrap {
+    background:
+      linear-gradient(to right, var(--md-default-bg-color) 30%, transparent) left center / 2.5rem 100% no-repeat local,
+      linear-gradient(to left, var(--md-default-bg-color) 30%, transparent) right center / 2.5rem 100% no-repeat local,
+      radial-gradient(farthest-side at 0 50%, var(--md-default-fg-color--light), transparent) left center / 0.9rem 100% no-repeat scroll,
+      radial-gradient(farthest-side at 100% 50%, var(--md-default-fg-color--light), transparent) right center / 0.9rem 100% no-repeat scroll;
+    background-color: var(--md-default-bg-color);
+  }
+
+  /* O fundo opaco da tabela esconderia as sombras do contêiner */
+  .md-typeset .md-typeset__scrollwrap table:not([class]) {
+    background-color: transparent;
+  }
+
+  /* Células mais compactas */
+  .md-typeset .md-typeset__scrollwrap table:not([class]) th,
+  .md-typeset .md-typeset__scrollwrap table:not([class]) td {
+    padding: 0.6em 0.75em;
+  }
+}
