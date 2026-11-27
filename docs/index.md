@@ -2,6 +2,8 @@
 description: "Guia técnico de ferramentas e metodologias de cibersegurança para Kali Linux, organizado segundo o ciclo de vida do pentest."
 ---
 
+# Guia de Cibersegurança com Kali Linux
+
 ![Guia Cibersegurança — by Pedro Hackner](assets/img/capa.webp)
 
 Este documento constitui um referencial técnico e acadêmico para a exploração sistemática do ecossistema Kali Linux. Seu objetivo principal é documentar, de forma estruturada e progressiva, o ferramental aplicado em auditorias de cibersegurança, gestão de infraestrutura de TI e integração de práticas DevSecOps.
