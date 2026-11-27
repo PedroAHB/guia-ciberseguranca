@@ -26,19 +26,15 @@ Nesta fase do ciclo de auditoria, o foco transita do [mapeamento topológico rea
 
 ```bash
 # Atualização do motor de templates oficial da comunidade (recomendado antes de qualquer uso)
-
 nuclei -ut
 
 # Varredura básica de um único alvo utilizando todos os templates padrão
-
 nuclei -u [https://alvo.com]
 
 # Varredura massiva a partir de um arquivo de IPs/Domínios exportando os resultados para JSON
-
 nuclei -l [hosts.txt] -json-export [resultados.json]
 
 # Varredura focada estritamente em vulnerabilidades críticas e altas (CVEs e exposições)
-
 nuclei -u [alvo.com] -tags cve,exposure -severity critical,high
 ```
 
@@ -65,15 +61,12 @@ nuclei -u https://staging.alvo.com -tags config,cve -severity critical,high,medi
 
 ```bash
 # Inicialização do daemon do Nessus (acesso padrão: https://127.0.0.1:8834)
-
 sudo systemctl start nessusd
 
 # Habilitação do serviço para inicialização contínua junto ao boot do SO
-
 sudo systemctl enable nessusd
 
 # Atualização manual do banco de dados de plugins (útil para redes air-gapped)
-
 sudo /opt/nessus/sbin/nessuscli update
 ```
 
@@ -95,15 +88,12 @@ sudo /opt/nessus/sbin/nessuscli update
 
 ```bash
 # 1. Sincronização mandatória dos feeds de inteligência (executada periodicamente)
-
 sudo greenbone-feed-sync
 
 # 2. Inicialização dos daemons e do servidor web (acesso padrão: https://127.0.0.1:9392)
-
 sudo gvm-start
 
 # 3. Execução de rotina de diagnóstico para validação da integridade da instalação
-
 sudo gvm-check-setup
 ```
 
@@ -126,20 +116,16 @@ sudo gvm-check-setup
 
 ```bash
 # Varredura padrão contra a porta HTTP (80) de um domínio ou IP
-
 nikto -h [http://alvo.com]
 
 # Varredura forçando a comunicação via SSL/TLS (porta 443)
-
 nikto -h [https://alvo.com] -ssl
 
 # Varredura direcionada a arquivos interessantes, configurações padrão e divulgação de informações
 # (Tuning: 1 = arquivos interessantes, 2 = configuração/arquivo padrão, 3 = divulgação de informações)
-
 nikto -h [http://alvo.com] -Tuning 1,2,3
 
 # Varredura abrangente com exportação estruturada do relatório em formato HTML
-
 nikto -h [http://alvo.com] -Format htm -o [relatorio_web.html]
 ```
 

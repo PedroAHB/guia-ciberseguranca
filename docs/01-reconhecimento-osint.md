@@ -57,31 +57,22 @@ theHarvester -d alvo.com -b all -l 500 -f recon_alvo_inicial
 
 ```bash
 # Inicialização do framework
-
 recon-ng
 
 # Gerenciamento de espaços de trabalho (workspaces)
-
 workspaces create [nome_do_projeto]
-
 workspaces list
 
 # Instalação e carregamento de módulos via Marketplace
-
 marketplace install [modulo]
-
 modules load [modulo]
 
 # Configuração de chaves de API (ex: Shodan, Virustotal)
-
 keys add [nome_da_api] [valor_da_chave]
 
 # Execução de fluxo de trabalho (exemplo: busca de hosts)
-
 info              # Exibe opções do módulo carregado
-
 options set SOURCE [alvo.com]
-
 run
 ```
 
@@ -91,17 +82,11 @@ run
 
 ```bash
 recon-ng
-
 workspaces create auditoria_nuvem
-
 marketplace install recon/domains-hosts/brute_hosts
-
 modules load recon/domains-hosts/brute_hosts
-
 options set SOURCE alvo.com
-
 run
-
 show hosts
 ```
 
@@ -157,15 +142,12 @@ amass enum -active -d alvo.com -brute -ip -dir ./recon_amass_alvo
 
 ```bash
 # Inicialização do processo principal da interface gráfica
-
 maltego
 
 # Criação de um projeto base para desenvolvimento de transforms customizados em Python
-
 maltego-trx start [nome_do_projeto]
 
 # Execução local de um transform customizado para validação de saída
-
 python3 project.py local [nome_do_transform] [valor_da_entidade]
 ```
 
@@ -187,15 +169,12 @@ python3 project.py local [nome_do_transform] [valor_da_entidade]
 
 ```bash
 # Inicialização do servidor para acesso via interface gráfica (padrão: 127.0.0.1:5001)
-
 spiderfoot -l 127.0.0.1:5001
 
 # Execução via CLI: listar todos os módulos de coleta disponíveis
-
 spiderfoot -M
 
 # Iniciar um scan via CLI em um alvo específico com módulos selecionados e saída em CSV
-
 spiderfoot -s alvo.com -m sfp_s3bucket,sfp_whois,sfp_googlemaps -o csv > resultados_recon.csv
 ```
 

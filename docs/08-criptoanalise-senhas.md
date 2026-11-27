@@ -29,19 +29,15 @@ Ao longo das fases anteriores, diversos artefatos criptográficos são coletados
 
 ```bash
 # Ataque de dicionário simples especificando o modo do algoritmo de hash (ex: 1000 = NTLM)
-
 hashcat -m [modo_hash] -a 0 [arquivo_hashes.txt] [wordlist.txt]
 
 # Ataque de dicionário combinado com um arquivo de regras de mutação (ex: best64.rule)
-
 hashcat -m [modo_hash] -a 0 [arquivo_hashes.txt] [wordlist.txt] -r [regras.rule]
 
 # Ataque de força bruta baseado em máscara (ex: 8 caracteres, iniciando com letra maiúscula e terminando em 2 dígitos)
-
 hashcat -m [modo_hash] -a 3 [arquivo_hashes.txt] ?u?l?l?l?l?l?d?d
 
 # Exibição das senhas já quebradas em execuções anteriores, referenciando o arquivo de hashes original
-
 hashcat -m [modo_hash] [arquivo_hashes.txt] --show
 ```
 
@@ -69,23 +65,18 @@ hashcat -m 1000 hash_ntlm_extraido.txt /usr/share/wordlists/rockyou.txt -r /usr/
 
 ```bash
 # Conversão de um arquivo protegido (ex: chave privada SSH) para um formato de hash reconhecido pelo John
-
 ssh2john [chave_privada_id_rsa] > [hash_extraido.txt]
 
 # Combinação dos arquivos passwd e shadow do Linux em um único arquivo processável
-
 unshadow [arquivo_passwd] [arquivo_shadow] > [hashes_combinados.txt]
 
 # Ataque de quebra utilizando o modo Single Crack (baseado nos metadados da própria conta)
-
 john --single [arquivo_de_hashes.txt]
 
 # Ataque de dicionário padrão especificando a wordlist a ser utilizada
-
 john --wordlist=[wordlist.txt] [arquivo_de_hashes.txt]
 
 # Exibição das senhas já recuperadas em execuções anteriores
-
 john --show [arquivo_de_hashes.txt]
 ```
 
@@ -95,7 +86,6 @@ john --show [arquivo_de_hashes.txt]
 
 ```bash
 unshadow passwd.txt shadow.txt > hashes_servidor.txt
-
 john --wordlist=/usr/share/wordlists/rockyou.txt hashes_servidor.txt
 ```
 
@@ -115,19 +105,15 @@ john --wordlist=/usr/share/wordlists/rockyou.txt hashes_servidor.txt
 
 ```bash
 # Geração de uma wordlist numérica pura (ex: todos os PINs de 4 dígitos), redirecionada para um arquivo
-
 crunch 4 4 0123456789 -o [pins_4digitos.txt]
 
 # Geração baseada em um padrão fixo, combinando um prefixo conhecido com sufixo numérico variável (@ = minúscula, % = número)
-
 crunch 8 8 -t Empresa%%%% -o [wordlist_direcionada.txt]
 
 # Geração com conjunto de caracteres customizado (letras minúsculas e dígitos), com saída direta via pipe para o Hashcat
-
 crunch 6 8 abcdefghijklmnopqrstuvwxyz0123456789 | hashcat -m [modo_hash] [arquivo_hashes.txt]
 
 # Estimativa do tamanho e quantidade de linhas resultantes sem gerar o arquivo completo
-
 crunch 8 8 -t Empresa%%%% --stats
 ```
 

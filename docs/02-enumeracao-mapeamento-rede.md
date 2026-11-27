@@ -30,19 +30,15 @@ Diferente do reconhecimento passivo, esta fase exige interação direta com a in
 
 ```bash
 # Varredura de descobrimento de rede (Ping Sweep via ARP/ICMP) sem port scan
-
 nmap -sn 192.168.1.0/24
 
 # Varredura TCP SYN furtiva padrão (requer privilégios de root)
-
 sudo nmap -sS [alvo_ou_IP]
 
 # Varredura Agressiva (Detecção de SO, Versões, Scripting padrão e Traceroute)
-
 sudo nmap -A [alvo_ou_IP]
 
 # Varredura completa (65535 portas), extração de versões e exportação de relatórios
-
 sudo nmap -sS -p- -sV [alvo_ou_IP] -oA [nome_do_arquivo_saida]
 ```
 
@@ -70,11 +66,9 @@ sudo nmap -sS -p- -sV -O --min-rate 1000 10.0.5.0/24 -oA recon_interna_vlan5
 
 ```bash
 # Varredura de uma porta específica em um bloco de rede definindo a taxa (ex: 10.000 pacotes/segundo)
-
 sudo masscan -p[porta] [bloco_IP_ou_CIDR] --rate=[numero_de_pacotes]
 
 # Varredura das portas mais comuns em múltiplos blocos, com exportação no formato Grepable
-
 sudo masscan --top-ports 100 10.0.0.0/8 192.168.0.0/16 --rate=100000 -oG [arquivo.grep]
 ```
 
@@ -100,15 +94,12 @@ sudo masscan -p22,3389 198.18.0.0/16 --rate=50000 -oG recon_massivo_admin.grep
 
 ```bash
 # Varredura ativa em uma sub-rede específica (requer privilégios de root)
-
 sudo netdiscover -r [bloco_IP_ou_CIDR]
 
 # Varredura ativa especificando a interface de rede (ex: eth0 ou wlan0)
-
 sudo netdiscover -i [interface] -r [bloco_IP_ou_CIDR]
 
 # Modo de escuta passiva (não envia pacotes, apenas analisa o tráfego ARP local)
-
 sudo netdiscover -p -i [interface]
 ```
 
@@ -135,7 +126,6 @@ sudo netdiscover -p -i eth0
 
 ```bash
 # Inicialização do framework (requer privilégios de root para varreduras furtivas e de SO)
-
 sudo legion
 ```
 

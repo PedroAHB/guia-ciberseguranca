@@ -29,19 +29,15 @@ Esta seção final rompe com o paradigma reativo do *pentest* tradicional (audit
 
 ```bash
 # Varredura de vulnerabilidades em uma imagem de contêiner, filtrando exclusivamente severidades críticas e altas
-
 trivy image --severity CRITICAL,HIGH [nome_da_imagem:tag]
 
 # Varredura de um sistema de arquivos local (ex: diretório de um projeto antes do build)
-
 trivy fs [caminho_do_diretorio]
 
 # Auditoria de má configuração em arquivos de Infraestrutura como Código
-
 trivy config [caminho_do_diretorio_iac]
 
 # Varredura com saída estruturada em JSON e código de retorno de falha (útil para gates de CI/CD)
-
 trivy image --exit-code 1 --severity CRITICAL -f json -o [relatorio.json] [nome_da_imagem:tag]
 ```
 
@@ -69,19 +65,15 @@ trivy image --exit-code 1 --severity CRITICAL,HIGH api-pagamentos:v2.3
 
 ```bash
 # Varredura completa de um diretório contendo arquivos de definição de infraestrutura (ex: Terraform)
-
 checkov -d [caminho_do_diretorio]
 
 # Varredura restrita a um único arquivo específico, com saída no formato JUnit (integrável em relatórios de CI)
-
 checkov -f [caminho_do_arquivo.tf] -o junitxml
 
 # Varredura ignorando explicitamente uma verificação específica pelo seu identificador
-
 checkov -d [caminho_do_diretorio] --skip-check [ID_da_verificacao]
 
 # Varredura filtrando exclusivamente por um framework de conformidade regulatório específico
-
 checkov -d [caminho_do_diretorio] --framework terraform --compact
 ```
 
@@ -109,19 +101,15 @@ checkov -d ./infraestrutura_terraform --compact
 
 ```bash
 # Varredura de um diretório utilizando um conjunto de regras pré-configurado da comunidade (ex: boas práticas OWASP)
-
 semgrep --config p/owasp-top-ten [caminho_do_diretorio]
 
 # Varredura utilizando um arquivo de regras customizado escrito pelo próprio analista
-
 semgrep --config [caminho_regra_customizada.yaml] [caminho_do_diretorio]
 
 # Varredura restrita exclusivamente aos arquivos alterados em relação a uma branch base (análise incremental)
-
 semgrep --config auto --baseline-commit [hash_do_commit_base]
 
 # Varredura com saída estruturada em formato SARIF, integrável a plataformas de gestão de vulnerabilidades
-
 semgrep --config auto --sarif -o [relatorio.sarif] [caminho_do_diretorio]
 ```
 
